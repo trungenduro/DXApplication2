@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Name="page"
+    x:Class="DXApplication2.Views.DatabasePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dx="http://schemas.devexpress.com/maui"
+    xmlns:dxcore="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Mvvm"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
+    xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
+    xmlns:models="clr-namespace:DXApplication2.Domain.Data;assembly=DXApplication2.Domain"
+   
+    BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
+    Title="Order Page">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
+    </ContentPage.Behaviors>
+   
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Create" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
+    </ContentPage.ToolbarItems>
+  
+    <Grid>
+        <dx:DataGridView
+            x:Name="collectionView"
+            ItemsSource="{Binding Orders}"
+          
+            
+            >
+            <dx:DataGridView.EndSwipeItems>              
+                <dx:GridSwipeItem  Image="open.svg" BackgroundColor="Cyan" 
+             Tap="Swipe_Open"/>
+            </dx:DataGridView.EndSwipeItems>
+
+
+
+        </dx:DataGridView>
+
+        <ActivityIndicator
+            IsRunning="{Binding InitializeCommand.IsRunning}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

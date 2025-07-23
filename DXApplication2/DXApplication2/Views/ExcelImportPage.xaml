@@ -1,0 +1,47 @@
+<ContentPage
+    x:Class="DXApplication2.Views.ExcelImportPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dx="http://schemas.devexpress.com/maui"
+    xmlns:viewModels="clr-namespace:DXApplication2.ViewModels;assembly=DXApplication2"
+    x:DataType="viewModels:ExcelImportViewModel"
+    Title="Import from Excel">
+
+    <ContentPage.BindingContext>
+        <viewModels:ExcelImportViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="*, Auto, Auto, Auto">
+        <dx:DataGridView Grid.Row="0" ItemsSource="{Binding Employees}">
+            <dx:DataGridView.Columns>
+                <dx:TextColumn FieldName="FirstName" />
+                <dx:TextColumn FieldName="LastName" />
+                <dx:TextColumn FieldName="Company" />
+            </dx:DataGridView.Columns>
+        </dx:DataGridView>
+
+        <dx:CheckEdit
+            Grid.Row="1"
+            IsChecked="{Binding UseDefaultFile}"
+            Label="Use Sample File"
+            HorizontalOptions="Center"
+            LabelFontSize="13"
+            CheckBoxPosition="End" />
+        <dx:DXButton
+            Grid.Row="2"
+            Content="Upload File"
+            Icon="star"
+            HorizontalOptions="Fill"
+            Command="{Binding UploadCommand}"
+            Margin="16,12"
+            Padding="16,12" />
+        <Label
+            Grid.Row="3"
+            Text="Expected table columns: First Name, Last Name, Company"
+            FontSize="12"
+            HorizontalOptions="Center"
+            HorizontalTextAlignment="Center"
+            MaximumWidthRequest="200"
+            TextColor="{dx:ThemeColor OnSurfaceVariant}" />
+    </Grid>
+</ContentPage>
