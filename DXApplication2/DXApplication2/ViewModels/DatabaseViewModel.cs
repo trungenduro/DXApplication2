@@ -17,6 +17,16 @@ public partial class DatabaseViewModel : ObservableObject {
     [ObservableProperty]
     ObservableCollection<ExcelSheet>? sheets;
 
+	[ObservableProperty]
+	DHFOrder? currentOrder;	
+    
+    [ObservableProperty]
+	ExcelSheet? currentSheet;
+
+    [ObservableProperty]
+	LiningSpool? currentSpool;
+
+
 
 	[ObservableProperty]
 	ObservableCollection<LiningSpool>? spools;
@@ -47,7 +57,63 @@ public partial class DatabaseViewModel : ObservableObject {
         }
 		Orders?.Remove(item);
     }
-    [RelayCommand]
+
+   internal async Task UpdateOrderAsync()
+    {
+		Action? pendingAction = null;
+		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+				
+			unitOfWork.CustomersRepository.Update(CurrentOrder);
+
+        var k= Orders.ToList().FindIndex(x => x.Id == CurrentOrder.Id);
+		pendingAction = () =>
+            Orders[k] = CurrentOrder;
+        
+		await unitOfWork.SaveAsync();
+        pendingAction?.Invoke();
+        InitializeAsync();
+	}
+
+	public async Task ValidateSheets(ValidateItemEventArgs args)
+	{
+		args.AutoUpdateItemsSource = false;
+		if (args.Item is not ExcelSheet item)
+			return;
+
+		try
+		{
+			ArgumentNullException.ThrowIfNull(Orders);
+			Action? pendingAction = null;
+
+			using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+			if (args.DataChangeType == DataChangeType.Add)
+			{
+				unitOfWork.SheetRepository.Add(item);
+				pendingAction = () => Sheets.Add(item);
+			}
+			if (args.DataChangeType == DataChangeType.Edit)
+			{
+				unitOfWork.SheetRepository.Update(item);
+				pendingAction = () => Sheets[args.SourceIndex] = item;
+			}
+			if (args.DataChangeType == DataChangeType.Delete)
+			{
+				unitOfWork.SheetRepository.Delete(item);
+				pendingAction = () => Sheets.Remove(item);
+			}
+
+			await unitOfWork.SaveAsync();
+			pendingAction?.Invoke();
+		}
+		catch (Exception ex)
+		{
+			args.IsValid = false;
+			await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+			return;
+		}
+	}
+
+	[RelayCommand]
     async Task ValidateAndSaveAsync(ValidateItemEventArgs args) {
         args.AutoUpdateItemsSource = false;
         if (args.Item is not DHFOrder item)

@@ -63,6 +63,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <MauiXaml Update="Views\NewSheetView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\NewSpoolPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\SheetEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\SheetsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>

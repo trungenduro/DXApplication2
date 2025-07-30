@@ -1,3 +1,4 @@
+using DXApplication2.ViewModels;
 using LiningCheckRecord;
 
 namespace DXApplication2.Views
@@ -18,9 +19,19 @@ namespace DXApplication2.Views
 
 		private void Swipe_Open(object sender, DevExpress.Maui.DataGrid.SwipeItemTapEventArgs e)
 		{
+			DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
 			if (e.Item is DHFOrder file)
-				//	Navigation.PushAsync(new ViewPDFSyncfusion(file));
-				Navigation.PushAsync(new SheetsPage());
+			{
+				vm.CurrentOrder = file;
+				Navigation.PushAsync(new SheetsPage(vm, file));
+			}
+			//collectionView.Commands.ShowDetailEditForm
+
+		}
+
+		private void collectionView_ValidateAndSave(object sender, DevExpress.Maui.Core.ValidateItemEventArgs e)
+		{
+			DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
 		}
 	}
 }

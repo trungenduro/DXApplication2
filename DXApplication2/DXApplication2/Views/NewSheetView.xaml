@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DXApplication2.Views.NewSheetView"
+              xmlns:dx="http://schemas.devexpress.com/maui"
+             Title="NewSheetView">
+    <dx:DXScrollView>
+        <dx:DXStackLayout ItemSpacing="24" Margin="16">
+            <dx:DXStackLayout ItemSpacing="8">
+                <Label Text="{Binding Item}" />
+                <dx:TextEdit LabelText="検査日" Text="{Binding Item.CheckDate1}" />
+                <dx:TextEdit LabelText="検査員" Text="{Binding Item.Checked}" />
+                <dx:TextEdit LabelText="客先名" Text="{Binding Item.Kiki1}" />
+                <dx:TextEdit LabelText="案件名" Text="{Binding Item.Kiki2}" />
+
+                <dx:DataGridView  x:Name="collectionView" ItemsSource="{Binding Item.Spools}" HeightRequest="200"
+                     
+                               >
+                    <dx:DataGridView.Columns>
+                        <dx:TextColumn FieldName="SheetNo"></dx:TextColumn>
+                        <dx:TextColumn FieldName="Checker"></dx:TextColumn>
+                        <dx:TextColumn FieldName="Kiki1"></dx:TextColumn>
+                        <dx:TextColumn FieldName="Kiki2"></dx:TextColumn>
+                    </dx:DataGridView.Columns>
+
+                </dx:DataGridView>
+            </dx:DXStackLayout>
+
+            <dx:DXButton Content="Save" Command="{Binding SaveCommand}" />
+        </dx:DXStackLayout>
+    </dx:DXScrollView>
+</ContentPage>

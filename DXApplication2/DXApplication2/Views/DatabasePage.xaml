@@ -6,6 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:dx="http://schemas.devexpress.com/maui"
     xmlns:dxcore="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Mvvm"
+      xmlns:local="clr-namespace:DemoCenter.Maui.Views"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
     xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
@@ -20,20 +21,49 @@
    
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Create" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
+        <ToolbarItem Text="Create" IconImageSource="add.png" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
     </ContentPage.ToolbarItems>
   
     <Grid>
         <dx:DataGridView
             x:Name="collectionView"
-            ItemsSource="{Binding Orders}"
-          
-            
+            ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave"
+              RowDoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands}"
+               DetailEditFormTemplate="{DataTemplate views:DatabaseEditPage}"
             >
+            <dx:DataGridView.Behaviors>
+                
+                
+            </dx:DataGridView.Behaviors>
+            
             <dx:DataGridView.EndSwipeItems>              
-                <dx:GridSwipeItem  Image="open.svg" BackgroundColor="Cyan" 
+                <dx:GridSwipeItem  Image="edit40.png" BackgroundColor="Cyan" 
              Tap="Swipe_Open"/>
             </dx:DataGridView.EndSwipeItems>
+
+            <dx:DataGridView.Columns>
+                <dx:TextColumn Caption="オーダー" FieldName="OrderNo" Width="180" AutoFilterCondition="Contains"   />
+                <dx:TemplateColumn  Caption="進歩" IsReadOnly="True" FieldName="CreateDate"  MinWidth="200" AutoFilterCondition="Contains"  >
+                    <dx:TemplateColumn.DisplayTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <local:BarControl MaxValue="{Binding Item.Total}" Value="{Binding Item.SpoolsCount}" />
+                                <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                                    <Label FontSize="Body" TextColor="Blue" Text="{Binding Item.SpoolsCount}"></Label>
+                                    <Label FontSize="Body" TextColor="Blue" Text="/"></Label>
+                                    <Label FontSize="Body" TextColor="Blue" Text="{Binding Item.Total}"  />
+
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </dx:TemplateColumn.DisplayTemplate>
+                </dx:TemplateColumn>
+                <dx:TextColumn Caption="客先名" FieldName="客先名" Width="180" AutoFilterCondition="Contains"   />
+                <dx:TextColumn Caption="シート数" FieldName="ExcelSheetsCount" Width="180" AutoFilterCondition="Contains"   />
+            
+                <dx:TextColumn Caption="管数" FieldName="Total" Width="180" AutoFilterCondition="Contains"   />
+                
+            </dx:DataGridView.Columns>
 
 
 

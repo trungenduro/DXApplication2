@@ -6,7 +6,7 @@ using LiningCheckRecord;
 namespace DXApplication2.Infrastructure.Data;
 
 public class SQLiteUnitOfWork : IDisposable {
-    readonly LiningCheckContext context;
+   public readonly LiningCheckContext context;
     readonly ICacheService cacheService;
 
     GenericRepository<DHFOrder>? customersRepository;
@@ -33,12 +33,12 @@ public class SQLiteUnitOfWork : IDisposable {
             try {
                 context.SaveChanges();
                 CustomersRepository.ExecuteCacheUpdateActions();
-                SheetRepository.ExecuteCacheUpdateActions();
-                SpoolRepository.ExecuteCacheUpdateActions();
+              //  SheetRepository.ExecuteCacheUpdateActions();
+              //  SpoolRepository.ExecuteCacheUpdateActions();
             } catch {
                 CustomersRepository.ClearCacheUpdateActions();
-				SheetRepository.ClearCacheUpdateActions();
-				SpoolRepository.ClearCacheUpdateActions();
+			//	SheetRepository.ClearCacheUpdateActions();
+			//	SpoolRepository.ClearCacheUpdateActions();
                 throw;
             }
         });

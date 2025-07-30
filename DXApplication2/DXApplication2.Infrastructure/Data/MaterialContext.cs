@@ -23,11 +23,11 @@ namespace LiningCheckRecord
 		
 		public DbSet<DHFOrder>? DHFOrders { get; set; }
         public DbSet<ExcelSheet> ExcelSheet { get; set; }
-     //   public DbSet<LiningSpool>? Spools { get; set; }
-        //public DbSet<CheckerTable>? CheckerTables { get; set; }
-        //public DbSet<Checker1Table>? Checker1Tables { get; set; }
+        public DbSet<LiningSpool>? Spools { get; set; }
+        public DbSet<CheckerTable>? CheckerTables { get; set; }
+        public DbSet<Checker1Table>? Checker1Tables { get; set; }
         //public DbSet<DHFSettings> SettingTable { get; set; }
-     //   public DbSet<GenKanCSV> GenKanData { get; set; }
+        public DbSet<GenKanCSV> GenKanData { get; set; }
              
 
 		public LiningCheckContext()
@@ -37,7 +37,7 @@ namespace LiningCheckRecord
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-			modelBuilder.Ignore<DHFOrder>();
+		//	modelBuilder.Ignore<DHFOrder>();
 			modelBuilder.Entity<LiningSpool>()
 					.Property(x => x.Adata)
 					.HasConversion(new ValueConverter<List<object>, string>(
