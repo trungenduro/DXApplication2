@@ -8,9 +8,9 @@
     <dx:DXScrollView>
         <dx:DXStackLayout ItemSpacing="24" Margin="16">
             <dx:DXStackLayout ItemSpacing="8">
-                <Label Text="{Binding DataControlContext.Item}"/>
+                <Label Text="{Binding DataControlContext.DataControlContext.DataControlContext}"/>
                 <dx:TextEdit LabelText="SpoolNo" Text="{Binding Item.SpoolNo}" />
-                <dx:TextEdit LabelText="Size" Text="{Binding Item.Size}" />
+                <dx:ComboBoxEdit LabelText="Size" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}"  />
                 <dx:TextEdit LabelText="ShapeType" Text="{Binding Item.ShapeType}" />
                 <dx:TokenEdit LabelText="A"  ItemsSource="{Binding DataControlContext.Item.ThickNessList}"  />
               

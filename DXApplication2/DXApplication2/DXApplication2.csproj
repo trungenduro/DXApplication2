@@ -24,7 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- App Icon -->
-    <MauiIcon Include="Resources\AppIcon\appicon.svg"  Color="#ff0000" />
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#ff0000" />
 
     <!-- Splash Screen -->
     <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#6750A4" BaseSize="128,128" />
@@ -63,8 +63,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\OrdersPage.xaml.cs">
+      <DependentUpon>OrdersPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\EditSpoolPage.xaml.cs">
       <DependentUpon>EditSpoolPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SheetsPage1.xaml.cs">
+      <DependentUpon>SheetsPage1.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -81,8 +87,15 @@
     <MauiXaml Update="Views\SheetEditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
+    <MauiXaml Update="Views\SheetsPage1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\SheetsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Convert\" />
   </ItemGroup>
 </Project>

@@ -35,33 +35,30 @@
                 InputTransparent="True" />
         </DataTemplate>
     </Shell.ItemTemplate>
-
+    
     <ShellContent
         Title="Mvvm"
-        Icon="star"
-        ContentTemplate="{DataTemplate views:DatabasePage}" />
+        Icon="logo_dhf1.png"
+        ContentTemplate="{DataTemplate views:OrdersPage}" />
     <!--<ShellContent
         Title="Reporting"
         Icon="star"
         ContentTemplate="{DataTemplate views:ReportingPage}" />-->
     <ShellContent
         Title="Excel Import"
-        Icon="star"
+        Icon="logo_dhf1.png"
         ContentTemplate="{DataTemplate views:ExcelImportPage}" />
+  
     <ShellContent
-        Title="Database"
-        Icon="star"
-        ContentTemplate="{DataTemplate views:DatabasePage}" />
-    <ShellContent
-        Title="Detail Form 4"
-        Icon="star"
+        Title="Report"
+        Icon="logo_dhf1.png"
         ContentTemplate="{DataTemplate views:DetailForm4Page}" />
     <ShellContent
         Title="Item Editing 3"
-        Icon="star"
+        Icon="logo_dhf1.png"
         ContentTemplate="{DataTemplate views:ItemEditing3Page}" />
     <ShellContent
         Title="List Search"
-        Icon="star"
+        Icon="logo_dhf1.png"
         ContentTemplate="{DataTemplate views:ListSearchPage}" />
 </Shell>

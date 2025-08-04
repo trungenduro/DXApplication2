@@ -12,9 +12,9 @@
     BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:MvvmViewModel}}"
     Title="MvvmPage">
 
-    <ContentPage.Behaviors>
+    <!--<ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
-    </ContentPage.Behaviors>
+    </ContentPage.Behaviors>-->
 
     <Grid>
         <dx:DXCollectionView ItemsSource="{Binding Customers}" ItemSpacing="16">

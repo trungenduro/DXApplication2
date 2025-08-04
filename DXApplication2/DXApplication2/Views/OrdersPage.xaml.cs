@@ -5,9 +5,9 @@ using Microsoft.Maui.Controls;
 
 namespace DXApplication2.Views
 {
-    public partial class DatabasePage : ContentPage
+    public partial class OrdersPage : ContentPage
     {
-        public DatabasePage()
+        public OrdersPage()
         {
             InitializeComponent();
         }
@@ -36,10 +36,10 @@ namespace DXApplication2.Views
 		private async void collectionView_ValidateAndSave(object sender, DevExpress.Maui.Core.ValidateItemEventArgs e)
 		{
 			DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
+            e.AutoUpdateItemsSource = true; // Ensure the items source is updated automatically
+											//   await vm.Validate(e);
 
-         //   await vm.Validate(e);
-
-        }
+		}
 
         private void ImageButton_Clicked(object sender, EventArgs e)
         {

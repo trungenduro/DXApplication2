@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Name="page"
-    x:Class="DXApplication2.Views.DatabasePage"
+    x:Class="DXApplication2.Views.OrdersPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:dx="http://schemas.devexpress.com/maui"
@@ -31,7 +31,7 @@
             x:Name="collectionView" ShowAutoFilterRow="True"
             ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave"
               RowDoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"
-               DetailEditFormTemplate="{DataTemplate views:SheetsPage}"
+               DetailEditFormTemplate="{DataTemplate views:SheetsPage1}"
             >
             <dx:DataGridView.Behaviors>                
                 

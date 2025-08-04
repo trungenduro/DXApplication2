@@ -68,6 +68,7 @@ public partial class DatabaseViewModel : ObservableObject {
 		Orders?.Remove(item);
     }
 
+    public List<string> Sizes = new List<string> { "20A", "25A", "50A", "65A", "80A", "100A" };
    internal async Task UpdateOrderAsync()
     {
 		Action? pendingAction = null;
@@ -280,9 +281,9 @@ public partial class DatabaseViewModel : ObservableObject {
             {
                 if (sh.Order.ExcelSheetsCount > 0)
                 {
-                    if (sh.Order.ExcelSheets.Where(x => x.ID == sh.ID).Count() == 0)
+                    //if (sh.Order.ExcelSheets.Where(x => x.ID == sh.ID).Count() == 0)
 
-                        unitOfWork.SheetRepository.Delete(sh);
+                       // unitOfWork.SheetRepository.Delete(sh);
                 }
             }
         }
@@ -295,9 +296,9 @@ public partial class DatabaseViewModel : ObservableObject {
             {
                 if (sp.Sheet.Spools.Count > 0)
                 {
-                    if(sp.Sheet.Spools.Where(x=>x.ID== sp.ID).Count() ==0)
+                    var t = sp.Sheet.Spools.Where(x => x.ID == sp.ID).Count();
 
-                        unitOfWork.SpoolRepository.Delete(sp);
+                      //  unitOfWork.SpoolRepository.Delete(sp);
                 }
             }
         }
