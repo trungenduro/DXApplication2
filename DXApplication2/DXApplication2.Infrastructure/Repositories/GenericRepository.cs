@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 namespace DXApplication2.Infrastructure.Repositories;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class {
-    const string CollectionCacheKey = nameof(TEntity);
-
+    //const string CollectionCacheKey = nameof(TEntity);
+    readonly string CollectionCacheKey;
     readonly DbSet<TEntity> DbSet;
     readonly ICacheService cacheService;
     readonly LiningCheckContext Context;
@@ -19,6 +19,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         this.cacheService = cacheService;
         Context = context;
         DbSet = context.Set<TEntity>();
+        CollectionCacheKey = $"CollectionCache_{typeof(TEntity).FullName}";
         PendingCacheUpdateActions = new List<Action<IList>>();
     }
 

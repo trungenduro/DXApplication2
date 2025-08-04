@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DevExpress.Maui.Core;
+using DevExpress.XtraRichEdit.Forms;
 using DXApplication2.Domain.Data;
 using DXApplication2.Domain.Services;
 using DXApplication2.Infrastructure.Data;
@@ -43,8 +44,17 @@ public partial class DatabaseViewModel : ObservableObject {
     async Task InitializeAsync() {
         var data = await GetItems();
         Orders = new ObservableCollection<DHFOrder>(data);
+
+
         IsInitialized = true;
     }
+
+    [RelayCommand]
+    async Task Refresh()
+    {
+       await InitializeAsync();
+    }
+
     [RelayCommand]
     async Task DeleteItemAsync(DHFOrder item) {
         using var unitOfWork = new SQLiteUnitOfWork(cacheService);
@@ -64,6 +74,12 @@ public partial class DatabaseViewModel : ObservableObject {
 		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
 				
 			unitOfWork.CustomersRepository.Update(CurrentOrder);
+         var sheets= unitOfWork.SheetRepository.GetAsync();
+
+        
+
+        // var order= unitOfWork.CustomersRepository.GetAsync();
+
 
         var k= Orders.ToList().FindIndex(x => x.Id == CurrentOrder.Id);
 		pendingAction = () =>
@@ -71,49 +87,142 @@ public partial class DatabaseViewModel : ObservableObject {
         
 		await unitOfWork.SaveAsync();
         pendingAction?.Invoke();
-        InitializeAsync();
-	}
 
-	public async Task ValidateSheets(ValidateItemEventArgs args)
+        Orders = new ObservableCollection<DHFOrder>(Orders);
+       await InitializeAsync();
+    }
+
+
+
+    public async Task Validate(ValidateItemEventArgs args)
 	{
-		args.AutoUpdateItemsSource = false;
-		if (args.Item is not ExcelSheet item)
-			return;
+		args.AutoUpdateItemsSource = true;
+        using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+        Action? pendingAction = null;
+        if (args.Item is ExcelSheet item)
+        {
+            try
+            {
+                ArgumentNullException.ThrowIfNull(Orders);
+              
 
-		try
-		{
-			ArgumentNullException.ThrowIfNull(Orders);
-			Action? pendingAction = null;
+                
+                if (args.DataChangeType == DataChangeType.Add)
+                {
+                    
+                   // unitOfWork.SheetRepository.Add(item);
+                    //pendingAction = () => Sheets.Add(item);
+                }
+                if (args.DataChangeType == DataChangeType.Edit)
+                {
+                    unitOfWork.SheetRepository.Update(item);
+                    //pendingAction = () => Sheets[args.SourceIndex] = item;
+                }
+                if (args.DataChangeType == DataChangeType.Delete)
+                {
+                    unitOfWork.SheetRepository.Delete(item);
+                    //pendingAction = () => Sheets.Remove(item);
+                }
 
-			using var unitOfWork = new SQLiteUnitOfWork(cacheService);
-			if (args.DataChangeType == DataChangeType.Add)
-			{
-				unitOfWork.SheetRepository.Add(item);
-				pendingAction = () => Sheets.Add(item);
-			}
-			if (args.DataChangeType == DataChangeType.Edit)
-			{
-				unitOfWork.SheetRepository.Update(item);
-				pendingAction = () => Sheets[args.SourceIndex] = item;
-			}
-			if (args.DataChangeType == DataChangeType.Delete)
-			{
-				unitOfWork.SheetRepository.Delete(item);
-				pendingAction = () => Sheets.Remove(item);
-			}
+                await unitOfWork.SaveAsync();
+              //  pendingAction?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                args.IsValid = false;
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                return;
+            }
+           
+        }
+         if (args.Item is LiningSpool sp)
+        {
+            try
+            {
+                ArgumentNullException.ThrowIfNull(Orders);
+               
 
-			await unitOfWork.SaveAsync();
-			pendingAction?.Invoke();
-		}
-		catch (Exception ex)
-		{
-			args.IsValid = false;
-			await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-			return;
-		}
-	}
+                
+                if (args.DataChangeType == DataChangeType.Add)
+                {
+                    //CurrentOrder.ExcelSheets.Add(item);
+                    //unitOfWork.SheetRepository.Add(item);
+                    //pendingAction = () => Sheets.Add(item);
+                }
+                if (args.DataChangeType == DataChangeType.Edit)
+                {
+                    unitOfWork.SpoolRepository.Update(sp);
+                    //pendingAction = () => Sheets[args.SourceIndex] = item;
+                }
+                if (args.DataChangeType == DataChangeType.Delete)
+                {
+                    unitOfWork.SpoolRepository.Delete(sp);
+                    //pendingAction = () => Sheets.Remove(item);
+                }
 
-	[RelayCommand]
+               
+            }
+            catch (Exception ex)
+            {
+                args.IsValid = false;
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                return;
+            }
+           
+        }
+
+        await unitOfWork.SaveAsync();
+        pendingAction?.Invoke();
+
+        await UpdateOrderAsync();
+        return;
+    }
+
+    internal async Task DeleteSheetAsync(ExcelSheet sheet)
+    {
+
+        if (sheet == null)
+            return;
+        using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+
+       // var sheets = await unitOfWork.SheetRepository.GetAsync();
+        try
+        {
+            unitOfWork.SheetRepository.Delete(sheet);
+            unitOfWork.SaveAsync().Wait();
+        }
+        catch (Exception e)
+        {
+            Shell.Current.DisplayAlert("Error", e.Message, "OK").Wait();
+            return;
+        }
+       // CurrentOrder?.ExcelSheets.Remove(CurrentSheet);
+    }
+    internal async Task DeleteSpoolAsync(LiningSpool spool)
+    {
+
+        if (spool == null)
+            return;
+        using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+
+        //var sheets = await unitOfWork.SheetRepository.GetAsync();
+        try
+        {
+            unitOfWork.SpoolRepository.Delete(spool);
+
+            unitOfWork.SaveAsync().Wait();
+        }
+        catch (Exception e)
+        {
+            Shell.Current.DisplayAlert("Error", e.Message, "OK").Wait();
+            return;
+        }
+       // CurrentOrder?.ExcelSheets.Remove(CurrentSheet);
+    }
+
+
+
+        [RelayCommand]
     async Task ValidateAndSaveAsync(ValidateItemEventArgs args) {
         args.AutoUpdateItemsSource = false;
         if (args.Item is not DHFOrder item)
@@ -160,6 +269,44 @@ public partial class DatabaseViewModel : ObservableObject {
     async Task<IEnumerable<DHFOrder>> GetItems() {
         using var unitOfWork = new SQLiteUnitOfWork(cacheService);
         var data = await unitOfWork.CustomersRepository.GetAsync();
+        var sheets = await unitOfWork.SheetRepository.GetAsync();
+        var spools = await unitOfWork.SpoolRepository.GetAsync();
+
+        foreach (var sh in sheets)
+        {
+            if (sh.Order == null)
+                unitOfWork.SheetRepository.Delete(sh);
+            else
+            {
+                if (sh.Order.ExcelSheetsCount > 0)
+                {
+                    if (sh.Order.ExcelSheets.Where(x => x.ID == sh.ID).Count() == 0)
+
+                        unitOfWork.SheetRepository.Delete(sh);
+                }
+            }
+        }
+
+        foreach (var sp in spools)
+        {
+            if (sp.Sheet == null)
+                unitOfWork.SpoolRepository.Delete(sp);
+            else
+            {
+                if (sp.Sheet.Spools.Count > 0)
+                {
+                    if(sp.Sheet.Spools.Where(x=>x.ID== sp.ID).Count() ==0)
+
+                        unitOfWork.SpoolRepository.Delete(sp);
+                }
+            }
+        }
+        await unitOfWork.SaveAsync();
+         data = await unitOfWork.CustomersRepository.GetAsync();
+         sheets = await unitOfWork.SheetRepository.GetAsync();
+        spools = await unitOfWork.SpoolRepository.GetAsync();
+        Sheets = new ObservableCollection<ExcelSheet>(sheets?? Enumerable.Empty<ExcelSheet>());
+
         return data ?? Enumerable.Empty<DHFOrder>();
     }
 }

@@ -13,7 +13,7 @@
     xmlns:models="clr-namespace:DXApplication2.Domain.Data;assembly=DXApplication2.Domain"
    
     BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
-    Title="Order Page">
+    Title="オーダーリスト">
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
@@ -21,28 +21,31 @@
    
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Create" IconImageSource="add.png" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
+        <!--Command="{Binding RefreshCommand"-->
+        <ToolbarItem Text="Refresh"  Clicked="ToolbarItem_Clicked" />
+        <ToolbarItem Text="Create" IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
     </ContentPage.ToolbarItems>
   
     <Grid>
         <dx:DataGridView
-            x:Name="collectionView"
+            x:Name="collectionView" ShowAutoFilterRow="True"
             ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave"
-              RowDoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands}"
-               DetailEditFormTemplate="{DataTemplate views:DatabaseEditPage}"
+              RowDoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"
+               DetailEditFormTemplate="{DataTemplate views:SheetsPage}"
             >
-            <dx:DataGridView.Behaviors>
-                
+            <dx:DataGridView.Behaviors>                
                 
             </dx:DataGridView.Behaviors>
             
-            <dx:DataGridView.EndSwipeItems>              
-                <dx:GridSwipeItem  Image="edit40.png" BackgroundColor="Cyan" 
-             Tap="Swipe_Open"/>
+            <dx:DataGridView.EndSwipeItems>
+
+                <dx:GridSwipeItem BackgroundColor="White"  Image="edit.svg"  Tap="Swipe_Open"/>
             </dx:DataGridView.EndSwipeItems>
 
             <dx:DataGridView.Columns>
-                <dx:TextColumn Caption="オーダー" FieldName="OrderNo" Width="180" AutoFilterCondition="Contains"   />
+                <dx:TextColumn Caption="オーダー" HorizontalContentAlignment="Center" FontSize="20" FieldName="OrderNo" Width="180" AutoFilterCondition="Contains"   >
+                  
+                </dx:TextColumn>
                 <dx:TemplateColumn  Caption="進歩" IsReadOnly="True" FieldName="CreateDate"  MinWidth="200" AutoFilterCondition="Contains"  >
                     <dx:TemplateColumn.DisplayTemplate>
                         <DataTemplate>

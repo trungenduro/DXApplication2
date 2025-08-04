@@ -24,7 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- App Icon -->
-    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#6750A4" />
+    <MauiIcon Include="Resources\AppIcon\appicon.svg"  Color="#ff0000" />
 
     <!-- Splash Screen -->
     <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#6750A4" BaseSize="128,128" />
@@ -63,7 +63,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\EditSpoolPage.xaml.cs">
+      <DependentUpon>EditSpoolPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <MauiXaml Update="Views\NewSheetView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\EditSpoolPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\NewSpoolPage.xaml">

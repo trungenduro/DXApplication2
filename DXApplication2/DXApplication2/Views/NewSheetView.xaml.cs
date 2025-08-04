@@ -6,4 +6,10 @@ public partial class NewSheetView : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void ContentPage_BindingContextChanged(object sender, EventArgs e)
+    {
+		var b = this.BindingContext;
+
+    }
 }

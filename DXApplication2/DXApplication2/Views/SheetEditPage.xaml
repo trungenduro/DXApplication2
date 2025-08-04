@@ -3,24 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DXApplication2.Views.SheetEditPage"
                 xmlns:dx="http://schemas.devexpress.com/maui"
+             BindingContextChanged="ContentPage_BindingContextChanged"
              xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
              Title="SheetEditPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="管追加" IconImageSource="add.png" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
-        <ToolbarItem Text="Save" IconImageSource="save.png" Clicked="Save_Clicked"/>
+        <ToolbarItem Text="管追加" IconImageSource="addSpool.svg" Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailNewItemForm}" />
+        <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <dx:DXScrollView>
         <dx:DXStackLayout ItemSpacing="24" Margin="16">
             <dx:DXStackLayout ItemSpacing="8">
 
-                <Label  Text="{Binding CurrentSheet.CombineName}" />
+                <Label  Text="{Binding Item.CombineName}" />
 
-                <dx:DataGridView  x:Name="collectionView" ItemsSource="{Binding CurrentSheet.Spools}" CreateDetailFormViewModel="collectionView_CreateDetailFormViewModel"
-           DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}"                 
+                <dx:DataGridView  x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" CreateDetailFormViewModel="collectionView_CreateDetailFormViewModel"
+           DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}"  DetailEditFormTemplate="{DataTemplate views:EditSpoolPage}"  ValidateAndSave="collectionView_ValidateAndSave"             
                             >
                     <dx:DataGridView.EndSwipeItems>
-                        <dx:GridSwipeItem  Image="edit40.png" BackgroundColor="Cyan" 
-Tap="Swipe_Open"/>
+                        <dx:GridSwipeItem  Image="edit.svg" BackgroundColor="Cyan"  Command="{Binding Source={x:Reference spoolGrid},Path=Commands.ShowDetailEditForm}" />
+                        <dx:GridSwipeItem  Caption="Delete" BackgroundColor="Red" Tap="delete_Tap" />
                     </dx:DataGridView.EndSwipeItems>
                     <dx:DataGridView.Columns>
                         <dx:TextColumn Caption="管番号" FieldName="SpoolNo"></dx:TextColumn>

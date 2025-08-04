@@ -40,7 +40,7 @@ public static class MauiProgram {
         return appBuilder;
     }
     static MauiAppBuilder RegisterAppServices(this MauiAppBuilder appBuilder) {
-        appBuilder.Services.AddSingleton<Domain.Services.IDataService, Infrastructure.Services.DataService>();
+     
         appBuilder.Services.AddSingleton<Domain.Services.ICacheService, Infrastructure.Services.MemoryCacheService>();
         return appBuilder;
     }

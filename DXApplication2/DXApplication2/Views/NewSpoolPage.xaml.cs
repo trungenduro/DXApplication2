@@ -1,4 +1,7 @@
+using DevExpress.Maui.Core;
+using DevExpress.Maui.DataGrid;
 using DXApplication2.ViewModels;
+using LiningCheckRecord;
 
 namespace DXApplication2.Views;
 
@@ -18,8 +21,26 @@ public partial class NewSpoolPage : ContentPage
 		InitializeComponent();
 	}
 
-	private void ContentPage_BindingContextChanged(object sender, EventArgs e)
+    ExcelSheet Sheet;
+    private void ContentPage_BindingContextChanged(object sender, EventArgs e)
 	{
-		var ct= this.BindingContext;
-	}
+        if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
+        {
+            //form.DataControlContext.DataControlContext
+            var sp = form.Item as LiningSpool;
+            if (form.DataControlContext is DetailEditFormViewModel sheetform)
+            {
+                if( sheetform.Item is ExcelSheet sh)
+                {
+                    Sheet = sh;
+                }
+                if(sheetform.DataControlContext is DetailEditFormViewModel form1)
+                {
+                    if (form1.DataControlContext is DatabaseViewModel viewmodel)
+                        DatabaseViewModel = viewmodel;
+                }
+
+            }
+        }
+    }
 }

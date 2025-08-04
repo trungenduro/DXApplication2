@@ -442,6 +442,16 @@ namespace LiningCheckRecord
 
         public DHFOrder? Order { get; set; }
         public double ThickNess { get; set; } = 1;
+        public List<object> ThickNessList
+        {
+            get
+            {
+            var thicknesses = Enumerable.Range(0, 20).Select(x => 1 + ((double)x) * 0.1);
+                if (ThickNess > 1)
+                    thicknesses = Enumerable.Range(0, 10).Select(x => ThickNess + ((double)x) * 0.1);
+                return thicknesses.Select(x => (object) x).ToList();
+            }
+        }
 		public string LinningType { get; set; } = "内面";
 		bool IsStringEmpty(string str)
         {
@@ -463,9 +473,6 @@ namespace LiningCheckRecord
     }
 
 
-
-
-
 	public class LiningSpool
     {
 
@@ -480,7 +487,6 @@ namespace LiningCheckRecord
         [Key]
         public int ID { get; set; }
         [Display(Name = "シート")]
-
         public int SpoolType
 		{
             get;set;
