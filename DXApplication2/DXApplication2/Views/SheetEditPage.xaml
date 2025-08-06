@@ -7,6 +7,7 @@
              xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
              Title="{Binding Item.SheetNo,StringFormat='シートNo.{0}'}">
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{Binding IsSaved,StringFormat='saved={0}' }"  />
         <ToolbarItem Text="管追加" IconImageSource="addSpool.svg" Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailNewItemForm}" />
         <ToolbarItem Text="Delete" IconImageSource="delete.png" Command="{Binding DeleteCommand}"/>
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}"/>

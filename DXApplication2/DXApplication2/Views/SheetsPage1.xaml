@@ -10,7 +10,7 @@
 
              Title="{Binding Item.OrderNo,StringFormat='Order {0}'}">
     <ContentPage.ToolbarItems>
-        <!--<ToolbarItem Text="Edit" IconImageSource="edit.svg" Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailEditForm}" />-->
+        <ToolbarItem Text="{Binding IsSaved,StringFormat='saved={0}' }"  />
 
         <ToolbarItem Text="シート作成" IconImageSource="addlist.svg" Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailNewItemForm}" />
      

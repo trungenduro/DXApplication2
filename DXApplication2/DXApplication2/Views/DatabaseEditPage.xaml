@@ -6,7 +6,7 @@
     xmlns:dx="http://schemas.devexpress.com/maui"
      xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
     xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-    ios:Page.UseSafeArea="true"
+ 
     Title="Edit Page">
     
     <ContentPage.ToolbarItems>

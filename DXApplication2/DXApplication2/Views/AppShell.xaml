@@ -45,10 +45,10 @@
         Icon="star"
         ContentTemplate="{DataTemplate views:ReportingPage}" />-->
     <ShellContent
-        Title="Excel Import"
+        Title="Test OCR"
         Icon="logo_dhf1.png"
-        ContentTemplate="{DataTemplate views:ExcelImportPage}" />
-  
+        ContentTemplate="{DataTemplate views:OCRPage}" />  
+    
     <ShellContent
         Title="Report"
         Icon="logo_dhf1.png"

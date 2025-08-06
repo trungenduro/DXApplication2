@@ -2,6 +2,12 @@ using DevExpress.Maui;
 using DevExpress.Maui.Core;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using CommunityToolkit.Maui;
+using SampleApp.DI;
+using SampleApp.Platforms.Android.DI;
+using CommunityToolkit.Maui.Core.Handlers;
+using CommunityToolkit.Maui.Views;
+
+
 
 namespace DXApplication2;
 
@@ -12,17 +18,23 @@ public static class MauiProgram {
             .UseMauiApp<App>()
             .UseDevExpress(useLocalization: false)
             .UseDevExpressControls()
-            .UseDevExpressCharts()
-            .UseDevExpressTreeView()
+           // .UseDevExpressCharts()
+           // .UseDevExpressTreeView()
             .UseDevExpressCollectionView()
             .UseDevExpressEditors()
             .UseDevExpressDataGrid()
-            .UseDevExpressScheduler()
-            .UseDevExpressGauges()
-            .UseSkiaSharp()
-            .UseMauiCommunityToolkit()
+           // .UseDevExpressScheduler()
+            //.UseDevExpressGauges()
+		    .UseMauiCommunityToolkit()         
             .RegisterAppServices()
             .RegisterViewModels()
+			.UseMauiCommunityToolkitCamera()
+
+			.ConfigureMauiHandlers(handlers =>
+			{
+				handlers.AddHandler<CameraView, CameraViewHandler>();
+			})
+
             .ConfigureFonts(fonts => {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("roboto-bold.ttf", "Roboto-Bold");
@@ -33,7 +45,7 @@ public static class MauiProgram {
     }
 
     static MauiAppBuilder RegisterViewModels(this MauiAppBuilder appBuilder) {
-        appBuilder.Services.AddTransient<ViewModels.MvvmViewModel>();
+   
         appBuilder.Services.AddTransient<ViewModels.DatabaseViewModel>();
         appBuilder.Services.AddTransient<ViewModels.ReportingViewModel>();
         appBuilder.Services.AddTransient<ViewModels.ExcelImportViewModel>();
@@ -42,6 +54,7 @@ public static class MauiProgram {
     static MauiAppBuilder RegisterAppServices(this MauiAppBuilder appBuilder) {
      
         appBuilder.Services.AddSingleton<Domain.Services.ICacheService, Infrastructure.Services.MemoryCacheService>();
-        return appBuilder;
+		appBuilder.Services.AddSingleton<IOcrServiceDI, OcrServiceDI>();
+		return appBuilder;
     }
 }

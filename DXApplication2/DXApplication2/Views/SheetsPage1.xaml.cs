@@ -29,8 +29,15 @@ public partial class SheetsPage1 : ContentPage
     private void ContentPage_BindingContextChanged(object sender, EventArgs e)
     {
         if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
-        {
-          
+        {		
+
+			form.PropertyChanged += (s, e) =>
+			{
+				if (e.PropertyName == nameof(DevExpress.Maui.Core.DetailEditFormViewModel.Item))
+				{
+					
+				}
+			};
 			var item= form.Item;
 
                 if (form.DataControlContext is DatabaseViewModel viewmodel)

@@ -9,7 +9,11 @@
         <dx:DXStackLayout ItemSpacing="24" Margin="16">
             <dx:DXStackLayout ItemSpacing="8">
                 <Label Text="{Binding DataControlContext.DataControlContext.DataControlContext}"/>
-                <dx:TextEdit LabelText="SpoolNo" Text="{Binding Item.SpoolNo}" />
+                <Grid ColumnDefinitions="*,60">
+                    
+                    <dx:TextEdit LabelText="SpoolNo" Text="{Binding Item.SpoolNo}" />
+                    <dx:DXButton Content="camera" Clicked="DXButton_Clicked" />
+                </Grid>
                 <dx:ComboBoxEdit LabelText="Size" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}"  />
                 <dx:TextEdit LabelText="ShapeType" Text="{Binding Item.ShapeType}" />
                 <dx:TokenEdit LabelText="A"  ItemsSource="{Binding DataControlContext.Item.ThickNessList}"  />

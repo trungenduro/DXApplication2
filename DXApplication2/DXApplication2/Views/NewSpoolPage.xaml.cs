@@ -1,3 +1,4 @@
+using DevExpress.CodeParser;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
 using DXApplication2.ViewModels;
@@ -43,4 +44,11 @@ public partial class NewSpoolPage : ContentPage
             }
         }
     }
+
+	private void DXButton_Clicked(object sender, EventArgs e)
+	{
+
+			//Navigation.PushAsync(new OCRPage());
+		
+	}
 }

@@ -288,8 +288,11 @@ public partial class DatabaseViewModel : ObservableObject {
             }
         }
 
-        foreach (var sp in spools)
+        for (int i1 = 0; i1 < spools.Count(); i1++)
         {
+
+            var sp = spools.ToList()[i1]; 
+            
             if (sp.Sheet == null)
                 unitOfWork.SpoolRepository.Delete(sp);
             else
