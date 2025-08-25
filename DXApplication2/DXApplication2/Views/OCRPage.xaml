@@ -2,11 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
             Appearing="ContentPage_Appearing"
-          
+          HandlerChanged="OnHandlerChanged"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-         
+          xmlns:viewmodel="clr-namespace:DXApplication2.ViewModels"  
             x:Class="DXApplication2.Views.OCRPage"  
             Title="OCRPage">
+    <ContentPage.BindingContext>
+        <viewmodel:CameraViewModel  />
+    </ContentPage.BindingContext>
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -23,7 +26,7 @@
                  
             <Grid HorizontalOptions="Center">
                 
-        <toolkit:CameraView x:Name="cameraView" 
+        <toolkit:CameraView x:Name="cameraView"
                         
                           HorizontalOptions="Fill"  ZoomFactor="2"
                           VerticalOptions="Center"  

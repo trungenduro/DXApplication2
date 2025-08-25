@@ -284,6 +284,21 @@ namespace LiningCheckRecord
                return ExcelSheets.Where(x => x.Spools != null).Select(x => x.Spools.Count).Sum();
             }
         }
+          public List<string> SpoolNames
+        {
+            get
+            {
+                if (ExcelSheets == null)
+                    return new();           
+                List<string> names = new();
+                ExcelSheets.Where(x => x.Spools != null).ToList().ForEach(x => names.AddRange( x.Spools.Select(x=>x.SpoolNo).ToList()));
+
+                return names;
+            }
+        }
+        
+
+
 
         public double Completion { get
             {

@@ -69,15 +69,24 @@ public partial class SheetEditPage : ContentPage
                 {
                     mess += "管番号未入力\n";
                 }
+				else if (order != null)
+				{
+					if(order.SpoolNames.Where(x=>x.Equals(sp.SpoolNo)).Any())
+					{
+                        mess += "管番号重複\n";
+                    }
+                }
                 if (sp.Size == null || sp.Size == "")
                 {
                     mess += "管サイズ未入力\n";
                 }
+
+
                 if (mess != "")
 				{
 
 					e.IsValid = false;
-                    await Shell.Current.DisplayAlert("Error", mess, "OK");
+                    await Shell.Current.DisplayAlert("確認", mess, "OK");
                     return;
 				}
 
@@ -90,6 +99,8 @@ public partial class SheetEditPage : ContentPage
     }
 	DevExpress.Maui.Core.DetailEditFormViewModel editform;
 
+	DHFOrder order;
+
     private void ContentPage_BindingContextChanged(object sender, EventArgs e)
 	{
 		if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
@@ -98,7 +109,7 @@ public partial class SheetEditPage : ContentPage
 
             if (form.DataControlContext is DetailEditFormViewModel form1)
 			{
-
+				order = form1.Item as DHFOrder;				
 				if (form1.DataControlContext is DatabaseViewModel viewmodel)
 				{
                     DatabaseViewModel = viewmodel;

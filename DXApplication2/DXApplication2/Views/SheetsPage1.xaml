@@ -86,8 +86,8 @@ CommandParameter="{Binding .}"                                        />-->
                                     <dx:DXCollectionView ItemsSource="{Binding Spools}" ItemSpanCount="2"  >
                                         <dx:DXCollectionView.ItemTemplate>
                                             <DataTemplate>
-                                                <dx:DXBorder BackgroundColor="LightSkyBlue"
-                                                     CornerRadius="6"
+                                                <dx:DXBorder BorderColor="Red" BorderThickness="2" 
+                                                     CornerRadius="10"
                                                      Padding="4"
                                                      Margin="2">
                                                 <Grid>

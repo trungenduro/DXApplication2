@@ -22,13 +22,15 @@ public partial class NewSpoolPage : ContentPage
 		InitializeComponent();
 	}
 
+    LiningSpool sp;
+
     ExcelSheet Sheet;
     private void ContentPage_BindingContextChanged(object sender, EventArgs e)
 	{
         if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
         {
             //form.DataControlContext.DataControlContext
-            var sp = form.Item as LiningSpool;
+             sp = form.Item as LiningSpool;
             if (form.DataControlContext is DetailEditFormViewModel sheetform)
             {
                 if( sheetform.Item is ExcelSheet sh)
@@ -47,8 +49,9 @@ public partial class NewSpoolPage : ContentPage
 
 	private void DXButton_Clicked(object sender, EventArgs e)
 	{
+        var ocrpage = new OCRPage();
 
-			//Navigation.PushAsync(new OCRPage());
+        Navigation.PushAsync(new OCRPage());
 		
 	}
 }

@@ -1,4 +1,6 @@
 using CommunityToolkit.Maui.Views;
+using DXApplication2.ViewModels;
+using LiningCheckRecord;
 using Microsoft.Maui.Graphics.Platform;
 using Microsoft.Maui.Layouts;
 using SampleApp.DI;
@@ -10,17 +12,26 @@ public partial class OCRPage : ContentPage
 {
 	private IOcrServiceDI _ocrServiceDI;
 
-	public OCRPage(IOcrServiceDI ocrServiceDI)
+	public OCRPage()
 	{
 		InitializeComponent();
-		_ocrServiceDI = ocrServiceDI;
-		//imagePath = Path.Combine(fileSystem.CacheDirectory, "camera-view-image.jpg");
-	//	cameraView.in += loaded;
+    }
+	LiningSpool LiningSpool;
+    public OCRPage(LiningSpool spool)
+	{
+		InitializeComponent();
+        LiningSpool = spool;
+    }
+    
 
-		
-	}
 
-	private void loaded(object? sender, EventArgs e)
+
+    void OnHandlerChanged(object sender, EventArgs e)
+    {
+		if(Handler!=null)
+        _ocrServiceDI = Handler.MauiContext.Services.GetService<IOcrServiceDI>();
+    }
+    private void loaded(object? sender, EventArgs e)
 	{
 		int width = (int)cameraView.ImageCaptureResolution.Width;
 		int height = (int)cameraView.ImageCaptureResolution.Height;
@@ -66,11 +77,9 @@ public partial class OCRPage : ContentPage
 		var scaleX = displayWidth / imageWidth;
 		var scaleY = displayHeight / imageHeight;
 
+      
 
-
-		var textBlocks =  await _ocrServiceDI.GetTextAsync(image);
-
-
+        var textBlocks =  await _ocrServiceDI.GetTextAsync(image);
 
 		overlayContainer.Children.Clear();
 

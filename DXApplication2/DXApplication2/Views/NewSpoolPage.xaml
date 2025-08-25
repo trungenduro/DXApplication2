@@ -12,7 +12,7 @@
                 <Grid ColumnDefinitions="*,60">
                     
                     <dx:TextEdit LabelText="SpoolNo" Text="{Binding Item.SpoolNo}" />
-                    <dx:DXButton Content="camera" Clicked="DXButton_Clicked" />
+                    <dx:DXButton Grid.Column="1" Content="cam" Icon="edit" Background="Blue" BackgroundColor="Transparent" Clicked="DXButton_Clicked" />
                 </Grid>
                 <dx:ComboBoxEdit LabelText="Size" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}"  />
                 <dx:TextEdit LabelText="ShapeType" Text="{Binding Item.ShapeType}" />
