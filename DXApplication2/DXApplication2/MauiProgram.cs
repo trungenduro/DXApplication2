@@ -6,6 +6,7 @@ using SampleApp.DI;
 using SampleApp.Platforms.Android.DI;
 using CommunityToolkit.Maui.Core.Handlers;
 using CommunityToolkit.Maui.Views;
+using Syncfusion.Maui.Core.Hosting;
 
 
 
@@ -14,8 +15,12 @@ namespace DXApplication2;
 public static class MauiProgram {
     public static MauiApp CreateMauiApp() {
         ThemeManager.ApplyThemeToSystemBars = true;
-        var builder = MauiApp.CreateBuilder()
+
+		Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDAwNzM3MkAzMzMwMmUzMDJlMzAzYjMzMzQzYktCQkpsb0VkWjZJcjI0NTVoRTZmZU80QXU3dnZjWmNBV1NkdFlpWHp4Zlk9");
+
+		var builder = MauiApp.CreateBuilder()
             .UseMauiApp<App>()
+			 .ConfigureSyncfusionCore()
             .UseDevExpress(useLocalization: false)
             .UseDevExpressControls()
            // .UseDevExpressCharts()
@@ -29,6 +34,7 @@ public static class MauiProgram {
             .RegisterAppServices()
             .RegisterViewModels()
 			.UseMauiCommunityToolkitCamera()
+            
 
 			.ConfigureMauiHandlers(handlers =>
 			{
@@ -48,7 +54,7 @@ public static class MauiProgram {
    
         appBuilder.Services.AddTransient<ViewModels.DatabaseViewModel>();
         appBuilder.Services.AddTransient<ViewModels.ReportingViewModel>();
-        appBuilder.Services.AddTransient<ViewModels.ExcelImportViewModel>();
+     
         return appBuilder;
     }
     static MauiAppBuilder RegisterAppServices(this MauiAppBuilder appBuilder) {

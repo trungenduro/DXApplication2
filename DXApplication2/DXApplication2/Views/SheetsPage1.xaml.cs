@@ -1,3 +1,4 @@
+using DevExpress.Maui.CollectionView;
 using DevExpress.Maui.DataGrid;
 using DevExpress.Spreadsheet;
 using DXApplication2.ViewModels;
@@ -92,5 +93,12 @@ public partial class SheetsPage1 : ContentPage
 
 
 		await DatabaseViewModel.Validate(e);
+	}
+
+	private void ToolbarButton_Clicked(object sender, EventArgs e)
+	{
+		
+
+
 	}
 }

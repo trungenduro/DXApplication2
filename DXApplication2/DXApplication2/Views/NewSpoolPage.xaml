@@ -1,26 +1,48 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DXApplication2.Views.NewSpoolPage"
-               xmlns:dx="http://schemas.devexpress.com/maui"
-             xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2" BindingContextChanged="ContentPage_BindingContextChanged"
-             Title="NewSpoolPage">
-    <dx:DXScrollView>
-        <dx:DXStackLayout ItemSpacing="24" Margin="16">
-            <dx:DXStackLayout ItemSpacing="8">
-                <Label Text="{Binding DataControlContext.DataControlContext.DataControlContext}"/>
-                <Grid ColumnDefinitions="*,60">
-                    
-                    <dx:TextEdit LabelText="SpoolNo" Text="{Binding Item.SpoolNo}" />
-                    <dx:DXButton Grid.Column="1" Content="cam" Icon="edit" Background="Blue" BackgroundColor="Transparent" Clicked="DXButton_Clicked" />
-                </Grid>
-                <dx:ComboBoxEdit LabelText="Size" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}"  />
-                <dx:TextEdit LabelText="ShapeType" Text="{Binding Item.ShapeType}" />
-                <dx:TokenEdit LabelText="A"  ItemsSource="{Binding DataControlContext.Item.ThickNessList}"  />
-              
-            </dx:DXStackLayout>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+            x:Class="DXApplication2.Views.NewSpoolPage"  
+            xmlns:dx="http://schemas.devexpress.com/maui"  
+            xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"  
+            xmlns:converters="clr-namespace:DXApplication2.Converters"  
+            BindingContextChanged="ContentPage_BindingContextChanged"  
+            Title="NewSpoolPage">  
+   <ContentPage.Resources>  
+       <converters:ImageEnumConverter x:Key="ImageEnumConverter" />  
+       <converters:SpoolToImageConverter x:Key="ImageSPConverter" />  
+   </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="camera" Text="カメラ"   Clicked="TakePhotoClicked" />
+        <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}" />
+    </ContentPage.ToolbarItems>
+    <dx:DXScrollView>  
+       <dx:DXStackLayout ItemSpacing="24" Margin="16">  
+           <dx:DXStackLayout ItemSpacing="8">                
+                <Image  x:Name="preview" HeightRequest="100" WidthRequest="100" Source="{Binding Item,Converter={StaticResource ImageSPConverter}}"></Image>
+               <Grid ColumnDefinitions="*,60">  
+                   <dx:TextEdit LabelText="SpoolNo" Text="{Binding Item.SpoolNo}" />                   
+               </Grid>  
+               <dx:ComboBoxEdit SelectionChanged="type_SelectionChanged" x:Name="type" SelectedIndex="{Binding Item.SpoolType}" LabelText="形式" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.SpoolTypes}">
+                   
+                        <dx:ComboBoxEdit.ItemTemplate>  
+                       <DataTemplate>  
+                           <Grid ColumnDefinitions="*,*">  
+                               <Label HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="0" FontSize="20" Text="{Binding StringFormat='{0}  '}" />  
+                               <Image Grid.Column="1" HorizontalOptions="Start" WidthRequest="50" HeightRequest="50" Source="{Binding Converter={StaticResource ImageEnumConverter}}" />  
+                              
+                           </Grid>  
+                       </DataTemplate>  
+                   </dx:ComboBoxEdit.ItemTemplate>  
+               </dx:ComboBoxEdit>  
 
-            <dx:DXButton Content="Save" Command="{Binding SaveCommand}" />
-        </dx:DXStackLayout>
-    </dx:DXScrollView>
+               <dx:ComboBoxEdit LabelText="サイズ" SelectedValue="{Binding Item.Size1}" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}">  
+                 
+               </dx:ComboBoxEdit>
+                <dx:TextEdit LabelText="枝サイズ" Text="{Binding Item.Size2}" />  
+              
+           </dx:DXStackLayout>  
+
+           <dx:DXButton Content="Save" Command="{Binding SaveCommand}" />  
+       </dx:DXStackLayout>  
+   </dx:DXScrollView>  
 </ContentPage>

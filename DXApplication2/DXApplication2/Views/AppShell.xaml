@@ -54,7 +54,7 @@
         Icon="logo_dhf1.png"
         ContentTemplate="{DataTemplate views:DetailForm4Page}" />
     <ShellContent
-        Title="Item Editing 3"
+        Title="Reset Database"
         Icon="logo_dhf1.png"
         ContentTemplate="{DataTemplate views:ItemEditing3Page}" />
     <ShellContent

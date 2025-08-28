@@ -493,7 +493,7 @@ namespace LiningCheckRecord
 
         public LiningSpool()
         {
-            SpoolType = 1;
+            SpoolType = 0;
 			ShapeType = "Shape1";
             SpoolNo = "";
             ImagePath = "";
@@ -503,9 +503,9 @@ namespace LiningCheckRecord
         public int ID { get; set; }
         [Display(Name = "シート")]
         public int SpoolType
-		{
-            get;set;
-		} 
+        {
+            get; set;
+        } = 0;
 
         [Display(Name = "形状")]
         public string ShapeType
@@ -552,7 +552,7 @@ namespace LiningCheckRecord
                 double tmin = 1;
                 if (Sheet!=null)
                     if(Sheet.ThickNess>1) tmin = Sheet.ThickNess;
-                return Enumerable.Range(0, 10).Select(x => tmin + ((double)x) * 0.1).ToList();
+                return Enumerable.Range(0, 10).Select(x => Math.Round( tmin + ((double)x) * 0.1,1)).ToList();
 
             }
         }

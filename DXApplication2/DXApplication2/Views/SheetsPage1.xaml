@@ -1,119 +1,92 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DXApplication2.Views.SheetsPage1"
-              xmlns:dx="http://schemas.devexpress.com/maui"
-              xmlns:dxc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
-            BindingContextChanged="ContentPage_BindingContextChanged"
-              xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"            
-                xmlns:models="clr-namespace:LiningCheckRecord;assembly=DXApplication2.Infrastructure"
-
-             Title="{Binding Item.OrderNo,StringFormat='Order {0}'}">
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+            x:Class="DXApplication2.Views.SheetsPage1"  
+            xmlns:dx="http://schemas.devexpress.com/maui"  
+            xmlns:dxc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"  
+            xmlns:converters="clr-namespace:DXApplication2.Converters;assembly=DXApplication2"  
+            BindingContextChanged="ContentPage_BindingContextChanged"  
+            xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"  
+            xmlns:models="clr-namespace:LiningCheckRecord;assembly=DXApplication2.Infrastructure"  
+            Title="{Binding Item.OrderNo,StringFormat='Order {0}'}">
+    <ContentPage.Resources>
+        <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{Binding IsSaved,StringFormat='saved={0}' }"  />
-
-        <ToolbarItem Text="シート作成" IconImageSource="addlist.svg" Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailNewItemForm}" />
-     
-        <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}"/>
+        <!--<ToolbarItem Text="{Binding Source={x:Reference sheetGrid1}}" />-->
+        <ToolbarItem Text="シート作成" IconImageSource="addlist.svg"  Command="{Binding Source={x:Reference sheetGrid1}, Path=Commands.ShowDetailNewItemForm}" />
+        <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <Grid>
-        <dx:DXCollectionView Margin="5,5,0,20" x:Name="sheetGrid" SelectionMode="Single"   UseRippleEffect="True" ItemSpanCount="3" DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"  
-                             DoubleTapCommand="{Binding Source={RelativeSource Mode=Self}, Path=Commands.ShowDetailEditForm}" ValidateAndSave="collectionView_ValidateAndSave"
-                      ItemsSource="{Binding Item.ExcelSheets}" ItemSpacing="16"   DetailNewItemFormTemplate="{DataTemplate views:NewSheetView}" 
-                             >
-          
+        <dx:DXCollectionView Margin="5,5,0,20" x:Name="sheetGrid1" SelectionMode="Single" UseRippleEffect="True" ItemSpanCount="1" DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"  
+                            DoubleTapCommand="{Binding Source={RelativeSource Mode=Self}, Path=Commands.ShowDetailEditForm}" ValidateAndSave="collectionView_ValidateAndSave"  
+                            ItemsSource="{Binding Item.ExcelSheets}" ItemSpacing="16" DetailNewItemFormTemplate="{DataTemplate views:NewSheetView}">
             <dx:DXCollectionView.ItemTemplate>
-
                 <DataTemplate>
-                    <dx:DXBorder CornerRadius="10"
-                         BorderColor="LightGray"
-                         BorderThickness="1"
-                         BackgroundColor="White"
-                         Padding="12"
-                         Margin="8">
+                    <dx:DXBorder CornerRadius="10"  
+                                BorderColor="LightGray"  
+                                BorderThickness="1"  
+                                BackgroundColor="White"  
+                                Padding="12"  
+                                Margin="8">
                         <Grid>
-                            <Grid>
-
-                                <dx:DXToolbar Padding="0" HeightRequest="30" Margin="0,-15,0,0" BackgroundColor="Transparent" WidthRequest="30" HorizontalOptions="End">
-                                    <dx:ToolbarButton Padding="0"  WidthRequest="30" Margin="0,0,5,5" HeightRequest="30" VerticalContentAlignment="End"   Icon="edit.png"  FontSize="10" 
-Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailEditForm}"
-CommandParameter="{Binding .}"
-/>
-                                    <!--<dx:ToolbarButton Content="{Binding Source={RelativeSource AncestorType=ContentPage},Path=BindingContext.DataControlContext}"                                       
-CommandParameter="{Binding .}"                                        />-->
-
-                                </dx:DXToolbar>
-
-                            </Grid>
+                            
+                                <dx:DXButton WidthRequest="30" ButtonType="ToolButton" Icon="edit.png" HeightRequest="30" VerticalOptions="Start"
+                                             VerticalContentAlignment="Start"    HorizontalOptions="End"              
+                                             Command="{Binding Commands.ShowDetailEditForm, Source={RelativeSource AncestorType={x:Type dx:DXCollectionView}}}"
+                                        CommandParameter="{Binding .}"
+                                        ></dx:DXButton>
+                                
+                           
                             <VerticalStackLayout>
-                            <!-- ヘッダー -->
-                            <HorizontalStackLayout>
-                                <Label Text="{Binding SheetNo, StringFormat='No.{0}'}"
-                               FontSize="16" VerticalOptions="End"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Start"/>
-                                <Label Margin="10,0,0,0" Text="{Binding CheckDate1,StringFormat='{0:yy/MM/dd}'}"                               
-                               FontSize="12"
-                               TextColor="Gray"
-                                       VerticalOptions="End"
-                               HorizontalOptions="End"/>
-                                    <Label Margin="10,0,0,0" Text="{Binding CheckDate2,StringFormat='原管入荷:{0:yy/MM/dd}'}"                               
-                               FontSize="12"
-                               TextColor="Gray"
-                                       VerticalOptions="End"
-                               HorizontalOptions="End"/>
-                                
-                                
-                              
-
-
-
-                            </HorizontalStackLayout>
-
-                            <!-- 顧客情報 -->
-                          
-
-                            <!-- 状態表示 -->
-                            <HorizontalStackLayout Spacing="10">
-                                <Label Text="{Binding SpoolsCount, StringFormat='管数: {0}'}" FontSize="12"/>
-                                <Label Text="{Binding Checked, StringFormat='状態: {0}'}" FontSize="12"/>
-                                <Label Text="{Binding Checker, StringFormat='検査員: {0}'}" FontSize="12"/>
-                            </HorizontalStackLayout>
-
-                            <!-- スプール一覧（省略表示） -->
-                            <ScrollView Orientation="Vertical" HeightRequest="130">
-                              
-                                    <dx:DXCollectionView ItemsSource="{Binding Spools}" ItemSpanCount="2"  >
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding SheetNo, StringFormat='No.{0}'}"  
+                                          FontSize="16" VerticalOptions="End"  
+                                          FontAttributes="Bold"  
+                                          HorizontalOptions="Start" />
+                                    <Label Margin="10,0,0,0" Text="{Binding CheckDate1,StringFormat='{0:yy/MM/dd}'}"  
+                                          FontSize="12"  
+                                          TextColor="Gray"  
+                                          VerticalOptions="End"  
+                                          HorizontalOptions="End" />
+                                    <Label Margin="10,0,0,0" Text="{Binding CheckDate2,StringFormat='原管入荷:{0:yy/MM/dd}'}"  
+                                          FontSize="12"  
+                                          TextColor="Gray"  
+                                          VerticalOptions="End"  
+                                          HorizontalOptions="End" />
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="{Binding SpoolsCount, StringFormat='管数: {0}'}" FontSize="12" />
+                                    <Label Text="{Binding Checked, StringFormat='状態: {0}'}" FontSize="12" />
+                                    <!--<Label Text="{Binding Checker, StringFormat='検査員: {0}'}" FontSize="12" />-->
+                                  
+                                </HorizontalStackLayout>
+                                <ScrollView Orientation="Vertical" HeightRequest="130">
+                                    <dx:DXCollectionView ItemsSource="{Binding Spools}" ItemSpanCount="2">
                                         <dx:DXCollectionView.ItemTemplate>
                                             <DataTemplate>
-                                                <dx:DXBorder BorderColor="Red" BorderThickness="2" 
-                                                     CornerRadius="10"
-                                                     Padding="4"
-                                                     Margin="2">
-                                                <Grid>
-                                                    
-                                                    <Label Text="{Binding SpoolNo}" FontSize="12"/>
-                                                    <Label Text="{Binding Size}" HorizontalOptions="End" FontSize="12"/>
-                                                </Grid>
+                                                <dx:DXBorder BorderColor="Red" BorderThickness="2"  
+                                                            CornerRadius="10"  
+                                                            Padding="4"  
+                                                            Margin="2">
+                                                    <Grid>
+                                                        <Label Text="{Binding SpoolNo}" FontSize="12" />
+                                                        <Label Text="{Binding Size}" HorizontalOptions="End" FontSize="12" />
+                                                    </Grid>
                                                 </dx:DXBorder>
                                             </DataTemplate>
                                         </dx:DXCollectionView.ItemTemplate>
                                     </dx:DXCollectionView>
-                              
-                            </ScrollView>
-
-                         
-                        </VerticalStackLayout>
+                                </ScrollView>
+                            </VerticalStackLayout>
                         </Grid>
                     </dx:DXBorder>
                 </DataTemplate>
-
             </dx:DXCollectionView.ItemTemplate>
         </dx:DXCollectionView>
-      
-        <ActivityIndicator
-         IsRunning="{Binding InitializeCommand.IsRunning}"
-         HorizontalOptions="Center"
-         VerticalOptions="Center" />
+        <ActivityIndicator  
+        IsRunning="{Binding InitializeCommand.IsRunning}"  
+        HorizontalOptions="Center"  
+        VerticalOptions="Center" />
     </Grid>
 </ContentPage>

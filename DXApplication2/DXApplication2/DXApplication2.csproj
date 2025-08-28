@@ -24,6 +24,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- App Icon -->
+    <MauiIcon Include="Resources\AppIcon\appiconcopy.svg">
+      <Color>#ff0000</Color>
+    </MauiIcon>
     <MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#ff0000" />
 
     <!-- Splash Screen -->
@@ -59,12 +62,16 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="DevExpress.Maui.Pdf" Version="25.1.*-*" />
+    <PackageReference Include="Syncfusion.Maui.ImageEditor" Version="30.2.7" />
     <PackageReference Include="Xamarin.Google.MLKit.TextRecognition.Japanese" Version="116.0.1.4" />
     <ProjectReference Include="..\DXApplication2.ReportLibrary\DXApplication2.ReportLibrary.csproj" />
     <ProjectReference Include="..\DXApplication2.Infrastructure\DXApplication2.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\CameraView.xaml.cs">
+      <DependentUpon>CameraView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\OrdersPage.xaml.cs">
       <DependentUpon>OrdersPage.xaml</DependentUpon>
     </Compile>
@@ -77,6 +84,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <MauiXaml Update="Views\EditSpool.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ImageEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\NewSheetView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
@@ -84,6 +97,9 @@
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\NewSpoolPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\CameraView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\OCRPage.xaml">
@@ -101,6 +117,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="SpoolImage\" />
     <Folder Include="新しいフォルダー\" />
   </ItemGroup>
 </Project>

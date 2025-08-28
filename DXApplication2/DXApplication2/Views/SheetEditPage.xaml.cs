@@ -71,7 +71,7 @@ public partial class SheetEditPage : ContentPage
                 }
 				else if (order != null)
 				{
-					if(order.SpoolNames.Where(x=>x.Equals(sp.SpoolNo)).Any())
+					if(e.DataChangeType== DataChangeType.Add && order.SpoolNames.Where(x=>x.Equals(sp.SpoolNo)).Any())
 					{
                         mess += "ä«î‘çÜèdï°\n";
                     }
@@ -90,6 +90,16 @@ public partial class SheetEditPage : ContentPage
                     return;
 				}
 
+				if(e.DataChangeType== DataChangeType.Add)
+				{
+					if(sp.SpoolType == 3)
+					{
+						var ocrpage = new CameraView(sp);
+
+						Navigation.PushAsync(ocrpage);
+
+					}
+				}
 			}
 
             //form.SaveCommand.execute
@@ -128,8 +138,31 @@ public partial class SheetEditPage : ContentPage
     {
         if (e.Item is LiningSpool sp)
         {
-            spoolGrid.DeleteRow(e.RowHandle);
-            DatabaseViewModel.DeleteSpoolAsync(sp).Wait();
+           // spoolGrid.DeleteRow(e.RowHandle);
+          //  DatabaseViewModel.DeleteSpoolAsync(sp).Wait();
         }
     }
+
+	private void spoolGrid_Tap(object sender, DevExpress.Maui.CollectionView.CollectionViewGestureEventArgs e)
+	{
+		popup.IsOpen = true;
+		
+	}
+
+	private void DismissPopup(object sender, EventArgs e)
+	{
+		popup.IsOpen = false;
+	}
+
+	private void DeleteClick(object sender, EventArgs e)
+	{
+
+	}
+
+	private void EditClick(object sender, EventArgs e)
+	{
+		//popup.IsOpen = true;
+		//if(sender is  Microsoft.Maui.Controls.View view)
+		//  popup.PlacementTarget = view;
+	}
 }

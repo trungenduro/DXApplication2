@@ -1,53 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DXApplication2.Views.SheetEditPage"
+             x:Class="DXApplication2.Views.SheetEditPage" 
                 xmlns:dx="http://schemas.devexpress.com/maui"
+             xmlns:converters="clr-namespace:DXApplication2.Converters"  
              BindingContextChanged="ContentPage_BindingContextChanged"
              xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
              Title="{Binding Item.SheetNo,StringFormat='シートNo.{0}'}">
+    <ContentPage.Resources>
+        <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{Binding IsSaved,StringFormat='saved={0}' }"  />
+       
         <ToolbarItem Text="管追加" IconImageSource="addSpool.svg" Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailNewItemForm}" />
         <ToolbarItem Text="Delete" IconImageSource="delete.png" Command="{Binding DeleteCommand}"/>
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
-    <dx:DXScrollView>
-        <dx:DXStackLayout ItemSpacing="24" Margin="16">
-            <dx:DXStackLayout ItemSpacing="8">
-
-                <Label  Text="{Binding Item.Order}" />
-
-                <dx:DataGridView IsVisible="False" x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" CreateDetailFormViewModel="collectionView_CreateDetailFormViewModel"
-           DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}"  DetailEditFormTemplate="{DataTemplate views:EditSpoolPage}"  ValidateAndSave="collectionView_ValidateAndSave"             
-                            >
-                    <dx:DataGridView.EndSwipeItems>
-                        <dx:GridSwipeItem  Image="edit.svg" BackgroundColor="Cyan"  Command="{Binding Source={x:Reference spoolGrid},Path=Commands.ShowDetailEditForm}" />
-                        <dx:GridSwipeItem  Caption="Delete" BackgroundColor="Red" Tap="delete_Tap" />
-                    </dx:DataGridView.EndSwipeItems>
-                    <dx:DataGridView.Columns>
-                        <dx:TextColumn Caption="管番号" FieldName="SpoolNo"></dx:TextColumn>
-                        <dx:TextColumn Caption="サイズ" FieldName="Size"></dx:TextColumn>
-                        <!--<dx:TextColumn Caption="検査日" FieldName="Checker"></dx:TextColumn>
-                        <dx:TextColumn Caption="検査日" FieldName="Checker"></dx:TextColumn>
-                        <dx:TextColumn Caption="ピンホール．ディテクタ" FieldName="Kiki1"></dx:TextColumn>
-                        <dx:TextColumn Caption="膜厚検査" FieldName="Kiki2"></dx:TextColumn>-->
-                    </dx:DataGridView.Columns>
-
-                </dx:DataGridView>
-
-
-                <ScrollView Orientation="Vertical" >
-
-                    <dx:DXCollectionView ItemsSource="{Binding Item.Spools}" ItemSpanCount="2"  >
+  
+        <Grid Background="AliceBlue">
+            <dx:DXCollectionView x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" DetailEditFormTemplate="{DataTemplate views:EditSpoolPage}" 
+                                 ItemSpanCount="1" ValidateAndSave="collectionView_ValidateAndSave" 
+                                 Tap="spoolGrid_Tap"
+                                 DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}" >
                         <dx:DXCollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid >
                                     <Grid>
-
+                                       
                                         <dx:DXToolbar Padding="0" HeightRequest="30" Margin="0,-15,0,0" BackgroundColor="Transparent" WidthRequest="30" HorizontalOptions="End">
-                                            <dx:ToolbarButton Padding="0"  WidthRequest="30" Margin="0,0,5,5" HeightRequest="30" VerticalContentAlignment="End"   Icon="edit.png"  FontSize="10" 
-Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailEditForm}"
+                                            <dx:ToolbarButton Padding="0"  WidthRequest="30" Margin="-5,10,5,5" HeightRequest="30" VerticalContentAlignment="End"   Icon="edit.png"  FontSize="10" 
+Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailEditForm}" Clicked="EditClick"
 CommandParameter="{Binding .}"
 />
                                             <!--<dx:ToolbarButton Content="{Binding Source={RelativeSource AncestorType=ContentPage},Path=BindingContext.DataControlContext}"                                       
@@ -57,37 +39,58 @@ CommandParameter="{Binding .}"                                        />-->
 
                                     </Grid>
                                     <dx:DXBorder BorderColor="Red" BorderThickness="2" VerticalOptions="Start"
-                          CornerRadius="0"
+                          CornerRadius="5"
                           Padding="0"
                           Margin="2">
                                         <Grid  MinimumHeightRequest="150" ColumnDefinitions="2*,5*,*" RowDefinitions="*,5*">
-                                            
-                                      
-                                        <Label Padding="5" Text="{Binding SpoolNo}" FontSize="12"/>
-                                        <Grid  BackgroundColor="Cyan" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*,*,*,*,*">
+
+                                            <Grid Grid.Row="1"   />
+
+                                            <Label Padding="5" Text="{Binding SpoolNo}" FontSize="17" Grid.ColumnSpan="1" HorizontalOptions="Center" />
+
+                                            <Image Grid.Row="1"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
+
+                                            <Label Padding="0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="良" FontSize="15" FontAttributes="Bold"/>
+
+
+                                            <Grid  BackgroundColor="LightGray" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" RowDefinitions="*,*,*,*,*,*" ColumnDefinitions="*,*,*,*,*,*">
 
                                         <Label Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="A" FontSize="15" FontAttributes="Bold"/>
                                         <Label Padding="0" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="B" FontSize="15" FontAttributes="Bold"/>
                                         <Label Padding="0" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="C" FontSize="15" FontAttributes="Bold"/>
                                         <Label Padding="0" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="D" FontSize="15" FontAttributes="Bold"/>
                                         <Label Padding="0" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="E" FontSize="15" FontAttributes="Bold"/>
-                                        <Label Padding="0" Grid.Row="1" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="1" FontSize="15" FontAttributes="Bold"/>
-                                        <Label Padding="0" Grid.Row="2" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="2" FontSize="15" FontAttributes="Bold"/>
-                                        <Label Padding="0" Grid.Row="3" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="3" FontSize="15" FontAttributes="Bold"/>
-                                        <Label Padding="0" Grid.Row="4" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="4" FontSize="15" FontAttributes="Bold"/>
+
+                                                <Label  Grid.Row="5" Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="備考" FontSize="15" FontAttributes="Bold"/>
+
+                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                                                
+                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                                                
+                                                
+
+                                                <!--<dx:NumericEdit  Grid.Row="1"  Grid.Column="0" MaxDecimalDigitCount="1" SelectValueOnFocus="True" StepValue="0.1" ClearIconVisibility="Never" DisplayFormat="0.0" HeightRequest="30" BoxPadding="1"  BottomTextTopIndent="0"  UpDownIconAlignment="Start" TextVerticalAlignment="Center" TextHorizontalAlignment="Center"  BorderThickness="0" />
+                                                <dx:NumericEdit  Grid.Row="2"  Grid.Column="0" MaxDecimalDigitCount="1" SelectValueOnFocus="True" StepValue="0.1" ClearIconVisibility="Never" DisplayFormat="0.0" HeightRequest="30" BoxPadding="1"  BottomTextTopIndent="0"  UpDownIconAlignment="Start" TextVerticalAlignment="Center" TextHorizontalAlignment="Center"  BorderThickness="0" />
+                                                <dx:NumericEdit  Grid.Row="3"  Grid.Column="0" MaxDecimalDigitCount="1" SelectValueOnFocus="True" StepValue="0.1" ClearIconVisibility="Never" DisplayFormat="0.0" HeightRequest="30" BoxPadding="1"  BottomTextTopIndent="0"  UpDownIconAlignment="Start" TextVerticalAlignment="Center" TextHorizontalAlignment="Center"  BorderThickness="0" />
+                                                <dx:NumericEdit  Grid.Row="4"  Grid.Column="0" MaxDecimalDigitCount="1" SelectValueOnFocus="True" StepValue="0.1" ClearIconVisibility="Never" DisplayFormat="0.0" HeightRequest="30" BoxPadding="1"  BottomTextTopIndent="0"  UpDownIconAlignment="Start" TextVerticalAlignment="Center" TextHorizontalAlignment="Center"  BorderThickness="0" />-->
+
+                                                <dx:TextEdit Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="5" BoxPadding="1" BorderThickness="0" VerticalOptions="Fill"/>
                                        
-                                            <Label Padding="0" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="F" FontSize="15" FontAttributes="Bold"/>
+                                            <Label Padding="0" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="F" FontSize="15" FontAttributes="Bold"/>                                           
+                                             
+                                                
+                                            <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="1"     />
                                             
-                                             <Label Text="{Binding Size}" HorizontalOptions="End" FontSize="12"/>
-                                            <Rectangle Grid.Column="0" Grid.ColumnSpan="10" StrokeThickness="1" Grid.Row="1" VerticalOptions="Start"  Stroke="Blue"  />
-                                            <Rectangle Grid.Column="0" Grid.ColumnSpan="10" StrokeThickness="1" Grid.Row="3" VerticalOptions="Center" Stroke="Blue"  />
-                                            <Rectangle Grid.Column="0" Grid.ColumnSpan="10" StrokeThickness="1" Grid.Row="5" VerticalOptions="Center" Stroke="Blue"  />
-                                            <Rectangle Grid.Column="0" Grid.ColumnSpan="10" StrokeThickness="1" Grid.Row="7" VerticalOptions="Center" Stroke="Blue"  />
-                                        
-                                            <Rectangle Grid.Column="1" Grid.RowSpan="10" StrokeThickness="1" Grid.Row="0" HorizontalOptions="Start" Stroke="Blue"  />
-                                            <Rectangle Grid.Column="3" Grid.RowSpan="10" StrokeThickness="1" Grid.Row="0" HorizontalOptions="Start" Stroke="Blue"  />
-                                            <Rectangle Grid.Column="5" Grid.RowSpan="10" StrokeThickness="1" Grid.Row="0" HorizontalOptions="Start" Stroke="Blue"  />
-                                            <Rectangle Grid.Column="7" Grid.RowSpan="10" StrokeThickness="1" Grid.Row="0" HorizontalOptions="Start" Stroke="Blue"  />
+                                            <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="3"     />
+                                            <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="5"     />
+                                              
+                                         
                                     
                                     
                                     </Grid>
@@ -98,11 +101,32 @@ CommandParameter="{Binding .}"                                        />-->
                         </dx:DXCollectionView.ItemTemplate>
                     </dx:DXCollectionView>
 
-                </ScrollView>
-                
-            </dx:DXStackLayout>
+            <dx:DXPopup x:Name="popup"            
+               AllowScrim="True"
+               CloseOnScrimTap="True"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Stretch"
+               Margin="0,0,0,0"
+               CornerRadius="16">
+                <VerticalStackLayout Padding="5,10,10,8">
+                    <Label Text="hhhhh"
+            
+                Margin="24,16"
+                HorizontalTextAlignment="Center" />
 
-            <dx:DXButton Content="Save" Command="{Binding SaveCommand}" />
-        </dx:DXStackLayout>
-    </dx:DXScrollView>
+                    <dx:DXSeparator/>
+
+            
+                    <dx:DXButton ButtonType="ToolButton" Content="Delete" 
+             Icon="delete" 
+             Clicked="DeleteClick" />
+
+                    <dx:DXSeparator/>
+
+                    <dx:DXButton ButtonType="ToolButton" Content="Cancel" Clicked="DismissPopup"/>
+                </VerticalStackLayout>
+         
+            </dx:DXPopup>
+        </Grid>
+ 
 </ContentPage>

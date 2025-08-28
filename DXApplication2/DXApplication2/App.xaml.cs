@@ -5,10 +5,11 @@ namespace DXApplication2;
 public partial class App : Application {
     public App() {
 
-	//	Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "*.db")
-	//		.ToList()
-	//	.ForEach(file => File.Delete(file));
-	
+		var filePath = Path.Combine(FileSystem.Current.AppDataDirectory, "Photo");
+		var files = Directory.GetFiles(Path.Combine(FileSystem.Current.AppDataDirectory, "Photo"), "*.*").ToList();
+		//		.ToList()
+		//	.ForEach(file => File.Delete(file));
+
 
 		using var entitiesContext = new LiningCheckRecord.LiningCheckContext();
         SQLitePCL.Batteries_V2.Init();

@@ -20,46 +20,12 @@
 
     <dx:DXScrollView>
         <dx:DXStackLayout Margin="16,0" ItemSpacing="16">
-            <Label
-                Margin="0,16,0,0"
-                Style="{StaticResource HeaderText}"
-                Text="Name and Description" />
-            <dx:TextEdit Text="Product name" />
-            <dx:MultilineEdit MinLineCount="4" PlaceholderText="Description" />
-
-            <Label
-                Margin="0,16,0,0"
-                Style="{StaticResource HeaderText}"
-                Text="Add a Tag" />
-            <dx:ChipGroup
-                Padding="0"
-                BoxMode="Filled"
-                HorizontalSpacing="12"
-                VerticalSpacing="12">
-                <dx:ChipGroup.ItemsSource>
-                    <x:Array Type="{x:Type TypeName=x:String}">
-                        <x:String>Perfume</x:String>
-                        <x:String>Aroma</x:String>
-                        <x:String>Bergamot</x:String>
-                        <x:String>Lavender</x:String>
-                        <x:String>Special</x:String>
-                        <x:String>Sale</x:String>
-                    </x:Array>
-                </dx:ChipGroup.ItemsSource>
-            </dx:ChipGroup>
-            <dx:TextEdit EndIcon="add" PlaceholderText="Add New Tag" />
-
-            <Label
-                Margin="0,16,0,0"
-                Style="{StaticResource HeaderText}"
-                Text="Price" />
-            <dx:TextEdit Keyboard="Numeric" PlaceholderText="Retail Price" />
-            <dx:TextEdit Keyboard="Numeric" PlaceholderText="Sale Price" />
+           
 
             <dx:DXButton
                 Margin="0,8"
-                ButtonType="Accent"
-                Content="Save" />
+                ButtonType="Accent" Clicked="DXButton_Clicked"
+                Content="Delete" />
         </dx:DXStackLayout>
     </dx:DXScrollView>
 </ContentPage>

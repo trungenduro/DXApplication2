@@ -1,0 +1,23 @@
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dx="http://schemas.devexpress.com/maui"
+    xmlns:imageEditor="clr-namespace:Syncfusion.Maui.ImageEditor;assembly=Syncfusion.Maui.ImageEditor"
+    xmlns:local="clr-namespace:DemoCenter.Maui.Views"
+    x:Class="DemoCenter.Maui.Views.ImageEditView"
+    Shell.NavBarIsVisible="False"
+   >
+
+    <Grid>
+
+ 
+        <dx:DXToolbar  HeightRequest="30"  ZIndex="2" HorizontalOptions="End" VerticalOptions="Start"  ItemAlignment="Start" >
+            <dx:ToolbarButton HeightRequest="30"  Icon="ic_arrow_back.png" Clicked="BackPressed" />
+            <dx:ToolbarButton HeightRequest="30"  Icon="save.svg" Clicked="ToolbarItem_Clicked" />
+        </dx:DXToolbar>
+ 
+              <imageEditor:SfImageEditor    ZIndex="0" ImageSaving="ImageEditor_ImageSaving" x:Name="editor" />
+      
+    </Grid>
+
+</ContentPage>

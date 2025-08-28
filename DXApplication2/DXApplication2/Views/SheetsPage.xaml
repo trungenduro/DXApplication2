@@ -1,50 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DXApplication2.Views.SheetsPage"
-              xmlns:dx="http://schemas.devexpress.com/maui"
-             BindingContextChanged="ContentPage_BindingContextChanged"
-              xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
-             Title="{Binding Item.OrderNo}">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Edit" IconImageSource="edit.svg" Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailEditForm}" />
-
-        <ToolbarItem Text="シート作成" IconImageSource="addlist.svg" Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailNewItemForm}" />
-        <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}"/>
-    </ContentPage.ToolbarItems>
-    <dx:DXScrollView>
-        <dx:DXStackLayout ItemSpacing="24" Margin="16">
-            <dx:DXStackLayout ItemSpacing="8">
-
-                <Label  Text="{Binding Item.CombineName}" />
-            
-                                  <!--
-                                  CreateDetailFormViewModel="collectionView_CreateDetailFormViewModel"-->
-                <dx:DataGridView  x:Name="sheetGrid" ItemsSource="{Binding Item.ExcelSheets}" 
-                         ValidateAndSave="collectionView_ValidateAndSave"           CreateDetailFormViewModel="collectionView_CreateDetailFormViewModel"
-                            DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"   
-              DetailNewItemFormTemplate="{DataTemplate views:NewSheetView}"                 
-                               >
-                    <dx:DataGridView.EndSwipeItems>
-                        <!--<dx:GridSwipeItem  Image="edit40.png" BackgroundColor="Cyan"   Tap="Swipe_Open"/>-->
-                        <dx:GridSwipeItem BackgroundColor="White"  Image="edit.svg"  Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailEditForm} "/>
-                        <!--<dx:GridSwipeItem  Caption="delete CM"  Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm} "/>-->
-                        <dx:GridSwipeItem  Image="delete.svg" BackgroundColor="Red"   Tap="Swipe_Delete"/>
-                    </dx:DataGridView.EndSwipeItems>
-                    <dx:DataGridView.Columns>                     
-                        <dx:TextColumn Caption="No" FieldName="SheetNo" Width="50"></dx:TextColumn>
-                        <dx:TextColumn Caption="管数" FieldName="SpoolsCount" Width="50" ></dx:TextColumn>
-                        <dx:TextColumn Caption="検査員" FieldName="Checker" Width="150"></dx:TextColumn>
-                        <dx:TextColumn Caption="検査日" FieldName="Checker" Width="150" ></dx:TextColumn>
-                        <dx:TextColumn Caption="ピンホール．ディテクタ" FieldName="Kiki1"></dx:TextColumn>
-                        <dx:TextColumn Caption="膜厚検査" FieldName="Kiki2"></dx:TextColumn>
-                    </dx:DataGridView.Columns>
-
-                </dx:DataGridView>
-           
-            </dx:DXStackLayout>
-                <!--<dx:DXButton Content="Save" Command="{Binding SaveCommand}" />-->
-
-        </dx:DXStackLayout>
-    </dx:DXScrollView>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+            x:Class="DXApplication2.Views.SheetsPage"  
+            xmlns:dx="http://schemas.devexpress.com/maui"  
+            xmlns:converters="clr-namespace:DXApplication2.Converters;assembly=DXApplication2"  
+            BindingContextChanged="ContentPage_BindingContextChanged"  
+            xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"  
+            Title="{Binding Item.OrderNo}">  
+   <ContentPage.Resources>  
+       <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />  
+   </ContentPage.Resources>  
+   <ContentPage.ToolbarItems>  
+       <ToolbarItem Text="Edit" IconImageSource="edit.svg" Command="{Binding Source={x:Reference sheetGrid1}, Path=Commands.ShowDetailEditForm}" />  
+       <ToolbarItem Text="シート作成" IconImageSource="addlist.svg" Command="{Binding Source={x:Reference sheetGrid1}, Path=Commands.ShowDetailNewItemForm}" />  
+       <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}"/>  
+   </ContentPage.ToolbarItems>  
+   <dx:DXScrollView>  
+       <dx:DXStackLayout ItemSpacing="24" Margin="16">  
+           <dx:DXStackLayout ItemSpacing="8">  
+               <Label Text="{Binding Item.CombineName}" />  
+               <dx:DataGridView x:Name="sheetGrid1" ItemsSource="{Binding Item.ExcelSheets}"  
+                                ValidateAndSave="collectionView_ValidateAndSave"  
+                                CreateDetailFormViewModel="collectionView_CreateDetailFormViewModel"  
+                                DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"  
+                                DetailNewItemFormTemplate="{DataTemplate views:NewSheetView}">  
+                   <dx:DataGridView.EndSwipeItems>  
+                       <dx:GridSwipeItem BackgroundColor="White" Image="edit.svg" Command="{Binding Source={x:Reference sheetGrid}, Path=Commands.ShowDetailEditForm}" />  
+                       <dx:GridSwipeItem Image="delete.svg" BackgroundColor="Red" Tap="Swipe_Delete"/>  
+                   </dx:DataGridView.EndSwipeItems>  
+                   <dx:DataGridView.Columns>  
+                       <dx:TextColumn Caption="No" FieldName="SheetNo" Width="50"></dx:TextColumn>  
+                       <dx:TextColumn Caption="管数" FieldName="SpoolsCount" Width="50"></dx:TextColumn>  
+                       <dx:TextColumn Caption="検査員" FieldName="Checker" Width="150"></dx:TextColumn>  
+                       <dx:TextColumn Caption="検査日" FieldName="Checker" Width="150"></dx:TextColumn>  
+                       <dx:TextColumn Caption="ピンホール．ディテクタ" FieldName="Kiki1"></dx:TextColumn>  
+                       <dx:TextColumn Caption="膜厚検査" FieldName="Kiki2"></dx:TextColumn>  
+                   </dx:DataGridView.Columns>  
+               </dx:DataGridView>  
+           </dx:DXStackLayout>  
+       </dx:DXStackLayout>  
+   </dx:DXScrollView>  
 </ContentPage>

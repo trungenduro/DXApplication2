@@ -6,5 +6,16 @@ namespace DXApplication2.Views
         {
             InitializeComponent();
         }
+
+		private void DXButton_Clicked(object sender, EventArgs e)
+		{
+				Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "*.db")
+					.ToList()
+				.ForEach(file => File.Delete(file));
+
+			using var entitiesContext = new LiningCheckRecord.LiningCheckContext();
+			SQLitePCL.Batteries_V2.Init();
+			entitiesContext.Database.EnsureCreated();
+		}
     }
 }

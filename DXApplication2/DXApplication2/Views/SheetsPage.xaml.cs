@@ -102,19 +102,7 @@ public partial class SheetsPage : ContentPage
 
 	private async void Swipe_Delete(object sender, DevExpress.Maui.DataGrid.SwipeItemTapEventArgs e)
 	{
-		var test= sheetGrid.BindingContext;
-
-
-        if (e.Item is ExcelSheet sheetToDelete)
-		{
-
-			sheetGrid.DeleteRow(e.RowHandle);
-			
-         //   collectionView.Commands.
-
-            DatabaseViewModel.DeleteSheetAsync(sheetToDelete);
-
-        }
+		
     }
 
     private void ContentPage_BindingContextChanged(object sender, EventArgs e)

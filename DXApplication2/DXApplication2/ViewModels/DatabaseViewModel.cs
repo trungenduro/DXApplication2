@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DevExpress.Maui.Core;
 using DevExpress.XtraRichEdit.Forms;
+using DXApplication2.Converters;
 using DXApplication2.Domain.Data;
 using DXApplication2.Domain.Services;
 using DXApplication2.Infrastructure.Data;
@@ -68,7 +69,7 @@ public partial class DatabaseViewModel : ObservableObject {
 		Orders?.Remove(item);
     }
 
-    public List<string> Sizes = new List<string> { "20A", "25A", "50A", "65A", "80A", "100A" };
+    public List<string> Sizes => new List<string> {"15A", "20A", "25A", "50A", "65A", "80A", "100A","125A","150A","200A","250A","300A","350A","400A","450A","500A" };
    internal async Task UpdateOrderAsync()
     {
 		Action? pendingAction = null;
@@ -92,6 +93,9 @@ public partial class DatabaseViewModel : ObservableObject {
         Orders = new ObservableCollection<DHFOrder>(Orders);
        await InitializeAsync();
     }
+
+
+	public IEnumerable<SpoolType> SpoolTypes => Enum.GetValues(typeof(SpoolType)).Cast<SpoolType>();
 
 
 

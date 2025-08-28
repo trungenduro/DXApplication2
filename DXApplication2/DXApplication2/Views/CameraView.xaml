@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+          
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+          xmlns:viewmodel="clr-namespace:DXApplication2.ViewModels"  
+            x:Class="DXApplication2.Views.CameraView"  
+            Title="CameraView">
+    <ContentPage.BindingContext>
+        <viewmodel:CameraViewModel  />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+       
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="camera" Clicked="OnCaptureClicked" ></ToolbarItem>
+        <ToolbarItem Text="OK" Clicked="ToolbarItem_Clicked"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+   <ScrollView Padding="10" >
+        <HorizontalStackLayout>
+                 
+            <Grid HorizontalOptions="Center">
+                
+        <toolkit:CameraView x:Name="cameraView"
+                        
+                          HorizontalOptions="Center"  ZoomFactor="2"
+                          VerticalOptions="Fill"  
+                          IsEnabled="True"  
+                          />
+            <AbsoluteLayout x:Name="overlayContainer" 
+               
+                 IsVisible="True" />
+            </Grid>
+
+
+            <Image x:Name="CapturedImage"
+       HorizontalOptions="Fill"
+       Aspect="AspectFit"
+       IsVisible="False" />
+
+            <!--<Image x:Name="img"  
+              HeightRequest="300"  
+              Aspect="AspectFit" />-->  
+
+    
+        </HorizontalStackLayout>
+   </ScrollView>  
+</ContentPage>
