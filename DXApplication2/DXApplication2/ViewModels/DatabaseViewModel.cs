@@ -104,7 +104,25 @@ public partial class DatabaseViewModel : ObservableObject {
 		args.AutoUpdateItemsSource = true;
         using var unitOfWork = new SQLiteUnitOfWork(cacheService);
         Action? pendingAction = null;
-        if (args.Item is ExcelSheet item)
+        if (args.Item is DHFOrder order)
+        {
+            if (args.DataChangeType == DataChangeType.Edit)
+            {
+                var sheets = await unitOfWork.SheetRepository.GetAsync();
+                var orderS= sheets.Where(x=>x.Order!=null).Where(x => x.Order.Id == order.Id).ToList();
+                foreach (var sh in orderS)
+                {
+                  if(!order.ExcelSheets.Where(x=>x.ID==  sh.ID).Any())
+                    {
+                        unitOfWork.SheetRepository.Delete(sh);
+                    }
+                  
+                }
+
+                unitOfWork.CustomersRepository.Update(order);               
+            }
+        }
+            if (args.Item is ExcelSheet item)
         {
             try
             {
@@ -120,6 +138,17 @@ public partial class DatabaseViewModel : ObservableObject {
                 }
                 if (args.DataChangeType == DataChangeType.Edit)
                 {
+                    var spools = await unitOfWork.SpoolRepository.GetAsync();
+                    var orderS = spools.Where(x => x.Order != null).Where(x => x.Sheet.ID == item.ID).ToList();
+                    foreach (var sh in orderS)
+                    {
+                        if (!item.Spools.Where(x => x.ID == sh.ID).Any())
+                        {
+                            unitOfWork.SpoolRepository.Delete(sh);
+                        }
+
+                    }
+
                     unitOfWork.SheetRepository.Update(item);
                     //pendingAction = () => Sheets[args.SourceIndex] = item;
                 }
@@ -175,6 +204,8 @@ public partial class DatabaseViewModel : ObservableObject {
             }
            
         }
+
+
 
         await unitOfWork.SaveAsync();
         pendingAction?.Invoke();
@@ -263,14 +294,13 @@ public partial class DatabaseViewModel : ObservableObject {
     void CreateDetailFormViewModel(CreateDetailFormViewModelEventArgs args) {
         if (args.DetailFormType != DetailFormType.Edit)
             return;
-
         var item = new Customer();
         //Customer.Copy((Customer)args.Item!, item);
        // args.Result = new DetailEditFormViewModel(item, isNew: false);
     }
 
     bool CanInitialize() => !IsInitialized;
-
+   
     async Task<IEnumerable<DHFOrder>> GetItems() {
         using var unitOfWork = new SQLiteUnitOfWork(cacheService);
         var data = await unitOfWork.CustomersRepository.GetAsync();
@@ -309,11 +339,11 @@ public partial class DatabaseViewModel : ObservableObject {
                 }
             }
         }
-        await unitOfWork.SaveAsync();
-         data = await unitOfWork.CustomersRepository.GetAsync();
-         sheets = await unitOfWork.SheetRepository.GetAsync();
-        spools = await unitOfWork.SpoolRepository.GetAsync();
-        Sheets = new ObservableCollection<ExcelSheet>(sheets?? Enumerable.Empty<ExcelSheet>());
+      //  await unitOfWork.SaveAsync();
+     //    data = await unitOfWork.CustomersRepository.GetAsync();
+     //    sheets = await unitOfWork.SheetRepository.GetAsync();
+     //   spools = await unitOfWork.SpoolRepository.GetAsync();
+     //   Sheets = new ObservableCollection<ExcelSheet>(sheets?? Enumerable.Empty<ExcelSheet>());
 
         return data ?? Enumerable.Empty<DHFOrder>();
     }

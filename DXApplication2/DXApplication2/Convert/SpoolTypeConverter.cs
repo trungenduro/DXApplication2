@@ -117,6 +117,53 @@ namespace DXApplication2.Converters
 		}
 	}
 
+	public class SpoolToChartDataConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value == null) return null;
+			if (value is not  LiningSpool spool)
+				return null;
+
+            List<ChartData> list = new List<ChartData>();
+            double val = 0;
+            if (Double.TryParse(spool.A1, out val)) list.Add(new ChartData { Name = "A", Value = val });
+            if (Double.TryParse(spool.A2, out val)) list.Add(new ChartData { Name = "A", Value = val });
+            if (Double.TryParse(spool.A3, out val)) list.Add(new ChartData { Name = "A", Value = val });
+            if (Double.TryParse(spool.A4, out val)) list.Add(new ChartData { Name = "A", Value = val });
+            if (Double.TryParse(spool.B1, out val)) list.Add(new ChartData { Name = "B", Value = val });
+            if (Double.TryParse(spool.B2, out val)) list.Add(new ChartData { Name = "B", Value = val });
+            if (Double.TryParse(spool.B3, out val)) list.Add(new ChartData { Name = "B", Value = val });
+            if (Double.TryParse(spool.B4, out val)) list.Add(new ChartData { Name = "B", Value = val });
+            if (Double.TryParse(spool.C1, out val)) list.Add(new ChartData { Name = "C", Value = val });
+            if (Double.TryParse(spool.C2, out val)) list.Add(new ChartData { Name = "C", Value = val });
+            if (Double.TryParse(spool.C3, out val)) list.Add(new ChartData { Name = "C", Value = val });
+            if (Double.TryParse(spool.C4, out val)) list.Add(new ChartData { Name = "C", Value = val });
+            if (Double.TryParse(spool.D1, out val)) list.Add(new ChartData { Name = "D", Value = val });
+            if (Double.TryParse(spool.D2, out val)) list.Add(new ChartData { Name = "D", Value = val });
+            if (Double.TryParse(spool.D3, out val)) list.Add(new ChartData { Name = "D", Value = val });
+            if (Double.TryParse(spool.D4, out val)) list.Add(new ChartData { Name = "D", Value = val });
+            if (Double.TryParse(spool.E1, out val)) list.Add(new ChartData { Name = "E", Value = val });
+            if (Double.TryParse(spool.E2, out val)) list.Add(new ChartData { Name = "E", Value = val });
+            if (Double.TryParse(spool.E3, out val)) list.Add(new ChartData { Name = "E", Value = val });
+            if (Double.TryParse(spool.E4, out val)) list.Add(new ChartData { Name = "E", Value = val });
+            if (Double.TryParse(spool.F1, out val)) list.Add(new ChartData { Name = "F", Value = val });
+            if (Double.TryParse(spool.F2, out val)) list.Add(new ChartData { Name = "F", Value = val });
+            if (Double.TryParse(spool.F3, out val)) list.Add(new ChartData { Name = "F", Value = val });
+            if (Double.TryParse(spool.F4, out val)) list.Add(new ChartData { Name = "F", Value = val });
+
+			if (list.Count == 0) return list;
+            var minvalue= list.GroupBy(x=>x.Name).Select(x=>new ChartData { Name = x.Key, Value = x.Min(x1 => x1.Value) }).ToList();
+
+            return minvalue;
+        }
+
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
 
 
 }

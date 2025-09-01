@@ -11,12 +11,19 @@
     <Grid>
 
  
-        <dx:DXToolbar  HeightRequest="30"  ZIndex="2" HorizontalOptions="End" VerticalOptions="Start"  ItemAlignment="Start" >
-            <dx:ToolbarButton HeightRequest="30"  Icon="ic_arrow_back.png" Clicked="BackPressed" />
-            <dx:ToolbarButton HeightRequest="30"  Icon="save.svg" Clicked="ToolbarItem_Clicked" />
-        </dx:DXToolbar>
- 
-              <imageEditor:SfImageEditor    ZIndex="0" ImageSaving="ImageEditor_ImageSaving" x:Name="editor" />
+        <!--<dx:DXToolbar Background="Transparent" Margin="0,0,0,0" HeightRequest="30"  ZIndex="2" HorizontalOptions="Center" VerticalOptions="Start"  ItemAlignment="Start" >
+          
+            <dx:ToolbarButton HeightRequest="30"  Icon="ic_arrow_back.png" Background="Blue" Clicked="BackPressed" />
+            <dx:ToolbarButton HeightRequest="40"  Icon="save.svg" Clicked="ToolbarItem_Clicked" />
+        </dx:DXToolbar>--> 
+        
+     
+
+
+        <imageEditor:SfImageEditor ToolbarItemSelected="editor_ToolbarItemSelected" SavePickerOpening="editor_SavePickerOpening"   ZIndex="0" ImageSaving="ImageEditor_ImageSaving" x:Name="editor" ImageSaved="editor_ImageSaved">
+           
+
+        </imageEditor:SfImageEditor>
       
     </Grid>
 

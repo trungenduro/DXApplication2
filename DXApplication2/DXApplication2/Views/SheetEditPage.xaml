@@ -2,18 +2,28 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DXApplication2.Views.SheetEditPage" 
+           
                 xmlns:dx="http://schemas.devexpress.com/maui"
              xmlns:converters="clr-namespace:DXApplication2.Converters"  
              BindingContextChanged="ContentPage_BindingContextChanged"
              xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
+              xmlns:dxc="clr-namespace:DevExpress.Maui.Charts;assembly=DevExpress.Maui.Charts"
              Title="{Binding Item.SheetNo,StringFormat='シートNo.{0}'}">
     <ContentPage.Resources>
         <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
+        <converters:SpoolToChartDataConverter x:Key="ChartDataConverter" />
+     
+            <dxc:SeriesCrosshairOptions x:Key="lineSeriesHintOptions"
+                               PointTextPattern="{}{S}: {V}M"
+                               ShowInLabel="True"
+                               AxisLabelVisible="True"
+                               AxisLineVisible="True"/>
+      
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
        
         <ToolbarItem Text="管追加" IconImageSource="addSpool.svg" Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailNewItemForm}" />
-        <ToolbarItem Text="Delete" IconImageSource="delete.png" Command="{Binding DeleteCommand}"/>
+        <!--<ToolbarItem Text="Delete" IconImageSource="delete.png" Command="{Binding DeleteCommand}"/>-->
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
   
@@ -29,7 +39,7 @@
                                        
                                         <dx:DXToolbar Padding="0" HeightRequest="30" Margin="0,-15,0,0" BackgroundColor="Transparent" WidthRequest="30" HorizontalOptions="End">
                                             <dx:ToolbarButton Padding="0"  WidthRequest="30" Margin="-5,10,5,5" HeightRequest="30" VerticalContentAlignment="End"   Icon="edit.png"  FontSize="10" 
-Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailEditForm}" Clicked="EditClick"
+Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailEditForm}" 
 CommandParameter="{Binding .}"
 />
                                             <!--<dx:ToolbarButton Content="{Binding Source={RelativeSource AncestorType=ContentPage},Path=BindingContext.DataControlContext}"                                       
@@ -52,78 +62,105 @@ CommandParameter="{Binding .}"                                        />-->
 
                                             <Label Padding="0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="良" FontSize="15" FontAttributes="Bold"/>
 
+                                <dxc:ChartView Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="6" Margin="0" HeightRequest="100"  HorizontalOptions="Center" VerticalOptions="Center">
 
-                                            <Grid  BackgroundColor="LightGray" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" RowDefinitions="*,*,*,*,*,*" ColumnDefinitions="*,*,*,*,*,*">
-
-                                        <Label Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="A" FontSize="15" FontAttributes="Bold"/>
-                                        <Label Padding="0" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="B" FontSize="15" FontAttributes="Bold"/>
-                                        <Label Padding="0" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="C" FontSize="15" FontAttributes="Bold"/>
-                                        <Label Padding="0" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="D" FontSize="15" FontAttributes="Bold"/>
-                                        <Label Padding="0" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="E" FontSize="15" FontAttributes="Bold"/>
-
-                                                <Label  Grid.Row="5" Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="備考" FontSize="15" FontAttributes="Bold"/>
-
-                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                                                
-                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                                                <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                                                
-                                                
-
-                                                <!--<dx:NumericEdit  Grid.Row="1"  Grid.Column="0" MaxDecimalDigitCount="1" SelectValueOnFocus="True" StepValue="0.1" ClearIconVisibility="Never" DisplayFormat="0.0" HeightRequest="30" BoxPadding="1"  BottomTextTopIndent="0"  UpDownIconAlignment="Start" TextVerticalAlignment="Center" TextHorizontalAlignment="Center"  BorderThickness="0" />
-                                                <dx:NumericEdit  Grid.Row="2"  Grid.Column="0" MaxDecimalDigitCount="1" SelectValueOnFocus="True" StepValue="0.1" ClearIconVisibility="Never" DisplayFormat="0.0" HeightRequest="30" BoxPadding="1"  BottomTextTopIndent="0"  UpDownIconAlignment="Start" TextVerticalAlignment="Center" TextHorizontalAlignment="Center"  BorderThickness="0" />
-                                                <dx:NumericEdit  Grid.Row="3"  Grid.Column="0" MaxDecimalDigitCount="1" SelectValueOnFocus="True" StepValue="0.1" ClearIconVisibility="Never" DisplayFormat="0.0" HeightRequest="30" BoxPadding="1"  BottomTextTopIndent="0"  UpDownIconAlignment="Start" TextVerticalAlignment="Center" TextHorizontalAlignment="Center"  BorderThickness="0" />
-                                                <dx:NumericEdit  Grid.Row="4"  Grid.Column="0" MaxDecimalDigitCount="1" SelectValueOnFocus="True" StepValue="0.1" ClearIconVisibility="Never" DisplayFormat="0.0" HeightRequest="30" BoxPadding="1"  BottomTextTopIndent="0"  UpDownIconAlignment="Start" TextVerticalAlignment="Center" TextHorizontalAlignment="Center"  BorderThickness="0" />-->
-
-                                                <dx:TextEdit Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="5" BoxPadding="1" BorderThickness="0" VerticalOptions="Fill"/>
-                                       
-                                            <Label Padding="0" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="F" FontSize="15" FontAttributes="Bold"/>                                           
-                                             
-                                                
-                                            <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="1"     />
+                                    <dxc:ChartView.Series>
+                                        <dxc:BarSeries PointColorizer="{views:CustomColorizer}" DisplayName="test}" >
                                             
-                                            <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="3"     />
-                                            <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="5"     />
-                                              
-                                         
-                                    
-                                    
-                                    </Grid>
-                                        </Grid>
+                                            
+
+                                                <dxc:BarSeries.Data>
+                                                <dxc:SeriesDataAdapter  DataSource="{Binding Converter={StaticResource ChartDataConverter}}" ArgumentDataMember="Name" >
+
+                                                    <dxc:ValueDataMember Type="Value" Member="Value"/>
+                                                </dxc:SeriesDataAdapter>
+                                            </dxc:BarSeries.Data>
+                                        </dxc:BarSeries>
+                                    </dxc:ChartView.Series>
+                                    <dxc:ChartView.AxisX>
+                                        <dxc:QualitativeAxisX 
+                              
+                               />
+                                    </dxc:ChartView.AxisX>
+                                    <dxc:ChartView.AxisY >
+                                        
+                                        <dxc:NumericAxisY AutoRangeMode="Default" AlwaysShowZeroLevel="False" >
+                                            <dxc:NumericAxisY.Range>
+                                                <dxc:NumericRange VisualMin="-1" VisualMax="2"/>
+                                            </dxc:NumericAxisY.Range>
+                                            <dxc:NumericAxisY.LabelValueNotation >
+                                                <dxc:AxisLabelEngineeringNotation >
+                                                    
+                                                </dxc:AxisLabelEngineeringNotation>
+                                            </dxc:NumericAxisY.LabelValueNotation>
+                                           
+                                            <dxc:NumericAxisY.ConstantLines>
+                                                <dxc:NumericConstantLine AxisValue="1.0" ShowBehind="True">
+                                                    <dxc:NumericConstantLine.Style >
+                                                        <dxc:ConstantLineStyle Stroke="Red"></dxc:ConstantLineStyle>
+                                                    </dxc:NumericConstantLine.Style>
+                                                    <dxc:NumericConstantLine.Title>
+                                                        <dxc:ConstantLineTitle Text="1.0"></dxc:ConstantLineTitle>
+                                                    </dxc:NumericConstantLine.Title>
+
+                                                </dxc:NumericConstantLine>
+
+                                            </dxc:NumericAxisY.ConstantLines>
+                                            <dxc:NumericAxisY.Title>
+                                                <dxc:AxisTitle Text="膜厚">
+                                                    <dxc:AxisTitle.Style>
+                                                        <dxc:TitleStyle>
+                                                            <dxc:TitleStyle.TextStyle>
+                                                                <dxc:TextStyle Size="11"/>
+                                                            </dxc:TitleStyle.TextStyle>
+                                                        </dxc:TitleStyle>
+                                                    </dxc:AxisTitle.Style>
+                                                </dxc:AxisTitle>
+                                            </dxc:NumericAxisY.Title>
+                                            <dxc:NumericAxisY.Label>
+                                                <dxc:AxisLabel TextFormat="#.#" Position="Inside"/>
+                                            </dxc:NumericAxisY.Label>
+                                        </dxc:NumericAxisY>
+                                    </dxc:ChartView.AxisY>
+                                </dxc:ChartView>
+                                                </Grid>
                                     </dx:DXBorder>
                                 </Grid>
                             </DataTemplate>
                         </dx:DXCollectionView.ItemTemplate>
                     </dx:DXCollectionView>
 
-            <dx:DXPopup x:Name="popup"            
+        <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext.DataControlContext}"            
                AllowScrim="True"
                CloseOnScrimTap="True"
-               VerticalAlignment="Center"
+               VerticalAlignment="Bottom"
                HorizontalAlignment="Stretch"
                Margin="0,0,0,0"
                CornerRadius="16">
-                <VerticalStackLayout Padding="5,10,10,8">
-                    <Label Text="hhhhh"
-            
+                <VerticalStackLayout Padding="5,10,10,8" HorizontalOptions="Center">
+                <Label FontSize="17"  TextColor="Blue" Text="{Binding CurrentSpool.SpoolNo, StringFormat='管番号：{0}'}"            
                 Margin="24,16"
                 HorizontalTextAlignment="Center" />
 
-                    <dx:DXSeparator/>
+                    <dx:DXSeparator />
 
             
-                    <dx:DXButton ButtonType="ToolButton" Content="Delete" 
+                    <dx:DXButton ButtonType="ToolButton" Content="編集        " WidthRequest="150"
+             Icon="edit" 
+             Clicked="EditClick" /> 
+                    
+                    <dx:DXButton ButtonType="ToolButton" Content="画像編集" WidthRequest="150"
+             Icon="photo" 
+             Clicked="PhotoEditClick" /> 
+                    
+                    
+                    <dx:DXButton ButtonType="ToolButton" Content="削除         " WidthRequest="150"
              Icon="delete" 
              Clicked="DeleteClick" />
 
                     <dx:DXSeparator/>
 
-                    <dx:DXButton ButtonType="ToolButton" Content="Cancel" Clicked="DismissPopup"/>
+                    <dx:DXButton ButtonType="ToolButton" Content="キャンセル" Clicked="DismissPopup"/>
                 </VerticalStackLayout>
          
             </dx:DXPopup>

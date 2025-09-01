@@ -1,7 +1,9 @@
+using DevExpress.Maui.Charts;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
+using static Android.Icu.Text.IDNA;
 
 namespace DXApplication2.Views;
 
@@ -71,10 +73,13 @@ public partial class SheetEditPage : ContentPage
                 }
 				else if (order != null)
 				{
-					if(e.DataChangeType== DataChangeType.Add && order.SpoolNames.Where(x=>x.Equals(sp.SpoolNo)).Any())
+					if( order.Spools.Where(x=> x.ID!=sp.ID && x.SpoolNo.Equals( sp.SpoolNo)).Any())
 					{
                         mess += "管番号重複\n";
                     }
+					
+
+
                 }
                 if (sp.Size == null || sp.Size == "")
                 {
@@ -90,20 +95,26 @@ public partial class SheetEditPage : ContentPage
                     return;
 				}
 
+				if(e.DataChangeType== DataChangeType.Edit)
+				{
+                   // DatabaseViewModel.sa
+
+                }
 				if(e.DataChangeType== DataChangeType.Add)
 				{
 					if(sp.SpoolType == 3)
 					{
-						var ocrpage = new CameraView(sp);
+						//var ocrpage = new CameraView(sp);
 
-						Navigation.PushAsync(ocrpage);
+						//Navigation.PushAsync(ocrpage);
 
 					}
 				}
 			}
 
+            DatabaseViewModel.Validate(e);
             //form.SaveCommand.execute
-           // await form.SaveAsync();
+            // await form.SaveAsync();
         }
 
     }
@@ -143,9 +154,19 @@ public partial class SheetEditPage : ContentPage
         }
     }
 
+	LiningSpool ActiveSpool;
+	int ActiveHandle = -1;
+
 	private void spoolGrid_Tap(object sender, DevExpress.Maui.CollectionView.CollectionViewGestureEventArgs e)
 	{
 		popup.IsOpen = true;
+		if (e.Item is LiningSpool sp)
+		{
+			ActiveSpool = sp;
+            ActiveHandle= e.ItemHandle;
+			DatabaseViewModel.CurrentSpool = sp;
+        }
+		
 		
 	}
 
@@ -154,15 +175,44 @@ public partial class SheetEditPage : ContentPage
 		popup.IsOpen = false;
 	}
 
-	private void DeleteClick(object sender, EventArgs e)
+	private async void DeleteClick(object sender, EventArgs e)
 	{
+        bool confirm = await Application.Current.MainPage.DisplayAlert(
+                    "確認", $"管 {ActiveSpool.SpoolNo} を削除しますか？", "はい", "キャンセル");
+		if (!confirm) return;
+        this.spoolGrid.DeleteItem(ActiveHandle);
 
 	}
 
 	private void EditClick(object sender, EventArgs e)
 	{
-		//popup.IsOpen = true;
-		//if(sender is  Microsoft.Maui.Controls.View view)
-		//  popup.PlacementTarget = view;
-	}
+        popup.IsOpen = false;
+        //if(sender is  Microsoft.Maui.Controls.View view)
+        //  popup.PlacementTarget = view;
+      if(ActiveSpool!=null)  this.spoolGrid.ShowDetailEditForm(ActiveHandle);
+    }
+
+    private void PhotoEditClick(object sender, EventArgs e)
+    {
+
+    }
+
+
+   
+    }
+
+public class CustomColorizer : ICustomPointColorizer
+{
+
+    public ILegendItemProvider GetLegendItemProvider()
+    {
+        return null;
+    }
+
+    public Color GetColor(ColoredPointInfo info)
+    {
+		if (info.Value < 1)
+			return Colors.Red;
+        return Colors.Cyan;
+    }
 }

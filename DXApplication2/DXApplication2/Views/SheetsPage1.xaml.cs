@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Views;
 using DevExpress.Maui.CollectionView;
 using DevExpress.Maui.DataGrid;
 using DevExpress.Spreadsheet;
@@ -61,6 +62,8 @@ public partial class SheetsPage1 : ContentPage
 
 			var c = DatabaseViewModel.CurrentOrder.ExcelSheetsCount;
 			item.SheetNo = c + 1;
+
+			//sheetGrid1.ShowDetailEditForm(sheetGrid1..)
 		}
 		if (e.DataChangeType == DevExpress.Maui.Core.DataChangeType.Edit)
 		{
@@ -101,4 +104,48 @@ public partial class SheetsPage1 : ContentPage
 
 
 	}
+
+    private void sheetGrid1_Tap(object sender, CollectionViewGestureEventArgs e)
+    {
+
+    }
+    ExcelSheet ActiveSheet;
+    int ActiveHandle = -1;
+
+    private void spoolGrid_Tap(object sender, DevExpress.Maui.CollectionView.CollectionViewGestureEventArgs e)
+    {
+        this.popup.IsOpen = true;
+        if (e.Item is ExcelSheet sp)
+        {
+            ActiveSheet = sp;
+            ActiveHandle = e.ItemHandle;
+            DatabaseViewModel.CurrentSheet = sp;
+        }
+
+
+    }
+
+    private void DismissPopup(object sender, EventArgs e)
+    {
+        popup.IsOpen = false;
+    }
+
+    private async void DeleteClick(object sender, EventArgs e)
+    {
+
+        bool confirm = await Application.Current.MainPage.DisplayAlert(
+                    "確認", $"シート {ActiveSheet.SheetNo} を削除しますか？", "はい", "キャンセル");
+        if (!confirm) return;
+        this.sheetGrid1.DeleteItem(ActiveHandle);
+       
+        popup.IsOpen = false;
+    }
+
+    private void EditClick(object sender, EventArgs e)
+    {
+        popup.IsOpen = false;
+        //if(sender is  Microsoft.Maui.Controls.View view)
+        //  popup.PlacementTarget = view;
+        if (ActiveSheet != null) this.sheetGrid1.ShowDetailEditForm(ActiveHandle);
+    }
 }

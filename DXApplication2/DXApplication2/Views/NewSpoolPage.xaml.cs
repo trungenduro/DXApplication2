@@ -152,4 +152,21 @@ public partial class NewSpoolPage : ContentPage
 	{
         Capture();
 	}
+
+    private void DXButton_Clicked_1(object sender, EventArgs e)
+    {
+
+    }
+
+    private async void FreeHandClicked(object sender, EventArgs e)
+    {
+	
+        var editorPage = new ImageEditView(sp);
+        await Navigation.PushAsync(editorPage);
+        var cropResult = await editorPage.WaitForResultAsync();
+        editorPage.Handler.DisconnectHandler();    
+
+        sp.SpoolType = 5;
+        type.SelectedIndex = 5;
+    }
 }

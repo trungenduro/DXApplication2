@@ -49,15 +49,35 @@ Margin="2">
 
                             <Label  Grid.Row="5" Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="備考" FontSize="15" FontAttributes="Bold"/>
 
-                            <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                            <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                            <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                            <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="1" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never"  Text="{Binding Item.B1}" Grid.Column="1" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never"  Text="{Binding Item.B2}" Grid.Column="1" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never"  Text="{Binding Item.B3}" Grid.Column="1" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never"  Text="{Binding Item.B4}" Grid.Column="1" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
 
-                            <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                            <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                            <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
-                            <dx:TextEdit ClearIconVisibility="Never"  Grid.Column="0" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.A1}" Grid.Column="0" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.A2}" Grid.Column="0" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.A3}" Grid.Column="0" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.A4}" Grid.Column="0" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.C1}" Grid.Column="2" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.C2}" Grid.Column="2" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.C3}" Grid.Column="2" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.C4}" Grid.Column="2" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.D1}" Grid.Column="3" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.D2}" Grid.Column="3" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.D3}" Grid.Column="3" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.D4}" Grid.Column="3" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.E1}" Grid.Column="4" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.E2}" Grid.Column="4" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.E3}" Grid.Column="4" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.E4}" Grid.Column="4" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.F1}" Grid.Column="5" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.F2}" Grid.Column="5" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.F3}" Grid.Column="5" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
+                            <dx:TextEdit ClearIconVisibility="Never" Text="{Binding Item.F4}" Grid.Column="5" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" BorderThickness="0" BoxPadding="1" />
 
 
 

@@ -33,12 +33,12 @@ public class SQLiteUnitOfWork : IDisposable {
             try {
                 context.SaveChanges();
                 CustomersRepository.ExecuteCacheUpdateActions();
-              //  SheetRepository.ExecuteCacheUpdateActions();
-              //  SpoolRepository.ExecuteCacheUpdateActions();
+                SheetRepository.ExecuteCacheUpdateActions();
+                SpoolRepository.ExecuteCacheUpdateActions();
             } catch {
                 CustomersRepository.ClearCacheUpdateActions();
-			//	SheetRepository.ClearCacheUpdateActions();
-			//	SpoolRepository.ClearCacheUpdateActions();
+				SheetRepository.ClearCacheUpdateActions();
+				SpoolRepository.ClearCacheUpdateActions();
                 throw;
             }
         });

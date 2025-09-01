@@ -43,7 +43,7 @@
             </dx:DataGridView.EndSwipeItems>
 
             <dx:DataGridView.Columns>
-                <dx:TextColumn Caption="オーダー" HorizontalContentAlignment="Center" FontSize="20" FieldName="OrderNo" Width="180" AutoFilterCondition="Contains"   >
+                <dx:TextColumn Caption="オーダー" HorizontalContentAlignment="Center" FontSize="15" FieldName="OrderNo" Width="180" AutoFilterCondition="Contains"   >
                   
                 </dx:TextColumn>
                 <dx:TemplateColumn  Caption="進歩" IsReadOnly="True" FieldName="CreateDate"  MinWidth="200" AutoFilterCondition="Contains"  >

@@ -6,21 +6,23 @@
             xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"  
             xmlns:converters="clr-namespace:DXApplication2.Converters"  
             BindingContextChanged="ContentPage_BindingContextChanged"  
-            Title="NewSpoolPage">  
+            Title="管番号追加">  
    <ContentPage.Resources>  
        <converters:ImageEnumConverter x:Key="ImageEnumConverter" />  
        <converters:SpoolToImageConverter x:Key="ImageSPConverter" />  
    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="camera" Text="カメラ"   Clicked="TakePhotoClicked" />
+       
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <dx:DXScrollView>  
        <dx:DXStackLayout ItemSpacing="24" Margin="16">  
            <dx:DXStackLayout ItemSpacing="8">                
                 <Image  x:Name="preview" HeightRequest="100" WidthRequest="100" Source="{Binding Item,Converter={StaticResource ImageSPConverter}}"></Image>
-               <Grid ColumnDefinitions="*,60">  
-                   <dx:TextEdit LabelText="SpoolNo" Text="{Binding Item.SpoolNo}" />                   
+               <Grid ColumnDefinitions="*,50,50">  
+                   <dx:TextEdit LabelText="管番号"  Text="{Binding Item.SpoolNo}" />
+                    <dx:DXButton IconWidth="30" Clicked="FreeHandClicked" IconHeight="30" Grid.Column="2" ButtonType="ToolButton" Icon="freehand"></dx:DXButton>
+                    <dx:DXButton IconWidth="35" Clicked="TakePhotoClicked" IconHeight="35" Grid.Column="1" ButtonType="ToolButton" Icon="camera"></dx:DXButton>
                </Grid>  
                <dx:ComboBoxEdit SelectionChanged="type_SelectionChanged" x:Name="type" SelectedIndex="{Binding Item.SpoolType}" LabelText="形式" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.SpoolTypes}">
                    
@@ -38,11 +40,15 @@
                <dx:ComboBoxEdit LabelText="サイズ" SelectedValue="{Binding Item.Size1}" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}">  
                  
                </dx:ComboBoxEdit>
-                <dx:TextEdit LabelText="枝サイズ" Text="{Binding Item.Size2}" />  
-              
-           </dx:DXStackLayout>  
 
-           <dx:DXButton Content="Save" Command="{Binding SaveCommand}" />  
+                <Grid ColumnDefinitions="*,40">
+                    <dx:ComboBoxEdit LabelText="枝サイズ" SelectedValue="{Binding Item.Size1}" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}"/>
+                    <dx:DXButton Grid.Column="1" Icon="add" ButtonType="ToolButton" Clicked="DXButton_Clicked_1" ></dx:DXButton>
+                </Grid>
+
+            </dx:DXStackLayout>  
+
+          
        </dx:DXStackLayout>  
    </dx:DXScrollView>  
 </ContentPage>

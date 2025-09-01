@@ -37,8 +37,8 @@ namespace DXApplication2.Views
 		{
 			DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
             e.AutoUpdateItemsSource = true; // Ensure the items source is updated automatically
-											//   await vm.Validate(e);
-
+                                            //   await vm.Validate(e);
+          await  vm.Validate(e);
 		}
 
         private void ImageButton_Clicked(object sender, EventArgs e)

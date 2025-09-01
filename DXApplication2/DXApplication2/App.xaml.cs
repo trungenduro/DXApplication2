@@ -5,8 +5,9 @@ namespace DXApplication2;
 public partial class App : Application {
     public App() {
 
-		var filePath = Path.Combine(FileSystem.Current.AppDataDirectory, "Photo");
-		var files = Directory.GetFiles(Path.Combine(FileSystem.Current.AppDataDirectory, "Photo"), "*.*").ToList();
+
+		//var filePath = Path.Combine(FileSystem.Current.AppDataDirectory, "Photo");
+		//var files = Directory.GetFiles(Path.Combine(FileSystem.Current.AppDataDirectory, "Photo"), "*.*").ToList();
 		//		.ToList()
 		//	.ForEach(file => File.Delete(file));
 

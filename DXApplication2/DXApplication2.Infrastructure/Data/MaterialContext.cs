@@ -12,6 +12,7 @@ using System.Linq;
 using System.Windows;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using DataType = System.ComponentModel.DataAnnotations.DataType;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace LiningCheckRecord
@@ -292,6 +293,18 @@ namespace LiningCheckRecord
                     return new();           
                 List<string> names = new();
                 ExcelSheets.Where(x => x.Spools != null).ToList().ForEach(x => names.AddRange( x.Spools.Select(x=>x.SpoolNo).ToList()));
+
+                return names;
+            }
+        } 
+        public List<LiningSpool> Spools
+        {
+            get
+            {
+                if (ExcelSheets == null)
+                    return new();           
+                List<LiningSpool> names = new();
+                ExcelSheets.Where(x => x.Spools != null).ToList().ForEach(x => names.AddRange( x.Spools.ToList()));
 
                 return names;
             }
@@ -614,6 +627,36 @@ namespace LiningCheckRecord
 
         //     public List<CheckData> CheckDatas { get;set; } = new List<CheckData>();
 
+        public string A1 { get; set; }= "";
+        public string A2 { get; set; }= "";
+        public string A3 { get; set; }= "";
+        public string A4 { get; set; }= "";   
+                       
+        public string B1 { get; set; }= "";
+        public string B2 { get; set; }= "";
+        public string B3 { get; set; }= "";
+        public string B4 { get; set; }= "";
+                        
+        public string C1 { get; set; }= "";
+        public string C2 { get; set; }= "";
+        public string C3 { get; set; }= "";
+        public string C4 { get; set; }= "";
+                        
+        public string D1 { get; set; }= "";
+        public string D2 { get; set; }= "";
+                        
+        public string D3 { get; set; }= "";
+                        
+        public string D4 { get; set; }= "";
+        public string E1 { get; set; }= "";
+        public string E2 { get; set; }= "";
+        public string E3 { get; set; }= "";                         
+        public string E4 { get; set; }= "";
+        public string F1 { get; set; }= "";
+        public string F2 { get; set; }= "";
+        public string F3 { get; set; }= "";
+        public string F4 { get; set; } = "";
+
         public List<object> Adata { get; set; } = new();
         public List<object> Bdata { get; set; } = new();
         public List<object> Cdata { get; set; } = new();
@@ -665,6 +708,15 @@ namespace LiningCheckRecord
     }
 
 
+    public class ChartData
+    {
+        public string Name { get; set; } = string.Empty;
+        public double Value { get; set; } = 0;
+        public ChartData()
+        {
+          
+        }
+    }
     public class CheckData
     {
         [Display(Name = "シート")]
