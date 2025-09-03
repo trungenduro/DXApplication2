@@ -92,7 +92,7 @@ public partial class NewSpoolPage : ContentPage
 		ImageSource imageSource = null;
 		
 		sp.SpoolType = 4;
-		type.SelectedIndex = 4;
+		//type.SelectedIndex = 4;
 		sp.ImagePath = result.FullPath;
 
 		if (cropResult != null)
@@ -167,6 +167,11 @@ public partial class NewSpoolPage : ContentPage
         editorPage.Handler.DisconnectHandler();    
 
         sp.SpoolType = 5;
-        type.SelectedIndex = 5;
+        //type.SelectedIndex = 5;
     }
+
+	private void types_SelectionChanged(object sender, EventArgs e)
+	{
+
+	}
 }

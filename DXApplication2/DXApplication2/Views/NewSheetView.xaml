@@ -1,36 +1,73 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DXApplication2.Views.NewSheetView"
+              xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2" 
+             x:Class="DXApplication2.Views.NewSheetView"   xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
               xmlns:dx="http://schemas.devexpress.com/maui" BindingContextChanged="ContentPage_BindingContextChanged"
-             Title="NewSheetView">
+             Title="検 査 成 績 表">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save" IconImageSource="save.png" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <dx:DXScrollView>
         <dx:DXStackLayout ItemSpacing="24" Margin="16">
             <dx:DXStackLayout ItemSpacing="8">
+
+                <Label Text="{Binding Item.Order}" />
+                <Grid ColumnDefinitions="*,*">
+                    
+                    <dx:DateEdit LabelText="検査日" Date="{Binding Item.CheckDate1}" />
+                    <dx:DateEdit Margin="10,0,0,0" Grid.Column="1" LabelText="原管入荷日" Date="{Binding Item.CheckDate2,StringFormat='{yyyy/dd/mm}'}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+
+                    <dx:ComboBoxEdit LabelText="ポリエチレンライニング" ItemsSource="{Binding DataControlContext.DataControlContext.LinningType}"  SelectedValue="{Binding Item.LinningType}" />
+                    <dx:TextEdit Margin="10,0,0,0" Grid.Column="1" LabelText="指定膜厚" Suffix="mm以上" Keyboard="Numeric"  Text="{Binding Item.ThickNess}" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*">
+                    <dx:TextEdit LabelText="ピンホール検査機器名" Text="{Binding Item.Kiki1}" Prefix="LP-0" Mask="00"  />
+                    <HorizontalStackLayout Grid.Column="1" Margin="10,0,0,0">
+                        <Label VerticalOptions="Center" Text=" 検査電圧"></Label>    
+                    <dxe:ChoiceChipGroup ChipFontSize="15" Grid.Column="1" SelectedIndex="{Binding Item.Option1}" HorizontalOptions="Center" ChipCornerRadius="0" ChipSelectedDisabledIconColor="Red"  DisplayMember="Name"  BoxMode="Outlined" IsMultiline="True"
+ItemsSource="{Binding DataControlContext.DataControlContext.Options1}" />
+                    </HorizontalStackLayout>
+                    
+                </Grid>
+                <Grid ColumnDefinitions="*,*">
+                    <dx:TextEdit LabelText="膜厚検査機器名" Text="{Binding Item.Kiki2}" Prefix="LP-0" Mask="00"  />
+                    <HorizontalStackLayout Grid.Column="1" Margin="10,0,0,0">
+                        <Label VerticalOptions="Center" Text=" "></Label>
+                        <dxe:ChoiceChipGroup  ChipFontSize="15" SelectedIndex="{Binding Item.Option2}" HorizontalOptions="Center" ChipCornerRadius="0" ChipSelectedDisabledIconColor="Red" 
+                                             DisplayMember="Name"  BoxMode="Outlined" IsMultiline="True"
+                        ItemsSource="{Binding DataControlContext.DataControlContext.Options2}"  >           
+                        </dxe:ChoiceChipGroup>
+
+                    </HorizontalStackLayout>
+                </Grid>
+
                 
-                <Label Text="{Binding Item}" />
-                <dx:TextEdit LabelText="検査日" Text="{Binding Item.CheckDate1}" />
-                <dx:TextEdit LabelText="検査員" Text="{Binding Item.Checked}" />
-                <dx:TextEdit LabelText="客先名" Text="{Binding Item.Kiki1}" />
-                <dx:TextEdit LabelText="案件名" Text="{Binding Item.Kiki2}" />
+                <Grid ColumnDefinitions="*,*">
+                        <dx:TokenEdit x:Name="checkerList1" SelectionChanged="TokenEdit_SelectionChanged" LabelText="検査員" DisplayMember="Name"  ItemsSource="{Binding DataControlContext.DataControlContext.Peoples}" ></dx:TokenEdit>
+                    <dx:ComboBoxEdit SelectedValue="{Binding Item.Checked}" x:Name="checkerList2" Margin="10,0,0,0" Grid.Column="1"  LabelText="品証" DisplayMember="Name"  ItemsSource="{Binding DataControlContext.DataControlContext.Peoples}" ></dx:ComboBoxEdit>
+                 
+                    
+                <!--<dx:ComboBoxEdit Grid.Column="1" LabelText="検査員リスト" ItemsSource="{Binding DataControlContext.DataControlContext.Peoples}" DisplayMember="Name"></dx:ComboBoxEdit>
+                
+                <dxe:InputChipGroup Grid.Column="0" 
+                    ItemsSource="{Binding Item.Checkers}"
+                    DisplayMember="Name" IsMultiline="True" Completed="inputChipGroup_Completed"
+                    IconMember="add.svg"
+                    Padding="0">    
+                </dxe:InputChipGroup>-->
+                </Grid>
 
-                <dx:DataGridView  x:Name="collectionView" ItemsSource="{Binding Item.Spools}" HeightRequest="200"
-                     
-                               >
-                    <dx:DataGridView.Columns>
-                        <dx:TextColumn FieldName="SheetNo"></dx:TextColumn>
-                        <dx:TextColumn FieldName="Checker"></dx:TextColumn>
-                        <dx:TextColumn FieldName="Kiki1"></dx:TextColumn>
-                        <dx:TextColumn FieldName="Kiki2"></dx:TextColumn>
-                    </dx:DataGridView.Columns>
 
-                </dx:DataGridView>
+                <!--<dx:DXCollectionView HeightRequest="10" DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}" x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" ItemSpacing="10"  />-->
+
+
             </dx:DXStackLayout>
 
-            <dx:DXButton Content="Save" Command="{Binding SaveCommand}" />
+            <dx:DXButton Content="Save" Clicked="DXButton_Clicked"/>
         </dx:DXStackLayout>
     </dx:DXScrollView>
 </ContentPage>

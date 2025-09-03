@@ -15,7 +15,10 @@ public partial class DatabaseViewModel : ObservableObject {
     readonly ICacheService cacheService;
 
     [ObservableProperty]
-    ObservableCollection<DHFOrder>? orders;
+    ObservableCollection<DHFOrder>? orders;    
+    [ObservableProperty]
+    ObservableCollection<CheckerTable>? peoples;
+
     [ObservableProperty]
     ObservableCollection<ExcelSheet>? sheets;
 
@@ -68,10 +71,22 @@ public partial class DatabaseViewModel : ObservableObject {
         }
 		Orders?.Remove(item);
     }
-
-    public List<string> Sizes => new List<string> {"15A", "20A", "25A", "50A", "65A", "80A", "100A","125A","150A","200A","250A","300A","350A","400A","450A","500A" };
-   internal async Task UpdateOrderAsync()
+	public List<string> Options1 => new List<string> { "10,000V", "12,000V" };
+	public List<string> LinningType => new List<string> { "内面", "外面" };
+	public List<string> CheckResults => new List<string> { "","合格", "不合格" };
+	public List<string> Options2 => new List<string> { "電磁式膜厚計", "渦電流式膜厚計" };
+	public List<string> Sizes => new List<string> {"15A", "20A", "25A", "50A", "65A", "80A", "100A","125A","150A","200A","250A","300A","350A","400A","450A","500A" };
+   
+    public async void SaveDatabase()
+	{
+		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+		await unitOfWork.SaveAsync();
+        GetItems();
+	}
+	internal async Task UpdateOrderAsync()
     {
+        if(CurrentOrder == null)
+			return;
 		Action? pendingAction = null;
 		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
 				
@@ -97,9 +112,29 @@ public partial class DatabaseViewModel : ObservableObject {
 
 	public IEnumerable<SpoolType> SpoolTypes => Enum.GetValues(typeof(SpoolType)).Cast<SpoolType>();
 
+	
+
+	public async void AddPeople(string newpeople)
+    {
+		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+		var p = new CheckerTable() { Name = newpeople };
+		try
+		{
+			unitOfWork.PeoplesRepository.Add(p);
+			//await unitOfWork.SaveAsync();
+            List<CheckerTable> checkerTables = Peoples.ToList();
+			checkerTables.Add(p);
+			Peoples = new ObservableCollection<CheckerTable>(checkerTables);
+		}
+		catch (Exception e)
+		{
+			await Shell.Current.DisplayAlert("Error", e.Message, "OK");
+			return;
+		}
+	}
 
 
-    public async Task Validate(ValidateItemEventArgs args)
+	public async Task Validate(ValidateItemEventArgs args)
 	{
 		args.AutoUpdateItemsSource = true;
         using var unitOfWork = new SQLiteUnitOfWork(cacheService);
@@ -114,10 +149,11 @@ public partial class DatabaseViewModel : ObservableObject {
                 {
                   if(!order.ExcelSheets.Where(x=>x.ID==  sh.ID).Any())
                     {
-                        unitOfWork.SheetRepository.Delete(sh);
+                        //unitOfWork.SheetRepository.Delete(sh);
                     }
                   
                 }
+
 
                 unitOfWork.CustomersRepository.Update(order);               
             }
@@ -128,26 +164,14 @@ public partial class DatabaseViewModel : ObservableObject {
             {
                 ArgumentNullException.ThrowIfNull(Orders);
               
-
                 
                 if (args.DataChangeType == DataChangeType.Add)
-                {
-                    
+                {                    
                    // unitOfWork.SheetRepository.Add(item);
                     //pendingAction = () => Sheets.Add(item);
                 }
                 if (args.DataChangeType == DataChangeType.Edit)
-                {
-                    var spools = await unitOfWork.SpoolRepository.GetAsync();
-                    var orderS = spools.Where(x => x.Order != null).Where(x => x.Sheet.ID == item.ID).ToList();
-                    foreach (var sh in orderS)
-                    {
-                        if (!item.Spools.Where(x => x.ID == sh.ID).Any())
-                        {
-                            unitOfWork.SpoolRepository.Delete(sh);
-                        }
-
-                    }
+                {                   
 
                     unitOfWork.SheetRepository.Update(item);
                     //pendingAction = () => Sheets[args.SourceIndex] = item;
@@ -157,8 +181,8 @@ public partial class DatabaseViewModel : ObservableObject {
                     unitOfWork.SheetRepository.Delete(item);
                     //pendingAction = () => Sheets.Remove(item);
                 }
-
                 await unitOfWork.SaveAsync();
+
               //  pendingAction?.Invoke();
             }
             catch (Exception ex)
@@ -179,18 +203,19 @@ public partial class DatabaseViewModel : ObservableObject {
                 
                 if (args.DataChangeType == DataChangeType.Add)
                 {
-                    //CurrentOrder.ExcelSheets.Add(item);
-                    //unitOfWork.SheetRepository.Add(item);
-                    //pendingAction = () => Sheets.Add(item);
-                }
-                if (args.DataChangeType == DataChangeType.Edit)
+					
+					//CurrentOrder.ExcelSheets.Add(item);
+					//unitOfWork.SpoolRepository.Add(sp);
+					//pendingAction = () => Sheets.Add(item);
+				}
+				if (args.DataChangeType == DataChangeType.Edit)
                 {
                     unitOfWork.SpoolRepository.Update(sp);
                     //pendingAction = () => Sheets[args.SourceIndex] = item;
                 }
                 if (args.DataChangeType == DataChangeType.Delete)
                 {
-                    unitOfWork.SpoolRepository.Delete(sp);
+                   // unitOfWork.SpoolRepository.Delete(sp);
                     //pendingAction = () => Sheets.Remove(item);
                 }
 
@@ -205,12 +230,41 @@ public partial class DatabaseViewModel : ObservableObject {
            
         }
 
+		if (args.Item is CheckerTable people)
+        {
+            if (args.DataChangeType == DataChangeType.Delete)
+            {
+                unitOfWork.PeoplesRepository.Delete(people);
+            }
+            else
+            {
+                if (Peoples.Where(x => x.Name == people.Name).Any() || people.Name.Trim() == "")
+                {
+                    args.IsValid = false;
+                    await Shell.Current.DisplayAlert("Error", "名前が重複しています", "OK");
+                    return;
+                }
+            }
+			if (args.DataChangeType == DataChangeType.Add)
+			{
+				unitOfWork.PeoplesRepository.Add(people);
+				
+				//List<CheckerTable> checkerTables = Peoples.ToList();
+				//checkerTables.Add(people);
+				//Peoples = new ObservableCollection<CheckerTable>(checkerTables);
+
+			}
+			if (args.DataChangeType == DataChangeType.Edit)
+			{
+				unitOfWork.PeoplesRepository.Update(people);
+				
+			}
+		}
+
+			await unitOfWork.SaveAsync();
 
 
-        await unitOfWork.SaveAsync();
-        pendingAction?.Invoke();
-
-        await UpdateOrderAsync();
+		 await UpdateOrderAsync();
         return;
     }
 
@@ -246,7 +300,7 @@ public partial class DatabaseViewModel : ObservableObject {
         {
             unitOfWork.SpoolRepository.Delete(spool);
 
-            unitOfWork.SaveAsync().Wait();
+          await  unitOfWork.SaveAsync();
         }
         catch (Exception e)
         {
@@ -305,46 +359,43 @@ public partial class DatabaseViewModel : ObservableObject {
         using var unitOfWork = new SQLiteUnitOfWork(cacheService);
         var data = await unitOfWork.CustomersRepository.GetAsync();
         var sheets = await unitOfWork.SheetRepository.GetAsync();
-        var spools = await unitOfWork.SpoolRepository.GetAsync();
+       var spools = await unitOfWork.SpoolRepository.GetAsync();
+        var ps = await unitOfWork.PeoplesRepository.GetAsync();
+         var sheets1=  unitOfWork.context.ExcelSheet.ToList();
+        var spools1=  unitOfWork.context.Spools.ToList();
+		//var spoolsa = unitOfWork.context.Spools.ToList().ToList();
+		//var orderS = spools.Where(x => x.Sheet != null).Where(x=>!x.Sheet.Spools.Where(x1=>x1.ID == x.ID).Any()).ToList();
+        
 
-        foreach (var sh in sheets)
-        {
-            if (sh.Order == null)
-                unitOfWork.SheetRepository.Delete(sh);
-            else
-            {
-                if (sh.Order.ExcelSheetsCount > 0)
-                {
-                    //if (sh.Order.ExcelSheets.Where(x => x.ID == sh.ID).Count() == 0)
-
-                       // unitOfWork.SheetRepository.Delete(sh);
-                }
-            }
-        }
-
-        for (int i1 = 0; i1 < spools.Count(); i1++)
-        {
-
-            var sp = spools.ToList()[i1]; 
-            
-            if (sp.Sheet == null)
-                unitOfWork.SpoolRepository.Delete(sp);
-            else
-            {
-                if (sp.Sheet.Spools.Count > 0)
-                {
-                    var t = sp.Sheet.Spools.Where(x => x.ID == sp.ID).Count();
-
-                      //  unitOfWork.SpoolRepository.Delete(sp);
-                }
-            }
-        }
-      //  await unitOfWork.SaveAsync();
-     //    data = await unitOfWork.CustomersRepository.GetAsync();
-     //    sheets = await unitOfWork.SheetRepository.GetAsync();
-     //   spools = await unitOfWork.SpoolRepository.GetAsync();
-     //   Sheets = new ObservableCollection<ExcelSheet>(sheets?? Enumerable.Empty<ExcelSheet>());
-
+		Peoples = new ObservableCollection<CheckerTable>(ps ?? Enumerable.Empty<CheckerTable>());
         return data ?? Enumerable.Empty<DHFOrder>();
     }
+	public async void RemovePeople(string newpeople)
+	{
+		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+		var p = new CheckerTable() { Name = newpeople };
+		try
+		{
+			unitOfWork.PeoplesRepository.Add(p);
+			//await unitOfWork.SaveAsync();
+			List<CheckerTable> checkerTables = Peoples.ToList();
+			checkerTables.Add(p);
+			Peoples = new ObservableCollection<CheckerTable>(checkerTables);
+		}
+		catch (Exception e)
+		{
+			await Shell.Current.DisplayAlert("Error", e.Message, "OK");
+			return;
+		}
+	}
+	internal async void RemovePeople(CheckerTable peo)
+	{
+		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+		unitOfWork.PeoplesRepository.Delete(peo);
+		await unitOfWork.SaveAsync();
+        List<CheckerTable> checkerTables = Peoples.ToList();
+		checkerTables?.Remove(peo);
+		Peoples = new ObservableCollection<CheckerTable>( checkerTables);
+
+	}
 }

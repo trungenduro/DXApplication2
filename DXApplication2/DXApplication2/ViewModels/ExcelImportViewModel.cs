@@ -74,7 +74,7 @@ public partial class ExcelImportViewModel : ObservableObject {
         if (Application.Current?.MainPage == null)
             return Task.CompletedTask;
 
-        return Application.Current.MainPage.DisplayAlert("Error", message, "OK");
+        return Shell.Current.DisplayAlert("Error", message, "OK");
     }
 }
 

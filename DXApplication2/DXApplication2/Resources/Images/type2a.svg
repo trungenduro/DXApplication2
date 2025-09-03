@@ -1,0 +1,20 @@
+
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- カメラ本体 -->
+  <rect x="20" y="100" width="160" height="10" rx="10" fill="#1177D7" />
+   <rect x="75" y="45" width="50" height="8" rx="1" fill="#1177D7" />
+  
+  <rect x="20" y="65" width="10" height="80" rx="1" fill="#1177D7" />
+
+   <rect x="95" y="45" width="8" height="60" rx="1" fill="#1177D7" />
+
+  <rect x="170" y="65" width="10" height="80" rx="1" fill="#1177D7" />
+  <!-- テキスト -->
+  <!--<text x="25" y="60" font-size="26" text-anchor="middle" fill="blue">A</text>
+  <text x="45" y="90" font-size="26" text-anchor="middle" fill="blue">E</text>
+  <text x="155" y="90" font-size="26" text-anchor="middle" fill="blue">F</text>
+  <text x="175" y="60" font-size="26" text-anchor="middle" fill="blue">B</text>
+
+  <text x="99" y="35" font-size="26" text-anchor="middle" fill="blue">C</text>
+  <text x="115" y="95" font-size="26" text-anchor="middle" fill="blue">D</text>-->
+</svg>

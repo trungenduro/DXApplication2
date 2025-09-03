@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DXApplication2.Views.SheetEditPage" 
-           
+           xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
                 xmlns:dx="http://schemas.devexpress.com/maui"
              xmlns:converters="clr-namespace:DXApplication2.Converters"  
              BindingContextChanged="ContentPage_BindingContextChanged"
@@ -12,6 +12,9 @@
     <ContentPage.Resources>
         <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
         <converters:SpoolToChartDataConverter x:Key="ChartDataConverter" />
+        <converters:SpoolToIconConverter x:Key="SpoolIcon" />
+        <converters:ListIndexConverter x:Key="ListConvert" />
+        <converters:SheetNumberConverter x:Key="SheetNoConvert" />
      
             <dxc:SeriesCrosshairOptions x:Key="lineSeriesHintOptions"
                                PointTextPattern="{}{S}: {V}M"
@@ -27,8 +30,145 @@
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
   
-        <Grid Background="AliceBlue">
-            <dx:DXCollectionView x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" DetailEditFormTemplate="{DataTemplate views:EditSpoolPage}" 
+        <Grid >
+        <ScrollView>
+            <VerticalStackLayout Padding="8,0,8,0" Spacing="0"  >
+                <Frame BorderColor="Gray" CornerRadius="0" Padding="5,0,5,5">
+                    <VerticalStackLayout>
+                        <Label Text="ライニング検査成績表" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+
+                       
+
+                        <Grid Margin="0,10,0,0" ColumnDefinitions="1.5*, *,*,*" ColumnSpacing="5"  >
+                            <Frame  BorderColor="White" Padding="0"  VerticalOptions="Start" Grid.Column="0" >
+                                <VerticalStackLayout>
+                                    <Label HorizontalOptions="Center" VerticalOptions="Start" Grid.Column="0" Text="{Binding DataControlContext.DataControlContext.CurrentOrder.CombineName,StringFormat='{0}  殿'}" />
+                                    <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="10,00" />
+                                    <Label    HorizontalOptions="Center"  Grid.Column="0" Text="{Binding Item.CheckDate1,StringFormat='{0:yyyy/MM/dd}'}" />
+                                    <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="10,0" />
+
+                                </VerticalStackLayout>
+                            </Frame>
+                            
+                            <Border  Stroke="Gray" Padding="0"  VerticalOptions="Start" Grid.Column="1" >
+                                <VerticalStackLayout>
+                                    <Label HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Start" Grid.Column="0" Text="入荷日" />
+                                    <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,0" />
+                                    <Label  MinimumHeightRequest="50" VerticalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding Item.CheckDate2,StringFormat='{0:yy/MM/dd}'}" />
+
+                                </VerticalStackLayout>                                
+                            </Border>
+                           <Frame  BorderColor="Gray" Padding="0"  VerticalOptions="Start" Grid.Column="2" >
+                                <VerticalStackLayout>
+                                    <Label HorizontalOptions="Center" FontAttributes="Bold"  VerticalOptions="Start" Grid.Column="0" Text="検査員" />
+                                    <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,0" />
+                                    <Label MinimumHeightRequest="50" HorizontalOptions="Center" VerticalTextAlignment="Center" Grid.Column="0" Text="{Binding Item.Checker}" />
+
+                                </VerticalStackLayout>                                
+                            </Frame>
+                          <Frame  BorderColor="Gray" Padding="0"  VerticalOptions="Start" Grid.Column="3" >
+                                <VerticalStackLayout>
+                                    <Label HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Start" Grid.Column="0" Text="品証" />
+                                    <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,0" />
+                                    <Label MinimumHeightRequest="50" HorizontalOptions="Center" VerticalTextAlignment="Center" Grid.Column="0" Text="{Binding Item.Checked}" />
+
+                                </VerticalStackLayout>                                
+                            </Frame>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame BorderColor="Gray" CornerRadius="0" Padding="0">
+                  
+                        
+                    <VerticalStackLayout>
+                        <Grid Margin="0,0,0,0" RowDefinitions="*,*" ColumnDefinitions="*, *,*,*" ColumnSpacing="0"  >
+                            <BoxView BackgroundColor="Gray" HeightRequest="1" VerticalOptions="End" Grid.ColumnSpan="10" ></BoxView>
+
+                            <BoxView BackgroundColor="Gray" WidthRequest="1" HorizontalOptions="End" Grid.ColumnSpan="1" Grid.RowSpan="2"/>
+                            <BoxView BackgroundColor="Gray" WidthRequest="1" HorizontalOptions="End" Grid.ColumnSpan="1" Grid.RowSpan="2" Grid.Column="1"/>
+                            <BoxView BackgroundColor="Gray" WidthRequest="1" HorizontalOptions="End" Grid.ColumnSpan="1" Grid.RowSpan="2" Grid.Column="2"/>
+
+
+                            <Label HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="0" Text="ポリ" />                                    
+                               
+                            <Label Grid.Row="1"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30"  Text="{Binding Item.LinningType}" />
+                            
+                            <Label Grid.Row="1" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30"
+                                   Text="{Binding Item.ThickNess,StringFormat='{0} mm以上'}" />
+                            
+                            <Label Grid.Row="0" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="30"  
+                                   Text="{Binding DataControlContext.DataControlContext.CurrentOrder.OrderNo}" />
+
+
+                            <Label  HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="1" Text="数量" />
+                            <Label    HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="2" Grid.Row="1" Text="指定膜厚" />
+
+                            <Label Grid.Column="1" Grid.Row="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" >
+                                <Label.Text>
+                                    <MultiBinding Converter="{StaticResource  SheetNoConvert }">
+                                        <Binding Path="Item.SpoolsCount"  />
+                                        <Binding Path="DataControlContext.DataControlContext.CurrentOrder.Total"  />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+
+
+
+                            <Label  HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="2" Text="DHF O/#" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame> 
+                <Frame BorderColor="Gray" CornerRadius="0" Padding="0">
+                  
+                        
+                   
+                        <Grid Margin="0,0,0,0"  ColumnDefinitions="3*,22,*" ColumnSpacing="0"  >
+                            <BoxView BackgroundColor="Gray" HeightRequest="1" VerticalOptions="End" Grid.ColumnSpan="10" ></BoxView>
+
+                            <BoxView BackgroundColor="Gray" WidthRequest="1" HorizontalOptions="End" Grid.ColumnSpan="1" Grid.RowSpan="2"/>
+                            <BoxView BackgroundColor="Gray" WidthRequest="1" HorizontalOptions="End" Grid.ColumnSpan="1" Grid.RowSpan="2" Grid.Column="1"/>
+                            <BoxView BackgroundColor="Gray" WidthRequest="1" HorizontalOptions="End" Grid.ColumnSpan="1" Grid.RowSpan="2" Grid.Column="2"/>
+                            <Label HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="1" Text=" 総合判定" />
+                            <VerticalStackLayout Spacing="0">
+                                <Label HorizontalOptions="Start" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="0" Text=" 検査使用機器名" />
+                                <HorizontalStackLayout>
+                                    
+                                <Label  HorizontalOptions="Start" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="0" Text="       １．ピンホール検査   " />
+                                <Label  Text="{Binding Item.Kiki1,StringFormat='LP-0{0}'}" />
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Margin="0,0,0,0">
+                                    <Label HorizontalOptions="Start" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="0" Text="                検査電圧   " />
+                              
+                                    
+                                    
+                                <Label Background="AliceBlue" Grid.Column="0" Grid.Row="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" >
+                                    <Label.Text>
+                                        <MultiBinding Converter="{StaticResource  ListConvert }">
+                                            <Binding Path="DataControlContext.DataControlContext.Options1"  />
+                                            <Binding Path="Item.Option1"  />
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                            </HorizontalStackLayout>
+                                <HorizontalStackLayout Margin="0,0,0,0">                                    
+                                    <Label HorizontalOptions="Start" FontAttributes="Bold" VerticalOptions="Center" Grid.Column="0" Text="       ２．膜厚検査    " />
+                                    <Label  Text="{Binding Item.Kiki2,StringFormat='LP-0{0}'}" />
+                                </HorizontalStackLayout>
+                            <Label Margin="55,0,0,0" Grid.Column="0" Grid.Row="0" VerticalTextAlignment="Start" HorizontalTextAlignment="Start" >
+                                <Label.Text>
+                                    <MultiBinding Converter="{StaticResource  ListConvert }">
+                                        <Binding Path="DataControlContext.DataControlContext.Options2"  />
+                                        <Binding Path="Item.Option2"  />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </VerticalStackLayout>                              
+                           
+                        </Grid>
+                   
+                </Frame>
+        <dx:DXCollectionView x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" DetailEditFormTemplate="{DataTemplate views:EditSpoolPage}" 
                                  ItemSpanCount="1" ValidateAndSave="collectionView_ValidateAndSave" 
                                  Tap="spoolGrid_Tap"
                                  DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}" >
@@ -36,8 +176,8 @@
                             <DataTemplate>
                                 <Grid >
                                     <Grid>
-                                       
-                                        <dx:DXToolbar Padding="0" HeightRequest="30" Margin="0,-15,0,0" BackgroundColor="Transparent" WidthRequest="30" HorizontalOptions="End">
+                            <Image Margin="5" VerticalOptions="Start" WidthRequest="30" HeightRequest="30" HorizontalOptions="Start"  Source="{Binding Converter={StaticResource SpoolIcon}}"></Image>
+                            <dx:DXToolbar Padding="0" HeightRequest="30" Margin="0,-15,0,0" BackgroundColor="Transparent" WidthRequest="30" HorizontalOptions="End">
                                             <dx:ToolbarButton Padding="0"  WidthRequest="30" Margin="-5,10,5,5" HeightRequest="30" VerticalContentAlignment="End"   Icon="edit.png"  FontSize="10" 
 Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailEditForm}" 
 CommandParameter="{Binding .}"
@@ -51,8 +191,8 @@ CommandParameter="{Binding .}"                                        />-->
                                     <dx:DXBorder BorderColor="Red" BorderThickness="2" VerticalOptions="Start"
                           CornerRadius="5"
                           Padding="0"
-                          Margin="2">
-                                        <Grid  MinimumHeightRequest="150" ColumnDefinitions="2*,5*,*" RowDefinitions="*,5*">
+                          Margin="1">
+                                        <Grid  MinimumHeightRequest="150" ColumnDefinitions="2*,5*,0.5*" RowDefinitions="*,5*">
 
                                             <Grid Grid.Row="1"   />
 
@@ -62,45 +202,56 @@ CommandParameter="{Binding .}"                                        />-->
 
                                             <Label Padding="0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="良" FontSize="15" FontAttributes="Bold"/>
 
-                                <dxc:ChartView Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="6" Margin="0" HeightRequest="100"  HorizontalOptions="Center" VerticalOptions="Center">
+                                <dxc:ChartView Grid.Row="1"  HeightRequest="200" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="1" Margin="0"  HorizontalOptions="Center" >
 
                                     <dxc:ChartView.Series>
-                                        <dxc:BarSeries PointColorizer="{views:CustomColorizer}" DisplayName="test}" >
-                                            
-                                            
+                                        <dxc:AreaSeries PointColorizer="{views:CustomColorizer}"  >
 
-                                                <dxc:BarSeries.Data>
+
+
+                                            <dxc:AreaSeries.Label>
+                                                <dxc:BubbleSeriesLabel Position="Outside"  Angle="0"   TextPattern="{}{V$}mm" >
+                                                    <dxc:BubbleSeriesLabel.Style>
+                                                        <dxc:SeriesLabelStyle  >
+                                                            <dxc:SeriesLabelStyle.TextStyle >
+                                                                <dxc:TextStyle Size="12">
+                                                                    
+                                                                </dxc:TextStyle>
+                                                            </dxc:SeriesLabelStyle.TextStyle>
+
+
+                                                        </dxc:SeriesLabelStyle>
+                                                    </dxc:BubbleSeriesLabel.Style>
+                                                    
+                                                </dxc:BubbleSeriesLabel>
+                                            </dxc:AreaSeries.Label>
+                                                <dxc:AreaSeries.Data>
                                                 <dxc:SeriesDataAdapter  DataSource="{Binding Converter={StaticResource ChartDataConverter}}" ArgumentDataMember="Name" >
 
                                                     <dxc:ValueDataMember Type="Value" Member="Value"/>
                                                 </dxc:SeriesDataAdapter>
-                                            </dxc:BarSeries.Data>
-                                        </dxc:BarSeries>
+                                            </dxc:AreaSeries.Data>
+                                        </dxc:AreaSeries>
                                     </dxc:ChartView.Series>
                                     <dxc:ChartView.AxisX>
                                         <dxc:QualitativeAxisX 
                               
                                />
                                     </dxc:ChartView.AxisX>
-                                    <dxc:ChartView.AxisY >
+                                    <dxc:ChartView.AxisY  >
                                         
                                         <dxc:NumericAxisY AutoRangeMode="Default" AlwaysShowZeroLevel="False" >
                                             <dxc:NumericAxisY.Range>
-                                                <dxc:NumericRange VisualMin="-1" VisualMax="2"/>
+                                                <dxc:NumericRange VisualMin="-1" VisualMax="10"/>
                                             </dxc:NumericAxisY.Range>
-                                            <dxc:NumericAxisY.LabelValueNotation >
-                                                <dxc:AxisLabelEngineeringNotation >
-                                                    
-                                                </dxc:AxisLabelEngineeringNotation>
-                                            </dxc:NumericAxisY.LabelValueNotation>
-                                           
+                                          
                                             <dxc:NumericAxisY.ConstantLines>
                                                 <dxc:NumericConstantLine AxisValue="1.0" ShowBehind="True">
                                                     <dxc:NumericConstantLine.Style >
                                                         <dxc:ConstantLineStyle Stroke="Red"></dxc:ConstantLineStyle>
                                                     </dxc:NumericConstantLine.Style>
                                                     <dxc:NumericConstantLine.Title>
-                                                        <dxc:ConstantLineTitle Text="1.0"></dxc:ConstantLineTitle>
+                                                        <dxc:ConstantLineTitle Text="1.0" ></dxc:ConstantLineTitle>
                                                     </dxc:NumericConstantLine.Title>
 
                                                 </dxc:NumericConstantLine>
@@ -129,6 +280,10 @@ CommandParameter="{Binding .}"                                        />-->
                             </DataTemplate>
                         </dx:DXCollectionView.ItemTemplate>
                     </dx:DXCollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+
 
         <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext.DataControlContext}"            
                AllowScrim="True"

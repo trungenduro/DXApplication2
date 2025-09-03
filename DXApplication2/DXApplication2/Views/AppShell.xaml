@@ -43,11 +43,11 @@
     <!--<ShellContent
         Title="Reporting"
         Icon="star"
-        ContentTemplate="{DataTemplate views:ReportingPage}" />-->
+        ContentTemplate="{DataTemplate views:}" />-->
     <ShellContent
         Title="Test OCR"
         Icon="logo_dhf1.png"
-        ContentTemplate="{DataTemplate views:OCRPage}" />  
+        ContentTemplate="{DataTemplate views:PeoplesPage}" />  
     
     <ShellContent
         Title="Report"

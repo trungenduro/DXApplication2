@@ -2,6 +2,7 @@ using DXApplication2.Domain.Data;
 using DXApplication2.Domain.Services;
 using DXApplication2.Infrastructure.Repositories;
 using LiningCheckRecord;
+using Microsoft.EntityFrameworkCore;
 
 namespace DXApplication2.Infrastructure.Data;
 
@@ -12,6 +13,7 @@ public class SQLiteUnitOfWork : IDisposable {
     GenericRepository<DHFOrder>? customersRepository;
     GenericRepository<LiningSpool>? spoolRepository;
     GenericRepository<ExcelSheet>? sheetRepository;
+    GenericRepository<CheckerTable>? peoplesRepository;
     public GenericRepository<DHFOrder> CustomersRepository {
         get => customersRepository ??= new GenericRepository<DHFOrder>(context, cacheService);
     } 
@@ -20,6 +22,8 @@ public class SQLiteUnitOfWork : IDisposable {
     } 
     public GenericRepository<ExcelSheet> SheetRepository {
         get => sheetRepository ??= new GenericRepository<ExcelSheet>(context, cacheService);
+    }  public GenericRepository<CheckerTable> PeoplesRepository {
+        get => peoplesRepository ??= new GenericRepository<CheckerTable>(context, cacheService);
     }
 
     public SQLiteUnitOfWork(ICacheService cacheService) {
@@ -29,17 +33,21 @@ public class SQLiteUnitOfWork : IDisposable {
     }
 
     public Task SaveAsync() {
-        return Task.Run(() => {
+        return Task.Run(async () => {
             try {
-                context.SaveChanges();
-                CustomersRepository.ExecuteCacheUpdateActions();
-                SheetRepository.ExecuteCacheUpdateActions();
+               await  context.SaveChangesAsync();
+				PeoplesRepository.ExecuteCacheUpdateActions();
+				SheetRepository.ExecuteCacheUpdateActions();
+              var sheets=  SheetRepository.GetAsync();
+              var spools=  SpoolRepository.GetAsync();
                 SpoolRepository.ExecuteCacheUpdateActions();
-            } catch {
-                CustomersRepository.ClearCacheUpdateActions();
+            }
+			catch (DbUpdateException ex) { 
+				CustomersRepository.ClearCacheUpdateActions();
 				SheetRepository.ClearCacheUpdateActions();
 				SpoolRepository.ClearCacheUpdateActions();
-                throw;
+                PeoplesRepository.ClearCacheUpdateActions();
+				throw;
             }
         });
     }

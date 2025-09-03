@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Name="page"
+    x:Class="DXApplication2.Views.PeoplesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dx="http://schemas.devexpress.com/maui"
+    xmlns:dxcore="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Mvvm"
+      xmlns:local="clr-namespace:DemoCenter.Maui.Views"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
+    xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
+    xmlns:models="clr-namespace:DXApplication2.Domain.Data;assembly=DXApplication2.Domain"
+   
+    BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
+    Title="オーダーリスト">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
+    </ContentPage.Behaviors>
+   
+
+    <ContentPage.ToolbarItems>
+        <!--Command="{Binding RefreshCommand"-->
+        <ToolbarItem Text="Refresh"  Clicked="ToolbarItem_Clicked" />
+        <ToolbarItem Text="Create" IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
+      
+        <ToolbarItem Text="Create" IconImageSource="save.svg" Clicked="save_Clicked" />
+       
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <dx:DataGridView Margin="20,10,10,10" HorizontalOptions="Center" WidthRequest="200" EditorShowMode="Tap" 
+            x:Name="collectionView"  DetailNewItemFormTemplate="{DataTemplate views:NewPeopleView}" DetailEditFormTemplate="{DataTemplate views:NewPeopleView}"
+            ItemsSource="{Binding Peoples}" ValidateAndSave="collectionView_ValidateAndSave"
+              RowDoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"
+             
+            >
+            <dx:DataGridView.Behaviors>                
+                
+            </dx:DataGridView.Behaviors>
+            
+            <dx:DataGridView.EndSwipeItems>
+                <dx:GridSwipeItem BackgroundColor="White"  Image="delete.svg"  Tap="Swipe_Open"/>
+            </dx:DataGridView.EndSwipeItems>
+
+            <dx:DataGridView.Columns>
+                     <dx:TextColumn Caption="名" FieldName="Name" Width="180" AutoFilterCondition="Contains"   />
+                   
+            </dx:DataGridView.Columns>
+
+
+
+        </dx:DataGridView>
+
+        <ActivityIndicator
+            IsRunning="{Binding InitializeCommand.IsRunning}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

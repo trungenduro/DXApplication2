@@ -72,6 +72,12 @@
     <Compile Update="Views\CameraView.xaml.cs">
       <DependentUpon>CameraView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\NewPeopleView.xaml.cs">
+      <DependentUpon>NewPeopleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PeoplesPage.xaml.cs">
+      <DependentUpon>PeoplesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\OrdersPage.xaml.cs">
       <DependentUpon>OrdersPage.xaml</DependentUpon>
     </Compile>
@@ -90,6 +96,9 @@
     <MauiXaml Update="Views\ImageEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
+    <MauiXaml Update="Views\NewPeopleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\NewSheetView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
@@ -103,6 +112,9 @@
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\OCRPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\PeoplesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\SheetEditPage.xaml">

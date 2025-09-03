@@ -11,6 +11,9 @@
             Title="{Binding Item.OrderNo,StringFormat='Order {0}'}">
     <ContentPage.Resources>
         <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
+        <converters:IntToImageConverter x:Key="ImageIntConverter" />
+        <converters:SheetToIconConverter x:Key="SheetIcon" />
+        <converters:SpoolToIconConverter x:Key="SpoolIcon" />
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <!--<ToolbarItem Text="{Binding Source={x:Reference sheetGrid1}}" />-->
@@ -30,39 +33,69 @@
                                 Padding="12"  
                                 Margin="8">
                         <Grid>
-                            
-                                <dx:DXButton WidthRequest="30" ButtonType="ToolButton" Icon="edit.png" HeightRequest="30" VerticalOptions="Start"
+                           
+                            <!--<dx:DXButton WidthRequest="30" ButtonType="ToolButton" Icon="edit.png" HeightRequest="30" VerticalOptions="Start"
                                              VerticalContentAlignment="Start"    HorizontalOptions="End"              
                                              Command="{Binding Commands.ShowDetailEditForm, Source={RelativeSource AncestorType={x:Type dx:DXCollectionView}}}"
                                         CommandParameter="{Binding .}"
-                                        ></dx:DXButton>
+                                        ></dx:DXButton>-->
                                 
                            
                             <VerticalStackLayout>
                                 <HorizontalStackLayout>
-                                    <Label Text="{Binding SheetNo, StringFormat='No.{0}'}"  
-                                          FontSize="16" VerticalOptions="End"  
+                                    <Image VerticalOptions="Start" HorizontalOptions="End" WidthRequest="20" HeightRequest="20" Source="{Binding Converter={StaticResource SheetIcon}}"/>
+                                    <Label Text="{Binding SheetNo, StringFormat=' No.{0}'}"  
+                                          FontSize="18" VerticalOptions="End"  
                                           FontAttributes="Bold"  
                                           HorizontalOptions="Start" />
-                                    <Label Margin="10,0,0,0" Text="{Binding CheckDate1,StringFormat='{0:yy/MM/dd}'}"  
-                                          FontSize="12"  
-                                          TextColor="Gray"  
+                                    <Label Margin="10,0,0,0" Text="{Binding CheckDate1,StringFormat='検査日:{0:yy/MM/dd} '}"  
+                                                                                  
                                           VerticalOptions="End"  
                                           HorizontalOptions="End" />
-                                    <Label Margin="10,0,0,0" Text="{Binding CheckDate2,StringFormat='原管入荷:{0:yy/MM/dd}'}"  
-                                          FontSize="12"  
-                                          TextColor="Gray"  
+                                    <Label Margin="10,0,0,0" Text="{Binding CheckDate2,StringFormat='原管入荷:{0:yy/MM/dd}'}"      
                                           VerticalOptions="End"  
                                           HorizontalOptions="End" />
+                                    <Label Margin="10,0,0,0"    VerticalOptions="End"  Text="{Binding Checker, StringFormat='検査員: {0}'}"  />
+                                    <Label Margin="10,0,0,0" VerticalOptions="End"  Text="{Binding Checked, StringFormat=' 品証: {0}'}"  />
                                 </HorizontalStackLayout>
                                 <HorizontalStackLayout Spacing="10">
                                     <Label Text="{Binding SpoolsCount, StringFormat='管数: {0}'}" FontSize="12" />
-                                    <Label Text="{Binding Checked, StringFormat='状態: {0}'}" FontSize="12" />
-                                    <!--<Label Text="{Binding Checker, StringFormat='検査員: {0}'}" FontSize="12" />-->
+                                    <!--<Label Text="{Binding Checked, StringFormat='判定: {0}'}" FontSize="12" />-->
+                                    <!--<Label  Text="{Binding Checker, StringFormat='検査員: {0}'}"  />-->
+                                   
                                   
                                 </HorizontalStackLayout>
-                                <ScrollView Orientation="Vertical" HeightRequest="130">
-                                    <dx:DXCollectionView ItemsSource="{Binding Spools}" ItemSpanCount="2">
+
+                                <dx:DXWrapLayout ItemsSource="{Binding Spools}" ItemSpacing="10"  >
+                                    <dx:DXWrapLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <dx:DXBorder  BorderColor="Red" BorderThickness="1" 
+                                                         CornerRadius="5" BackgroundColor="#10ff0000"  
+                                                         Padding="4"  
+                                                         Margin="2">
+                                                <Grid>
+                                                    <VerticalStackLayout >
+
+                                                        <HorizontalStackLayout>
+                                                    <Image Margin="1" VerticalOptions="Center" WidthRequest="20" HeightRequest="20" HorizontalOptions="Start"  Source="{Binding Converter={StaticResource SpoolIcon}}"></Image>
+                                                            
+                                                             <Label  Text="{Binding SpoolNo,StringFormat='   {0}  '}" HorizontalOptions="Center" FontSize="16" />
+                                                        </HorizontalStackLayout>
+                                                    
+                                                        <Image WidthRequest="50" HeightRequest="50" VerticalOptions="Center" Source="{Binding SpoolType, Converter={StaticResource  ImageIntConverter}}" />
+                                                   
+                                                    <Label Text="{Binding Size}" HorizontalOptions="Center" FontSize="15" />
+                                                        
+                                                  
+                                                   
+                                                </VerticalStackLayout>
+                                                </Grid>
+                                            </dx:DXBorder>
+                                        </DataTemplate>
+                                    </dx:DXWrapLayout.ItemTemplate>
+                                    
+                                </dx:DXWrapLayout>
+                                    <!--<dx:DXCollectionView HeightRequest="150" ItemsSource="{Binding Spools}" ItemSpanCount="2">
                                         <dx:DXCollectionView.ItemTemplate>
                                             <DataTemplate>
                                                 <dx:DXBorder BorderColor="Red" BorderThickness="2"  
@@ -76,8 +109,8 @@
                                                 </dx:DXBorder>
                                             </DataTemplate>
                                         </dx:DXCollectionView.ItemTemplate>
-                                    </dx:DXCollectionView>
-                                </ScrollView>
+                                    </dx:DXCollectionView>-->
+                              
                             </VerticalStackLayout>
                         </Grid>
                     </dx:DXBorder>
@@ -99,7 +132,10 @@
                 <dx:DXSeparator/>
 
 
-                <dx:DXButton ButtonType="ToolButton" Content="編集" 
+                <dx:DXButton ButtonType="ToolButton" Content="シート編集"
+      Icon="edit" 
+      Clicked="EditClick" /> 
+                <dx:DXButton ButtonType="ToolButton" Content="管編集" 
       Icon="edit" 
       Clicked="EditClick" />
 

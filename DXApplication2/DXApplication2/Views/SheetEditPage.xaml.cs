@@ -1,6 +1,7 @@
 using DevExpress.Maui.Charts;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
+using DevExpress.Spreadsheet;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using static Android.Icu.Text.IDNA;
@@ -177,11 +178,17 @@ public partial class SheetEditPage : ContentPage
 
 	private async void DeleteClick(object sender, EventArgs e)
 	{
-        bool confirm = await Application.Current.MainPage.DisplayAlert(
+		
+		popup.IsOpen = false;
+		bool confirm = await  Shell.Current.DisplayAlert(
                     "確認", $"管 {ActiveSpool.SpoolNo} を削除しますか？", "はい", "キャンセル");
 		if (!confirm) return;
-        this.spoolGrid.DeleteItem(ActiveHandle);
+	
 
+			this.spoolGrid.DeleteItem(ActiveHandle);
+	 await	DatabaseViewModel.DeleteSpoolAsync(ActiveSpool);
+
+		
 	}
 
 	private void EditClick(object sender, EventArgs e)

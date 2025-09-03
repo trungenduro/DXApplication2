@@ -26,8 +26,9 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     public Task<IEnumerable<TEntity>?> GetAsync() {
 		//Context.Customers.Load();	
 
-		return Task.Run(() => cacheService.GetOrCreate<IEnumerable<TEntity>>(CollectionCacheKey, _ => DbSet.ToList()));
-    }
+		var items= Task.Run(() => cacheService.GetOrCreate<IEnumerable<TEntity>>(CollectionCacheKey, _ => DbSet.ToList()));
+		return items;
+	}
     public void Add(TEntity item) {
         DbSet.Add(item);
         PendingCacheUpdateActions.Add(cachedList => cachedList.Add(item));
