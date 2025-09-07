@@ -1,5 +1,6 @@
 using DemoCenter.Maui.Views;
 using DevExpress.Maui.Core;
+using DevExpress.Maui.Editors;
 using DevExpress.Spreadsheet;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
@@ -16,7 +17,6 @@ public partial class EditSpoolPage : ContentPage
 	DatabaseViewModel DatabaseViewModel;
 	public EditSpoolPage(DatabaseViewModel model)
 	{
-
 		DatabaseViewModel = model;
 		this.BindingContext = model;
 		InitializeComponent();
@@ -54,4 +54,18 @@ public partial class EditSpoolPage : ContentPage
 			
 
 	}
+
+    private void TextEdit_Completed(object sender, EventArgs e)
+    {
+		
+
+        TextEdit textEdit = sender as TextEdit;
+
+		var grid = textEdit.Parent as Grid;
+
+        var ind= grid.Children.ToList().FindIndex(x => x == textEdit);
+
+		grid.Children[ind+1].Focus();
+        // textEdit.fo = textEdit.Text.ToUpper();
+    }
 }

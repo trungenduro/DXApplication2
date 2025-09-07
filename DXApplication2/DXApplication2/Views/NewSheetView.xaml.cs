@@ -1,5 +1,6 @@
 using DevExpress.Maui.Core;
 using DevExpress.Maui.Editors;
+using DevExpress.Spreadsheet;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using System.Collections.ObjectModel;
@@ -14,9 +15,30 @@ public partial class NewSheetView : ContentPage
 		InitializeComponent();
 	}
 
+	ExcelSheet Sheet;
+    DatabaseViewModel Viewmodel;
+
     private void ContentPage_BindingContextChanged(object sender, EventArgs e)
     {
-		var b = this.BindingContext;
+        if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
+        {
+            //form.DataControlContext.DataControlContext
+            if( form.Item is ExcelSheet sh)            
+                Sheet = sh;
+
+            if (form.DataControlContext is DetailEditFormViewModel sheetform)
+            {
+               
+                if (sheetform.DataControlContext is DetailEditFormViewModel form1)
+                {
+                    if (form1.DataControlContext is DatabaseViewModel viewmodel)
+                        Viewmodel = viewmodel;
+                    Viewmodel.CurrentSheet = Sheet;
+
+                }
+
+            }
+        }
 
     }
 
@@ -82,4 +104,14 @@ public partial class NewSheetView : ContentPage
 
 		}
 	}
+
+    private void collectionView_ValidateAndSave(object sender, ValidateItemEventArgs e)
+    {
+
+    }
+
+    private void spoolGrid_Tap(object sender, DevExpress.Maui.CollectionView.CollectionViewGestureEventArgs e)
+    {
+
+    }
 }

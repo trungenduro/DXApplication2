@@ -6,11 +6,13 @@ using DevExpress.Android.Editors;
 using DevExpress.Maui.Editors;
 using LiningCheckRecord;
 using Microsoft.Maui.Controls;
+using SkiaSharp;
 using Syncfusion.Maui.Core.Internals;
 using Syncfusion.Maui.ImageEditor;
 using static Bumptech.Glide.DiskLruCache.DiskLruCache;
 using Image = Microsoft.Maui.Controls.Image;
 using ImageFormat = DevExpress.Maui.Editors.ImageFormat;
+using Point = Microsoft.Maui.Graphics.Point;
 
 namespace DemoCenter.Maui.Views;
 
@@ -32,8 +34,18 @@ public partial class ImageEditView : ContentPage {
 
 		editor.Source = filename;
     }
+    public Stream CreateBlankImageStream(int width, int height)
+    {
+        var bitmap = new SKBitmap(width, height);
+        using var canvas = new SKCanvas(bitmap);
+        canvas.Clear(SKColors.White); // or any background color
 
-	void InitToolbar()
+        using var image = SKImage.FromBitmap(bitmap);
+        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+        return new MemoryStream(data.ToArray());
+    }
+
+    void InitToolbar()
 	{
         Image browseImage = new Image()
         {
@@ -56,7 +68,7 @@ public partial class ImageEditView : ContentPage {
 
 		headerToolbarGroup1.Items.Add(new ImageEditorToolbarItem()
 		{
-			Name = "NewSave",
+			Name = "Saves",
 			View = browseImage,
 			IsVisible = true,
 
@@ -79,28 +91,42 @@ public partial class ImageEditView : ContentPage {
 
 		headerToolbarGroup0.Items.Add(new ImageEditorToolbarItem()
 		{
-			Name = "Back",
+			Name = "Return",
 			View = shareImage,
 			IsVisible = true,
 
 		});
-
-	}
+        ImageEditorToolbar footerToolbarItem = this.editor.Toolbars[1];
+        ImageEditorToolbarItem cropItem = (ImageEditorToolbarItem)footerToolbarItem.ToolbarItems.FirstOrDefault(i => i.Name == "Crop");
+        cropItem.SubToolbarOverlay = false;
+        cropItem.SubToolbars = new List<ImageEditorToolbar>()
+            {
+                new ImageEditorToolbar()
+                {
+                    ToolbarItems = new List<IImageEditorToolbarItem>()
+                    {                        
+                        new ImageEditorToolbarItem(){ Name = "square"},                        
+                    }
+                }
+            };
+       
+    }
     LiningSpool Spool;
 	public ImageEditView(LiningSpool sp) {
         InitializeComponent();
-		InitToolbar();
+        InitCache();
+        InitToolbar();
         pageResultCompletionSource = new TaskCompletionSource<string>();
 		if(sp.ImagePath == null) return;
 		Spool = sp;
 		if (sp.ImagePath == "")
 		{
-			InitCache();
-			if(sp.SpoolType<3) 
-				editor.Source = $"type{sp.SpoolType+1}.png";
-			else 
-				editor.Source = "sample.png";
-		}
+
+            ImageSource blankImage = ImageSource.FromStream(() => CreateBlankImageStream(200, 200));
+
+			editor.Source = blankImage;
+
+        }
 		else
 		{
 			editor.Source = sp.ImagePath;
@@ -110,7 +136,9 @@ public partial class ImageEditView : ContentPage {
 	string samplePath = Path.Combine(FileSystem.Current.AppDataDirectory, "sample.png");
 	public void InitCache()
 	{
-		CopyFile("sample.png");
+		var c= File.Exists(samplePath);
+
+        CopyFile("sample.png");
 		CopyFile("type1.png");
 		CopyFile("type2.png");
 		CopyFile("type3.png");
@@ -282,12 +310,12 @@ public partial class ImageEditView : ContentPage {
 
 	private void editor_ToolbarItemSelected(object sender, ToolbarItemSelectedEventArgs e)
 	{
-		if (e.ToolbarItem.Name == "NewSave")
+		if (e.ToolbarItem.Name == "Saves")
 		{
 
 			ToolbarItem_Clicked(sender, e);
 		}
-		else if (e.ToolbarItem.Name == "Back")
+		else if (e.ToolbarItem.Name == "Return")
 		{
 			BackPressed(sender, e);
 		}
@@ -296,5 +324,71 @@ public partial class ImageEditView : ContentPage {
     private void editor_ImageSaved(object sender, ImageSavedEventArgs e)
     {
 
+    }
+
+    private void OnAddShapeClicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void DXButton_Clicked(object sender, EventArgs e)
+    {
+        //this.editor.AddShape(AnnotationShape.Polyline,
+        //   new ImageEditorShapeSettings()
+        //   {
+        //       Points = new PointCollection
+        //       {
+        //            new Point(10, 30),
+        //            new Point(10, 60),
+        //            new Point(10, 45),
+        //            new Point(80, 45),                   
+        //       },
+        //       Color = Colors.Blue,
+        //   });
+
+        //this.editor.AddCustomAnnotationView(new Label { Text = "A", WidthRequest = 150, HeightRequest = 40 });
+
+        Image image = new Image() { HeightRequest = 80, WidthRequest = 200, Aspect = Aspect.AspectFit };
+        image.Source = ImageSource.FromFile("spool.png");
+
+        this.editor.AddCustomAnnotationView(image,
+             new Syncfusion.Maui.ImageEditor.ImageEditorAnnotationSettings
+             {
+               AllowDrag = true,
+                 AllowResize = false,
+                 IsRotatable=true
+                 
+             });
+
+    }
+
+    private void DXButton_Clicked_1(object sender, EventArgs e)
+    {
+
+    }
+
+    private void Text_Clicked(object sender, EventArgs e)
+    {
+        this.editor.AddCustomAnnotationView(new Label { Text = "A", WidthRequest = 150, HeightRequest = 40 });
+    }
+
+    private void eda_Clicked(object sender, EventArgs e)
+    {
+        Image image = new Image() { HeightRequest = 80, WidthRequest = 120, Aspect = Aspect.AspectFit };
+        image.Source = ImageSource.FromFile("eda.png");
+
+        this.editor.AddCustomAnnotationView(image,
+             new Syncfusion.Maui.ImageEditor.ImageEditorAnnotationSettings
+             {
+                 AllowDrag = true,
+                 AllowResize = false,
+                 IsRotatable = true
+                 
+             });
+    }
+
+    private void editor_AnnotationSelected(object sender, AnnotationSelectedEventArgs e)
+    {
+        e.AnnotationSettings.Id;
     }
 }

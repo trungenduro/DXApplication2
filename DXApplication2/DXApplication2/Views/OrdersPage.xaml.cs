@@ -1,7 +1,10 @@
+using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using Microsoft.Maui.Controls;
+using System.Drawing;
+using Color = Microsoft.Maui.Graphics.Color;
 
 namespace DXApplication2.Views
 {
@@ -18,8 +21,9 @@ namespace DXApplication2.Views
 			Navigation.PushAsync(new SheetsPage());
 
 		}
-
-		private void Swipe_Open(object sender, DevExpress.Maui.DataGrid.SwipeItemTapEventArgs e)
+        DHFOrder ActiveOrder;
+        int ActiveHandle = -1;
+        private void Swipe_Open(object sender, DevExpress.Maui.DataGrid.SwipeItemTapEventArgs e)
 		{
 			DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
 			if (e.Item is DHFOrder file)
@@ -50,6 +54,39 @@ namespace DXApplication2.Views
         {
             DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
             vm.RefreshCommand.Execute(null);
+        }
+
+        private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+        {
+            if(sender  is  DXBorder border)
+            {
+                
+               if(border.BindingContext is DHFOrder order)
+                {
+                   // order.IsFavorite = !order.IsFavorite;
+                    border.BackgroundColor = order.IsFavorite ? Colors.AliceBlue : Colors.Transparent;
+                    if(border.Content is DXImage image)
+                        image.TintColor = order.IsFavorite ? Colors.Red : Colors.Black;
+                    DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
+                    vm.AddToFavorites( order);
+                   // await vm.UpdateOrderAsync();
+                }
+            }
+        }
+
+        private void EditClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DeleteClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DismissPopup(object sender, EventArgs e)
+        {
+
         }
     }
 }

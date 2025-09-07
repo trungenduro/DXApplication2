@@ -45,7 +45,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         Context.Entry(entityToUpdate).State = EntityState.Modified;
         PendingCacheUpdateActions.Add(cachedList => {
             int editedItemIndex = ((List<TEntity>)cachedList).IndexOf(entityToUpdate);
-            cachedList[editedItemIndex] = entityToUpdate;
+           if(editedItemIndex>-1)  cachedList[editedItemIndex] = entityToUpdate;
         });
     }
 

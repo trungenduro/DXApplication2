@@ -28,13 +28,13 @@
                             <Grid  ColumnDefinitions="*,*">
                                 <!--<Label Margin="10,0,10,0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="0" FontSize="16" Text="{Binding StringFormat='{0}  '}" />-->
 
-                                <Image Grid.Column="1" HorizontalOptions="Center" WidthRequest="100" HeightRequest="100"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
+                                <Image Grid.Column="1" HorizontalOptions="Center" WidthRequest="86" HeightRequest="86"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
 
                             </Grid>
                         </DataTemplate>
                     </dxe:ChoiceChipGroup.ChipContentTemplate>
                 </dxe:ChoiceChipGroup>
-                <Image  x:Name="preview" HeightRequest="100" WidthRequest="100" IsVisible="Collapse" Source="{Binding Item,Converter={StaticResource ImageSPConverter}}"></Image>
+                <Image  x:Name="preview" HeightRequest="80" WidthRequest="80" IsVisible="Collapse" Source="{Binding Item,Converter={StaticResource ImageSPConverter}}"></Image>
                <Grid ColumnDefinitions="*,50,50">  
                    <dx:TextEdit LabelText="管番号"  Text="{Binding Item.SpoolNo}" />
                     <dx:DXButton IconWidth="30" Clicked="FreeHandClicked" IconHeight="30" Grid.Column="2" ButtonType="ToolButton" Icon="freehand"></dx:DXButton>

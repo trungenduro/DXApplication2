@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DXApplication2.Views.OrderFilterTemplate"
+              xmlns:dx="http://schemas.devexpress.com/maui" IconImageSource="filter"
+             Title="オーダーフィルター">
+    <VerticalStackLayout>
+        <VerticalStackLayout>
+
+            
+            <dx:FilterChipGroupItem
+         FieldName="客先名"
+         Text="客先名"
+         ShowValuesOutOfFilter="true"
+         ShowValueCounts="true"
+         AllowDeselect="True"
+         ShowSeparator="False" />  
+            
+            <dx:FilterChipGroupItem
+         FieldName="客先名"
+         Text="客先名"
+         ShowValuesOutOfFilter="true"
+         ShowValueCounts="true"
+         AllowDeselect="True"
+         ShowSeparator="False" />
+
+
+            <dx:FilterCheckItem
+         FieldName="IsFinished"
+         Text="完成" 
+               
+         ShowSeparator="False" />
+
+
+
+
+
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

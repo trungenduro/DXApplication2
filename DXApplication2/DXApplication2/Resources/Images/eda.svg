@@ -1,0 +1,7 @@
+
+<svg width="60" height="40" viewBox="0 0 60 40">
+
+  <line x1="5" y1="0" x2="5" y2="40" stroke="#1177D7" stroke-width="4" />
+  
+    <line x1="5" y1="20" x2="60" y2="20" stroke="#1177D7" stroke-width="5" />
+</svg>

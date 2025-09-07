@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DevExpress.Maui.Core;
+using DevExpress.Spreadsheet;
 using DevExpress.XtraRichEdit.Forms;
 using DXApplication2.Converters;
 using DXApplication2.Domain.Data;
@@ -15,8 +16,20 @@ public partial class DatabaseViewModel : ObservableObject {
     readonly ICacheService cacheService;
 
     [ObservableProperty]
-    ObservableCollection<DHFOrder>? orders;    
-    [ObservableProperty]
+    ObservableCollection<DHFOrder>? orders;     
+    
+   
+    ObservableCollection<DHFOrder>? OrdersMarked
+    {
+        get
+        {
+            if (Orders == null) return null;
+            var list = Orders.Where(x => x.IsFavorite).ToList();
+            return new ObservableCollection<DHFOrder>(list);
+        }
+    }
+
+        [ObservableProperty]
     ObservableCollection<CheckerTable>? peoples;
 
     [ObservableProperty]
@@ -81,9 +94,23 @@ public partial class DatabaseViewModel : ObservableObject {
 	{
 		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
 		await unitOfWork.SaveAsync();
-        GetItems();
+        await GetItems();
 	}
-	internal async Task UpdateOrderAsync()
+
+    public ObservableCollection<DHFOrder> Favorites { get; } = new ObservableCollection<DHFOrder>();
+   internal void AddToFavorites(DHFOrder house)
+    {
+        if (Favorites.Remove(house))
+        {
+            house.IsFavorite = false;
+        }
+        else
+        {
+            Favorites.Add(house);
+            house.IsFavorite = true;
+        }
+    }
+    internal async Task UpdateOrderAsync()
     {
         if(CurrentOrder == null)
 			return;
@@ -157,18 +184,38 @@ public partial class DatabaseViewModel : ObservableObject {
 
                 unitOfWork.CustomersRepository.Update(order);               
             }
+            if (args.DataChangeType == DataChangeType.Add)
+            {
+                unitOfWork.CustomersRepository.Add(order);
+            }
+            if (args.DataChangeType == DataChangeType.Delete)
+            {
+                unitOfWork.CustomersRepository.Delete(order);
+                //pendingAction = () => Sheets.Remove(item);
+            }
+
         }
             if (args.Item is ExcelSheet item)
         {
             try
             {
                 ArgumentNullException.ThrowIfNull(Orders);
-              
-                
+                if (item.Checked == null) item.Checked = "-";
+
                 if (args.DataChangeType == DataChangeType.Add)
-                {                    
-                   // unitOfWork.SheetRepository.Add(item);
+                {
+                    // unitOfWork.SheetRepository.Add(item);
                     //pendingAction = () => Sheets.Add(item);
+                    string mess = "";
+                    if (item.Kiki1 == "")
+                        mess = "kiki1";
+                    if (item.Kiki2 == "")
+                        mess = "kiki1";
+                    if (item.ThickNess <=0)
+                        mess = "ThickNess";
+                    if (item.Checker=="")
+                        mess = "Checker";
+
                 }
                 if (args.DataChangeType == DataChangeType.Edit)
                 {                   
@@ -262,9 +309,9 @@ public partial class DatabaseViewModel : ObservableObject {
 		}
 
 			await unitOfWork.SaveAsync();
+       // pendingAction?.Invoke();
 
-
-		 await UpdateOrderAsync();
+        await UpdateOrderAsync();
         return;
     }
 

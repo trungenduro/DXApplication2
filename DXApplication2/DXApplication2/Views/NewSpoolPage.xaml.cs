@@ -166,8 +166,14 @@ public partial class NewSpoolPage : ContentPage
         var cropResult = await editorPage.WaitForResultAsync();
         editorPage.Handler.DisconnectHandler();    
 
-        sp.SpoolType = 5;
-        //type.SelectedIndex = 5;
+        
+
+        if (cropResult != null)
+        {
+            sp.ImagePath = cropResult;
+            sp.SpoolType = 4;
+        } 
+		
     }
 
 	private void types_SelectionChanged(object sender, EventArgs e)

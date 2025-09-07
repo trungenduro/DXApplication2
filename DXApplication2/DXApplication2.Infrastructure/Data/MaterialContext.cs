@@ -269,8 +269,9 @@ namespace LiningCheckRecord
         {
             get;set;
         }
+        public bool IsFavorite { get; set; }
 
-[DataType(DataType.Text), Display(Name = "客先名/案件名", Description = "合計数量")]
+        [DataType(DataType.Text), Display(Name = "客先名/案件名", Description = "合計数量")]
         public string CombineName { get => 客先名 + "/" + 案件名; }
 
         public List<ExcelSheet> ExcelSheets { get; set; } = new();
@@ -311,7 +312,15 @@ namespace LiningCheckRecord
         }
         
 
+        public bool IsFinished
+        {
+            get
+            {
 
+                if (Total == 0) return false;
+                return (SpoolsCount == Total);
+            }
+        }
 
         public double Completion { get
             {
@@ -328,12 +337,12 @@ namespace LiningCheckRecord
         {
             get
             {
-                //if (ExcelSheets.Count == 0) 
+                if (ExcelSheets.Count == 0) 
                     return null;
 
-              //  var days = ExcelSheets.Where(x => x.CheckDate1 != null);
-             //   if (days == null) return null;
-             //   return days.Select(x => x.CheckDate1).OrderByDescending(x => x).FirstOrDefault();
+                var days = ExcelSheets.Where(x => x.CheckDate1 != null);
+               if (days == null) return null;
+                return days.Select(x => x.CheckDate1).OrderByDescending(x => x).FirstOrDefault();
             }
         }
         public string LastMonth
@@ -390,6 +399,7 @@ namespace LiningCheckRecord
         [Required]
         public int SheetNo { get; set; } = 1;
 
+        public bool IsFavorite { get; set; }
         public string OrderNo { get; set; } = string.Empty;
         public string 客先名 { get {
                 if (Order == null) return string.Empty;
@@ -526,8 +536,8 @@ namespace LiningCheckRecord
 
             get;set;
         }
-
-[Display(Name = "O/#", Description = "d")]
+        public bool IsFavorite { get; set; }
+        [Display(Name = "O/#", Description = "d")]
         public DHFOrder? Order { get; set; }
 
         [Display(Name = "シート")]

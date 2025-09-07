@@ -40,7 +40,7 @@ public class SQLiteUnitOfWork : IDisposable {
 				SheetRepository.ExecuteCacheUpdateActions();
               var sheets=  SheetRepository.GetAsync();
               var spools=  SpoolRepository.GetAsync();
-                SpoolRepository.ExecuteCacheUpdateActions();
+              //  SpoolRepository.ExecuteCacheUpdateActions();
             }
 			catch (DbUpdateException ex) { 
 				CustomersRepository.ClearCacheUpdateActions();

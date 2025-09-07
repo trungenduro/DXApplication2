@@ -1,48 +1,73 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:converters="clr-namespace:DXApplication2.Converters"  
               xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2" 
              x:Class="DXApplication2.Views.NewSheetView"   xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
               xmlns:dx="http://schemas.devexpress.com/maui" BindingContextChanged="ContentPage_BindingContextChanged"
+            
              Title="検 査 成 績 表">
+    <ContentPage.Resources>
+        <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
+        <converters:SpoolToChartDataConverter x:Key="ChartDataConverter" />
+        <converters:SpoolToIconConverter x:Key="SpoolIcon" />
+        <converters:ListIndexConverter x:Key="ListConvert" />
+        <converters:SheetNumberConverter x:Key="SheetNoConvert" />
+
+      
+
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save" IconImageSource="save.png" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <dx:DXScrollView>
-        <dx:DXStackLayout ItemSpacing="24" Margin="16">
+        
+        <dx:TabView HeaderPanelBackgroundColor="White" HeaderPanelContentAlignment="Center" HorizontalOptions="Fill" >
+            <dx:TabViewItem  HeaderIcon="info.svg"  SelectedHeaderBackgroundColor="#1177D7" HeaderFontSize="15" SelectedHeaderIconColor="Blue">
+                <dx:TabViewItem.Content>
+                    
+                
+
+                    <dx:DXStackLayout ItemSpacing="24" Margin="16">
             <dx:DXStackLayout ItemSpacing="8">
 
                 <Label Text="{Binding Item.Order}" />
                 <Grid ColumnDefinitions="*,*">
                     
-                    <dx:DateEdit LabelText="検査日" Date="{Binding Item.CheckDate1}" />
-                    <dx:DateEdit Margin="10,0,0,0" Grid.Column="1" LabelText="原管入荷日" Date="{Binding Item.CheckDate2,StringFormat='{yyyy/dd/mm}'}" />
+                    <dx:DateEdit LabelText="検査日" Date="{Binding Item.CheckDate1}" DisplayFormat="yyyy/MM/dd" />
+                    <dx:DateEdit Margin="10,0,0,0" Grid.Column="1" LabelText="原管入荷日" DisplayFormat="yyyy/MM/dd" Date="{Binding Item.CheckDate2,StringFormat='{yyyy/dd/mm}'}" />
                 </Grid>
                 <Grid ColumnDefinitions="*,*">
 
-                    <dx:ComboBoxEdit LabelText="ポリエチレンライニング" ItemsSource="{Binding DataControlContext.DataControlContext.LinningType}"  SelectedValue="{Binding Item.LinningType}" />
+                    <dx:ComboBoxEdit TextHorizontalAlignment="Center" TextVerticalAlignment="Center"   LabelText="ポリエチレンライニング" ItemsSource="{Binding DataControlContext.DataControlContext.LinningType}"  SelectedValue="{Binding Item.LinningType}" />
                     <dx:TextEdit Margin="10,0,0,0" Grid.Column="1" LabelText="指定膜厚" Suffix="mm以上" Keyboard="Numeric"  Text="{Binding Item.ThickNess}" />
+               
                 </Grid>
 
-                <Grid ColumnDefinitions="*,*">
-                    <dx:TextEdit LabelText="ピンホール検査機器名" Text="{Binding Item.Kiki1}" Prefix="LP-0" Mask="00"  />
-                    <HorizontalStackLayout Grid.Column="1" Margin="10,0,0,0">
-                        <Label VerticalOptions="Center" Text=" 検査電圧"></Label>    
+                <Grid ColumnDefinitions="1*,*">
+                    <dx:TextEdit LabelFontSize="12"   TextFontSize="16"  Keyboard="Numeric" LabelText="ピンホール検査機器名" Text="{Binding Item.Kiki1}" Prefix="LP-0" Mask=""  />
+                  
+                        <!--<Label VerticalOptions="Center" Text=" 検査電圧"></Label>    
                     <dxe:ChoiceChipGroup ChipFontSize="15" Grid.Column="1" SelectedIndex="{Binding Item.Option1}" HorizontalOptions="Center" ChipCornerRadius="0" ChipSelectedDisabledIconColor="Red"  DisplayMember="Name"  BoxMode="Outlined" IsMultiline="True"
-ItemsSource="{Binding DataControlContext.DataControlContext.Options1}" />
-                    </HorizontalStackLayout>
+ItemsSource="{Binding DataControlContext.DataControlContext.Options1}" />-->
+                        <dx:ComboBoxEdit MinimumWidthRequest="170" Margin="10,0,0,0" Grid.Column="1" HorizontalOptions="StartAndExpand" BoxPadding="20" TextVerticalAlignment="Center" LabelText="検査電圧" ItemsSource="{Binding DataControlContext.DataControlContext.Options1}"  SelectedIndex="{Binding Item.Option1}" />
+
+
+                    
                     
                 </Grid>
                 <Grid ColumnDefinitions="*,*">
-                    <dx:TextEdit LabelText="膜厚検査機器名" Text="{Binding Item.Kiki2}" Prefix="LP-0" Mask="00"  />
+                    <dx:TextEdit LabelText="膜厚検査機器名" Keyboard="Numeric" Text="{Binding Item.Kiki2}" Prefix="LP-0" Mask="00"  />
                     <HorizontalStackLayout Grid.Column="1" Margin="10,0,0,0">
-                        <Label VerticalOptions="Center" Text=" "></Label>
+                        <!--<Label VerticalOptions="Center" Text=" "></Label>
                         <dxe:ChoiceChipGroup  ChipFontSize="15" SelectedIndex="{Binding Item.Option2}" HorizontalOptions="Center" ChipCornerRadius="0" ChipSelectedDisabledIconColor="Red" 
                                              DisplayMember="Name"  BoxMode="Outlined" IsMultiline="True"
                         ItemsSource="{Binding DataControlContext.DataControlContext.Options2}"  >           
-                        </dxe:ChoiceChipGroup>
-
+                        </dxe:ChoiceChipGroup>-->
+                           
                     </HorizontalStackLayout>
+                    <dx:ComboBoxEdit Margin="10,0,0,0" MinimumWidthRequest="170" Grid.Column="1" TextFontSize="16" HorizontalOptions="StartAndExpand" BoxPadding="10" TextVerticalAlignment="Center" LabelText="膜厚検査機器" ItemsSource="{Binding DataControlContext.DataControlContext.Options2}"  SelectedIndex="{Binding Item.Option2}" />
+
                 </Grid>
 
                 
@@ -69,5 +94,69 @@ ItemsSource="{Binding DataControlContext.DataControlContext.Options1}" />
 
             <dx:DXButton Content="Save" Clicked="DXButton_Clicked"/>
         </dx:DXStackLayout>
+                </dx:TabViewItem.Content>
+            </dx:TabViewItem>
+
+            <dx:TabViewItem HeaderIcon="ic_spool.svg" SelectedHeaderBackgroundColor="#1177D7"  >
+                <dx:TabViewItem.Content>
+                    <VerticalStackLayout Margin="10" >                        
+                    <dx:DXButton  
+                        Icon="add.svg" IconHeight="32" IconWidth="32" Content="管追加" ButtonType="Filled"  Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailNewItemForm}" ></dx:DXButton>
+                   
+                   
+                        <dx:DXCollectionView x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" DetailEditFormTemplate="{DataTemplate views:EditSpoolPage}" 
+                                 ItemSpanCount="1" ValidateAndSave="collectionView_ValidateAndSave" 
+                                 Tap="spoolGrid_Tap"
+                                 DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}" >
+                    <dx:DXCollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid >
+                                <Grid>
+                                    <Image Margin="5" VerticalOptions="Start" WidthRequest="30" HeightRequest="30" HorizontalOptions="Start"  Source="{Binding Converter={StaticResource SpoolIcon}}"></Image>
+                                    <dx:DXToolbar Padding="0" HeightRequest="30" Margin="0,-15,0,0" BackgroundColor="Transparent" WidthRequest="30" HorizontalOptions="End">
+                                        <dx:ToolbarButton Padding="0"  WidthRequest="30" Margin="-5,10,5,5" HeightRequest="30" VerticalContentAlignment="End"   Icon="edit.png"  FontSize="10" 
+Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailEditForm}" 
+CommandParameter="{Binding .}"
+/>
+                                        <!--<dx:ToolbarButton Content="{Binding Source={RelativeSource AncestorType=ContentPage},Path=BindingContext.DataControlContext}"                                       
+CommandParameter="{Binding .}"                                        />-->
+
+                                    </dx:DXToolbar>
+
+                                </Grid>
+                                <dx:DXBorder BorderColor="Red" BorderThickness="2" VerticalOptions="Start"
+                          CornerRadius="5"
+                          Padding="0"
+                          Margin="1">
+                                    <Grid  MinimumHeightRequest="150" ColumnDefinitions="2*,5*,0.5*" RowDefinitions="*,5*">
+
+                                        <Grid Grid.Row="1"   />
+
+                                        <Label Padding="5" Text="{Binding SpoolNo}" FontSize="17" Grid.ColumnSpan="1" HorizontalOptions="Center" />
+
+                                        <Image Grid.Row="1"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
+
+                                        <Label Padding="0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="良" FontSize="15" FontAttributes="Bold"/>
+
+                                               </Grid>
+                                </dx:DXBorder>
+                            </Grid>
+                        </DataTemplate>
+                    </dx:DXCollectionView.ItemTemplate>
+                </dx:DXCollectionView>
+                    </VerticalStackLayout>
+                </dx:TabViewItem.Content>
+            </dx:TabViewItem>
+
+            <dx:TabViewItem HeaderIcon="eye.svg">
+                <dxe:InputChipGroup 
+     ItemsSource="{Binding DataControlContext.DataControlContext.Peoples}" Padding="10,0,20,0" 
+     DisplayMember="Name" IsMultiline="True" Completed="inputChipGroup_Completed"
+     IconMember="add.svg" ChipCheckIcon="add.svg" 
+     >
+                </dxe:InputChipGroup> 
+            </dx:TabViewItem>
+        </dx:TabView>
+        
     </dx:DXScrollView>
 </ContentPage>

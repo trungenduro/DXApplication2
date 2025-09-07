@@ -114,6 +114,9 @@
     <MauiXaml Update="Views\OCRPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
+    <MauiXaml Update="Views\OrderFilterTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\PeoplesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>

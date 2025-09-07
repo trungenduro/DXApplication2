@@ -37,7 +37,6 @@
                     <VerticalStackLayout>
                         <Label Text="ライニング検査成績表" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
 
-                       
 
                         <Grid Margin="0,10,0,0" ColumnDefinitions="1.5*, *,*,*" ColumnSpacing="5"  >
                             <Frame  BorderColor="White" Padding="0"  VerticalOptions="Start" Grid.Column="0" >
@@ -282,8 +281,6 @@ CommandParameter="{Binding .}"                                        />-->
                     </dx:DXCollectionView>
             </VerticalStackLayout>
         </ScrollView>
-
-
 
         <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext.DataControlContext}"            
                AllowScrim="True"

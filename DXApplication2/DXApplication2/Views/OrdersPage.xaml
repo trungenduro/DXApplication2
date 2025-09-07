@@ -11,23 +11,120 @@
     xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
     xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
     xmlns:models="clr-namespace:DXApplication2.Domain.Data;assembly=DXApplication2.Domain"
-   
+      xmlns:converters="clr-namespace:DXApplication2.Converters;assembly=DXApplication2"  
     BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
     Title="オーダーリスト">
+    
+    <ContentPage.Resources>     
+            <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
+        <converters:BoolToColorConverter
+     x:Key="addToFavoriteBackgroundConverter"
+     TrueSource="AliceBlue"
+     FalseSource="Transparent" />
+        <converters:BoolToColorConverter
+    x:Key="addToFavoriteStrokeConverter"
+    TrueSource="Red"
+    FalseSource="Black" />
+        <DataTemplate x:Key="orderTemplate">
+            <dx:DXBorder BorderThickness="0"  BorderColor="Black" BackgroundColor="LightGrey"
+                CornerRadius="12"
+                Margin="8"    >
+          
+            <Grid RowDefinitions="*,Auto">
+                    <Grid Grid.Row="0">                       
+                        <dx:DXBorder BorderThickness="2"
+                            CornerRadius="50"
+                            VerticalOptions="Start"
+                            HorizontalOptions="End"
+                            BackgroundColor="{Binding IsFavorite, Converter={StaticResource addToFavoriteBackgroundConverter}}"
+                            Margin="2"
+                            >
+                            <dx:DXImage
+                                WidthRequest="24"
+                                HeightRequest="24"
+                                Margin="8"
+                                Source="filteringui_heart"
+                               TintColor="Red"
+                               >                                
+                            </dx:DXImage>
+                            <dx:DXBorder.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    NumberOfTapsRequired="1"
+                                   Tapped="TapGestureRecognizer_Tapped"
+                                    />
+                            </dx:DXBorder.GestureRecognizers>
+                        </dx:DXBorder>
+                    </Grid>
+                    <dx:DXStackLayout
+                        Grid.Row="0"
+                        ItemSpacing="4"
+                        Margin="12,8">
+                        <Label
+                            Text="{Binding OrderNo}"                           
+                            FontAttributes="Bold"
+                            FontSize="16" />
+                        <HorizontalStackLayout>
+                            <Image Source="people" WidthRequest="24"></Image>
+                                    <Label Margin="10,0,0,0"
+                                     Text="{Binding 客先名, StringFormat= '{0}'}"                           
+                                     FontAttributes="Bold"
+                                     FontSize="16" />       
+                        </HorizontalStackLayout>
+                     
+                        <HorizontalStackLayout>
+                            <Image Source="location" WidthRequest="24"></Image>
+                            <Label Margin="10,0,0,0"
+                            Text="{Binding 案件名}"                           
+                            FontAttributes="Bold"
+                            FontSize="16" />
+                        </HorizontalStackLayout>
+                        <Grid ColumnDefinitions="*,*">
+                            <HorizontalStackLayout Grid.Column="0">
+                                
+                            <Image HorizontalOptions="Start" Source="document" WidthRequest="24"></Image>
+                            <Label Margin="10,0,0,0" VerticalOptions="Center" VerticalTextAlignment="Center"
+                                Text="{Binding ExcelSheetsCount}"   ></Label>
+                            </HorizontalStackLayout>
+                        </Grid>
 
-    <ContentPage.Behaviors>
+                        <Grid>
+                            <Label HorizontalOptions="Center" ZIndex="3"  TextColor="Black">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="進捗：{0}/{1}">
+                                        <Binding Path="SpoolsCount" />
+                                        <Binding Path="Total" />                                        
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                            <BoxView ZIndex="2" BackgroundColor="White"></BoxView>
+                             <local:BarControl HorizontalOptions="Fill" ZIndex="2" Color="Yellow"
+                                               HeightRequest="20" 
+                                               MaxValue="{Binding Total}" Value="{Binding SpoolsCount}" />
+                        </Grid>
+
+
+                    </dx:DXStackLayout>
+                </Grid>
+            </dx:DXBorder>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+        <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
     </ContentPage.Behaviors>
    
 
     <ContentPage.ToolbarItems>
         <!--Command="{Binding RefreshCommand"-->
-        <ToolbarItem Text="Refresh"  Clicked="ToolbarItem_Clicked" />
-        <ToolbarItem Text="Create" IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
+        <!--<ToolbarItem Text="Refresh"  Clicked="ToolbarItem_Clicked" />-->
+        <ToolbarItem Text="Create"  IconImageSource="filter.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowFilteringUIForm}" />
+        <ToolbarItem Text="Create"  IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
     </ContentPage.ToolbarItems>
   
     <Grid>
-        <dx:DataGridView
+        
+        <!--#region NewRegion -->
+        <!--<dx:DataGridView
             x:Name="collectionView" ShowAutoFilterRow="True"
             ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave"
               RowDoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"
@@ -70,11 +167,121 @@
 
 
 
-        </dx:DataGridView>
+        </dx:DataGridView>-->
+        <!--#endregion-->
+        <!--#region colectionRegion -->
+        <dx:TabView
+      HeaderPanelPosition="Bottom"
+      ItemHeaderWidth="*"
+      HeaderPanelPadding="0"
+      
+      IsSelectedItemIndicatorVisible="False"
+     >
+            <dx:TabViewItem SelectedHeaderBackgroundColor="AliceBlue">
+                <dx:TabViewItem.HeaderContent>
+                    <VerticalStackLayout
+                  VerticalOptions="Center"
+                  Spacing="4"     >
+                        <dx:DXBorder
+                      CornerRadius="100"
+                      Padding="20,4"
+                      HorizontalOptions="Center"
+                      >
+                            <dx:DXImage
+                          WidthRequest="24"
+                          HeightRequest="24"
+                          Source="info"
+                          TintColor="{dx:ThemeColor OnSurfaceVariant}" />
+                        </dx:DXBorder>
+                        
+                    </VerticalStackLayout>
+                </dx:TabViewItem.HeaderContent>
 
+                <dx:TabViewItem.Content>
+                    <dx:DXCollectionView
+                  x:Name="collectionView"
+                 ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave"
+                  ItemTemplate="{StaticResource orderTemplate}" 
+                        DetailEditFormTemplate="{DataTemplate views:SheetsPage1}"
+                       DetailNewItemFormTemplate="{DataTemplate views:SheetsPage1}"
+                       
+                  FilteringUITemplate="{DataTemplate views:OrderFilterTemplate}"
+                         DoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"      
+                
+                  />
+                </dx:TabViewItem.Content>
+            </dx:TabViewItem>
+
+            <dx:TabViewItem>
+                <dx:TabViewItem.HeaderContent>
+                    <VerticalStackLayout
+                  VerticalOptions="Center"
+                  Spacing="4"              >
+                        <dx:DXBorder
+                      CornerRadius="100"
+                      Padding="20,4"
+                      HorizontalOptions="Center">
+                            <dx:DXImage
+                          WidthRequest="24"
+                          HeightRequest="24"
+                          Source="filteringui_favorite"
+                          TintColor="{dx:ThemeColor OnSurfaceVariant}" />
+                        </dx:DXBorder>
+                                      </VerticalStackLayout>
+                </dx:TabViewItem.HeaderContent>
+
+                <dx:TabViewItem.Content>
+                    <Grid>
+                        
+                      
+                        <dx:DXCollectionView
+                  FilterExpression="{Binding Source={Reference collectionView}, Path=FilterExpression}"
+                  ItemsSource="{Binding Favorites}"
+                  ItemTemplate="{StaticResource orderTemplate}"     
+                  TapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"      
+                        />
+                    </Grid>
+                </dx:TabViewItem.Content>
+            </dx:TabViewItem>
+        </dx:TabView>
+
+        <!--#endregion-->
         <ActivityIndicator
             IsRunning="{Binding InitializeCommand.IsRunning}"
             HorizontalOptions="Center"
             VerticalOptions="Center" />
+        <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext}"            
+    AllowScrim="True"
+    CloseOnScrimTap="True"
+    VerticalAlignment="Bottom"
+    HorizontalAlignment="Stretch"
+    Margin="0,0,0,0"
+    CornerRadius="16">
+            <VerticalStackLayout Padding="5,10,10,8">
+                <Label FontSize="17"  TextColor="Blue" Text="{Binding  CurrentSheet.SheetNo,StringFormat='シートNo.{0}'}"            
+     Margin="24,16"
+     HorizontalTextAlignment="Center" />
+
+                <dx:DXSeparator/>
+
+
+                <dx:DXButton ButtonType="ToolButton" Content="シート編集"
+  Icon="edit" 
+  Clicked="EditClick" />
+                <dx:DXButton ButtonType="ToolButton" Content="管編集" 
+  Icon="edit" 
+  Clicked="EditClick" />
+
+                <dx:DXButton ButtonType="ToolButton" Content="削除" 
+  Icon="delete" 
+  Clicked="DeleteClick" />
+
+                <dx:DXSeparator/>
+
+                <dx:DXButton ButtonType="ToolButton" Content="キャンセル" Clicked="DismissPopup"/>
+            </VerticalStackLayout>
+
+        </dx:DXPopup>
+
     </Grid>
 </ContentPage>

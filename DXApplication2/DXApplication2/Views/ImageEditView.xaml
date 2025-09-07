@@ -8,7 +8,7 @@
     Shell.NavBarIsVisible="False"
    >
 
-    <Grid>
+    <Grid RowDefinitions="*,50">
 
  
         <!--<dx:DXToolbar Background="Transparent" Margin="0,0,0,0" HeightRequest="30"  ZIndex="2" HorizontalOptions="Center" VerticalOptions="Start"  ItemAlignment="Start" >
@@ -20,11 +20,22 @@
      
 
 
-        <imageEditor:SfImageEditor ToolbarItemSelected="editor_ToolbarItemSelected" SavePickerOpening="editor_SavePickerOpening"   ZIndex="0" ImageSaving="ImageEditor_ImageSaving" x:Name="editor" ImageSaved="editor_ImageSaved">
+        <imageEditor:SfImageEditor  AnnotationSelected="editor_AnnotationSelected" SelectionStroke="Red" BackgroundColor="AliceBlue" ToolbarItemSelected="editor_ToolbarItemSelected" SavePickerOpening="editor_SavePickerOpening"   ZIndex="0" ImageSaving="ImageEditor_ImageSaving" x:Name="editor" ImageSaved="editor_ImageSaved">
            
 
         </imageEditor:SfImageEditor>
-      
+        <HorizontalStackLayout Grid.Row="1">
+            
+        <dx:DXButton Grid.Row="1" Clicked="DXButton_Clicked" ButtonType="ToolButton"
+                Icon="spool.png"   />
+         <dx:DXButton Grid.Row="1" Clicked="eda_Clicked" ButtonType="ToolButton" Padding="5"
+                Icon="eda.png" IconWidth="40" IconHeight="30"/>
+            
+            
+            
+            <dx:DXButton Content="A" ButtonType="Text" Clicked="Text_Clicked"></dx:DXButton>
+
+        </HorizontalStackLayout>
     </Grid>
 
 </ContentPage>
