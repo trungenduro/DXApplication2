@@ -14,20 +14,13 @@
          ShowValuesOutOfFilter="true"
          ShowValueCounts="true"
          AllowDeselect="True"
-         ShowSeparator="False" />  
-            
-            <dx:FilterChipGroupItem
-         FieldName="客先名"
-         Text="客先名"
-         ShowValuesOutOfFilter="true"
-         ShowValueCounts="true"
-         AllowDeselect="True"
          ShowSeparator="False" />
 
 
-            <dx:FilterCheckItem
-         FieldName="IsFinished"
-         Text="完成" 
+
+            <dx:FilterChipGroupItem
+         FieldName="IsFinished" ShowValuesOutOfFilter="true"
+         Text="完成"  ShowValueCounts="true"
                
          ShowSeparator="False" />
 

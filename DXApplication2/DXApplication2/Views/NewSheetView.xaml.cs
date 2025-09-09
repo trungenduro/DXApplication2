@@ -22,20 +22,21 @@ public partial class NewSheetView : ContentPage
     {
         if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
         {
+			
             //form.DataControlContext.DataControlContext
             if( form.Item is ExcelSheet sh)            
                 Sheet = sh;
 
             if (form.DataControlContext is DetailEditFormViewModel sheetform)
             {
-               
-                if (sheetform.DataControlContext is DetailEditFormViewModel form1)
-                {
-                    if (form1.DataControlContext is DatabaseViewModel viewmodel)
-                        Viewmodel = viewmodel;
-                    Viewmodel.CurrentSheet = Sheet;
+				
 
-                }
+				if (sheetform.DataControlContext is DatabaseViewModel viewmodel)
+				{
+					Viewmodel = viewmodel;
+					Viewmodel.CurrentSheet = Sheet;
+				}
+                
 
             }
         }
@@ -94,10 +95,37 @@ public partial class NewSheetView : ContentPage
 						sheet.Checkers = oblist;
 					}
 				}
+			
+
+
 				if (sheet.Checked == null) sheet.Checked = "-";
+
+				if (sheet.Checkers == null || sheet.Checkers.Count == 0)
+				{
+					await Shell.Current.DisplayAlert("確認", "検査者を指定してください", "OK");
+					return;
+				}
+					if (string.IsNullOrEmpty( sheet.Kiki1 ) || string.IsNullOrEmpty(sheet.Kiki2) )
+				{
+					await Shell.Current.DisplayAlert("確認", "機器名を入力してください", "OK");
+					return;
+				}
+
+					if ( sheet.CheckDate2 ==null  )
+				{
+					await Shell.Current.DisplayAlert("確認", "管入荷日を入力してください", "OK");
+					return;
+				}
+
+
+
+
+				this.slideView.Commands.ShowNext.Execute(null);
+				//this.slideView...Execute(null);
 				
+
 				//	form.CloseOnSave = false;
-				await form.SaveAsync();
+				//await form.SaveAsync();
 				
 			//	this.spoolGrid.Commands.ShowDetailNewItemForm.Execute(null);
 			}
@@ -105,10 +133,17 @@ public partial class NewSheetView : ContentPage
 		}
 	}
 
-    private void collectionView_ValidateAndSave(object sender, ValidateItemEventArgs e)
+    private async void collectionView_ValidateAndSave(object sender, ValidateItemEventArgs e)
     {
+		if (e.Item is not LiningSpool sp) return;	
+		if (Sheet!=null)
+		{		
+			
+			Viewmodel.CheckSpool(Sheet, e);
+		}
+		
 
-    }
+	}
 
     private void spoolGrid_Tap(object sender, DevExpress.Maui.CollectionView.CollectionViewGestureEventArgs e)
     {

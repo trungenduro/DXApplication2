@@ -2,8 +2,10 @@
 using System.Drawing;
 using System.Globalization;
 using System.Threading.Tasks;
+using Android.Text;
 using DevExpress.Android.Editors;
 using DevExpress.Maui.Editors;
+//using DevExpress.XtraGauges.Core;
 using LiningCheckRecord;
 using Microsoft.Maui.Controls;
 using SkiaSharp;
@@ -97,7 +99,49 @@ public partial class ImageEditView : ContentPage {
 
 		});
         ImageEditorToolbar footerToolbarItem = this.editor.Toolbars[1];
-        ImageEditorToolbarItem cropItem = (ImageEditorToolbarItem)footerToolbarItem.ToolbarItems.FirstOrDefault(i => i.Name == "Crop");
+
+
+		var newItem = new ImageEditorToolbarItem()
+		{
+			Name = "Custom",
+			View = new Image()
+			{
+				Source = ImageSource.FromFile("spool.png"),
+				HeightRequest = 30,
+				WidthRequest = 30
+			},
+			IsVisible = true,
+			IsEnabled = true
+		};
+		footerToolbarItem.ToolbarItems.Add(newItem);
+
+		newItem.SubToolbars = new List<ImageEditorToolbar>()
+			{
+				new ImageEditorToolbar()
+				{
+					ToolbarItems = new List<IImageEditorToolbarItem>()
+					{
+						new ImageEditorToolbarItem(){ Name = "insertspool",View = new Image()
+			{
+				Source = ImageSource.FromFile("spool.png"),
+				HeightRequest = 30,
+				WidthRequest = 30
+			},},
+					}
+				}
+                ,new ImageEditorToolbar()
+				{
+					ToolbarItems = new List<IImageEditorToolbarItem>()
+					{
+						new ImageEditorToolbarItem(){ Name = "inserteda"},
+					}
+				},
+
+
+			};
+
+
+		ImageEditorToolbarItem cropItem = (ImageEditorToolbarItem)footerToolbarItem.ToolbarItems.FirstOrDefault(i => i.Name == "Crop");
         cropItem.SubToolbarOverlay = false;
         cropItem.SubToolbars = new List<ImageEditorToolbar>()
             {
@@ -369,8 +413,28 @@ public partial class ImageEditView : ContentPage {
 
     private void Text_Clicked(object sender, EventArgs e)
     {
-        this.editor.AddCustomAnnotationView(new Label { Text = "A", WidthRequest = 150, HeightRequest = 40 });
-    }
+
+		if (currentChar > 'Z')
+			currentChar = 'A'; // Reset to A after Z
+
+		this.editor.AddText(currentChar.ToString(), new ImageEditorTextSettings
+        {
+            RotationAngle = 0,
+            IsRotatable = true,
+            IsEditable = false,
+			Background = Colors.Transparent,
+			TextAlignment = TextAlignment.Start,
+            Bounds= new Rect(0,0,10,10),
+            TextStyle = new ImageEditorTextStyle()
+            {
+                FontSize = 30,
+                TextColor = Colors.Blue,
+                FontFamily = "Arial",
+                FontAttributes = FontAttributes.None
+            }
+        });
+		currentChar++;
+	}
 
     private void eda_Clicked(object sender, EventArgs e)
     {
@@ -389,6 +453,54 @@ public partial class ImageEditView : ContentPage {
 
     private void editor_AnnotationSelected(object sender, AnnotationSelectedEventArgs e)
     {
-        e.AnnotationSettings.Id;
+        this.deleteBTN.IsVisible = true;
+
+		var ann= e.AnnotationSettings;
+        if(ann is ImageEditorTextSettings ts)
+		{
+		//	ts.TextStyle.FontSize = 20;
+			//ts.TextStyle.TextColor = Colors.Red;
+		}
+        if(ann is ImageEditorShapeSettings ss)
+        {
+			ss.Color = Colors.Red;
+			ss.StrokeThickness = 5;
+		}
+
+        if(Math.Abs( ann.RotationAngle ) < 5 )
+            ann.RotationAngle = 0;
+		if (Math.Abs(ann.RotationAngle - 90) < 5)
+			ann.RotationAngle = 90;
+	}
+
+	private void L_Clicked(object sender, EventArgs e)
+	{
+
+		 this.editor.AddShape(AnnotationShape.Polyline,
+		   new ImageEditorShapeSettings()
+           {
+               StrokeThickness=5,
+               Points = new PointCollection
+               {
+                    new Point(10, 30),
+                    new Point(10, 60),
+                    new Point(10, 45),
+                    new Point(80, 45),
+               },
+               Color = Colors.Blue
+           });
     }
+	private char currentChar = 'A';
+	private void delete_Clicked(object sender, EventArgs e)
+	{
+		ImageEditorToolbar footerToolbarItem = this.editor.Toolbars[1];
+		ImageEditorToolbarItem cropItem = (ImageEditorToolbarItem)footerToolbarItem.ToolbarItems.FirstOrDefault(i => i.Name == "Delete");
+		this.editor.DeleteAnnotation();
+		this.deleteBTN.IsVisible = false;
+	}
+
+	private void editor_AnnotationUnselected(object sender, AnnotationUnselectedEventArgs e)
+	{
+		this.deleteBTN.IsVisible = false;
+	}
 }

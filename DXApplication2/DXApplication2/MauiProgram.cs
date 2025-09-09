@@ -52,10 +52,10 @@ public static class MauiProgram {
 
     static MauiAppBuilder RegisterViewModels(this MauiAppBuilder appBuilder) {
    
-        appBuilder.Services.AddTransient<ViewModels.DatabaseViewModel>();
+        appBuilder.Services.AddSingleton<ViewModels.DatabaseViewModel>();
         appBuilder.Services.AddTransient<ViewModels.ReportingViewModel>();
-     
-        return appBuilder;
+		//appBuilder.Services.AddSingleton<IOcrServiceDI, OcrServiceDI>();
+		return appBuilder;
     }
     static MauiAppBuilder RegisterAppServices(this MauiAppBuilder appBuilder) {
      

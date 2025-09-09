@@ -37,7 +37,7 @@
     </Shell.ItemTemplate>
     
     <ShellContent
-        Title="Mvvm"
+        Title="DHF O/# 一覧表"
         Icon="logo_dhf1.png"
         ContentTemplate="{DataTemplate views:OrdersPage}" />
     <!--<ShellContent
@@ -45,20 +45,17 @@
         Icon="star"
         ContentTemplate="{DataTemplate views:}" />-->
     <ShellContent
-        Title="Test OCR"
-        Icon="logo_dhf1.png"
+        Title="検査員追加"
+        Icon="people.png"
         ContentTemplate="{DataTemplate views:PeoplesPage}" />  
     
     <ShellContent
-        Title="Report"
-        Icon="logo_dhf1.png"
+        Title="成績表"
+        Icon="share.png"
         ContentTemplate="{DataTemplate views:DetailForm4Page}" />
     <ShellContent
         Title="Reset Database"
         Icon="logo_dhf1.png"
         ContentTemplate="{DataTemplate views:ItemEditing3Page}" />
-    <ShellContent
-        Title="List Search"
-        Icon="logo_dhf1.png"
-        ContentTemplate="{DataTemplate views:ListSearchPage}" />
+   
 </Shell>

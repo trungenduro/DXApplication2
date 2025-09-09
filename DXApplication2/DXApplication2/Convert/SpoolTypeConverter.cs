@@ -280,8 +280,6 @@ namespace DXApplication2.Converters
     {
 
 
-	
-
 		public Color FalseSource { get; set; }
         public Color TrueSource { get; set; }
 

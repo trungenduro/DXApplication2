@@ -37,6 +37,8 @@ public class SQLiteUnitOfWork : IDisposable {
             try {
                await  context.SaveChangesAsync();
 				PeoplesRepository.ExecuteCacheUpdateActions();
+                var c= PeoplesRepository.PendingCacheUpdateActions.Count;
+				var peos = await PeoplesRepository.GetAsync();
 				SheetRepository.ExecuteCacheUpdateActions();
               var sheets=  SheetRepository.GetAsync();
               var spools=  SpoolRepository.GetAsync();

@@ -19,21 +19,21 @@
             <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
         <converters:BoolToColorConverter
      x:Key="addToFavoriteBackgroundConverter"
-     TrueSource="AliceBlue"
+      TrueSource="Transparent" 
      FalseSource="Transparent" />
         <converters:BoolToColorConverter
     x:Key="addToFavoriteStrokeConverter"
-    TrueSource="Red"
-    FalseSource="Black" />
+     TrueSource="Blue" 
+    FalseSource="White" />
         <DataTemplate x:Key="orderTemplate">
-            <dx:DXBorder BorderThickness="0"  BorderColor="Black" BackgroundColor="LightGrey"
+            <dx:DXBorder BorderThickness="0"  BorderColor="Black" BackgroundColor="Cyan"
                 CornerRadius="12"
                 Margin="8"    >
           
             <Grid RowDefinitions="*,Auto">
                     <Grid Grid.Row="0">                       
                         <dx:DXBorder BorderThickness="2"
-                            CornerRadius="50"
+                            CornerRadius="30"
                             VerticalOptions="Start"
                             HorizontalOptions="End"
                             BackgroundColor="{Binding IsFavorite, Converter={StaticResource addToFavoriteBackgroundConverter}}"
@@ -43,8 +43,8 @@
                                 WidthRequest="24"
                                 HeightRequest="24"
                                 Margin="8"
-                                Source="filteringui_heart"
-                               TintColor="Red"
+                                Source="star.png"
+                               TintColor="{Binding IsFavorite, Converter={StaticResource addToFavoriteStrokeConverter}}"
                                >                                
                             </dx:DXImage>
                             <dx:DXBorder.GestureRecognizers>
@@ -83,7 +83,8 @@
                                 
                             <Image HorizontalOptions="Start" Source="document" WidthRequest="24"></Image>
                             <Label Margin="10,0,0,0" VerticalOptions="Center" VerticalTextAlignment="Center"
-                                Text="{Binding ExcelSheetsCount}"   ></Label>
+                                Text="{Binding ExcelSheetsCount}"  FontSize="16"   ></Label> 
+                             
                             </HorizontalStackLayout>
                         </Grid>
 
@@ -170,15 +171,14 @@
         </dx:DataGridView>-->
         <!--#endregion-->
         <!--#region colectionRegion -->
-        <dx:TabView
+        <dx:TabView 
       HeaderPanelPosition="Bottom"
       ItemHeaderWidth="*"
-      HeaderPanelPadding="0"
-      
+      HeaderPanelPadding="0"      
       IsSelectedItemIndicatorVisible="False"
      >
-            <dx:TabViewItem SelectedHeaderBackgroundColor="AliceBlue">
-                <dx:TabViewItem.HeaderContent>
+            <dx:TabViewItem SelectedHeaderBackgroundColor="LightBlue"  HeaderIcon="list.png"  > 
+                <!--<dx:TabViewItem.HeaderContent>
                     <VerticalStackLayout
                   VerticalOptions="Center"
                   Spacing="4"     >
@@ -190,17 +190,22 @@
                             <dx:DXImage
                           WidthRequest="24"
                           HeightRequest="24"
-                          Source="info"
+                          Source="all.png"
                           TintColor="{dx:ThemeColor OnSurfaceVariant}" />
                         </dx:DXBorder>
                         
                     </VerticalStackLayout>
-                </dx:TabViewItem.HeaderContent>
+                </dx:TabViewItem.HeaderContent>-->
 
                 <dx:TabViewItem.Content>
-                    <dx:DXCollectionView
-                  x:Name="collectionView"
-                 ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave"
+                    <VerticalStackLayout>
+                        <!--<dx:FilterChipGroupItem Text="ff"  Context="{Binding Source={x:Reference collectionView}, Path=FilteringContext}"  FieldName="IsFinished" >
+                            
+                        </dx:FilterChipGroupItem>-->
+
+                        <dx:DXCollectionView
+                  x:Name="collectionView" FilterString="[IsFinished]=False"
+                 ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave" 
                   ItemTemplate="{StaticResource orderTemplate}" 
                         DetailEditFormTemplate="{DataTemplate views:SheetsPage1}"
                        DetailNewItemFormTemplate="{DataTemplate views:SheetsPage1}"
@@ -208,35 +213,41 @@
                   FilteringUITemplate="{DataTemplate views:OrderFilterTemplate}"
                          DoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"      
                 
-                  />
+                  >
+                        <dx:DXCollectionView.GroupDescription>
+                            <dx:GroupDescription FieldName="客先名"></dx:GroupDescription>
+                        </dx:DXCollectionView.GroupDescription>
+                        <dx:DXCollectionView.SortDescriptions>
+                            <dx:SortDescription FieldName="客先名" ></dx:SortDescription>
+                        </dx:DXCollectionView.SortDescriptions>
+                        <dx:DXCollectionView.GroupHeaderTemplate>
+                            <DataTemplate>
+                                <Border Margin="5,0,5,5">
+                                    
+                                <Label FontFamily="Roboto-Medium" HorizontalOptions="Center" VerticalOptions="Start"
+                                   Margin="5"
+                                   TextColor="#55575c" FontSize="18"
+                                   Text="{Binding GroupValueText}"/>
+                                </Border>
+                            </DataTemplate>
+                        </dx:DXCollectionView.GroupHeaderTemplate>
+
+                    </dx:DXCollectionView>
+                    </VerticalStackLayout>
+                   
                 </dx:TabViewItem.Content>
             </dx:TabViewItem>
 
-            <dx:TabViewItem>
-                <dx:TabViewItem.HeaderContent>
-                    <VerticalStackLayout
-                  VerticalOptions="Center"
-                  Spacing="4"              >
-                        <dx:DXBorder
-                      CornerRadius="100"
-                      Padding="20,4"
-                      HorizontalOptions="Center">
-                            <dx:DXImage
-                          WidthRequest="24"
-                          HeightRequest="24"
-                          Source="filteringui_favorite"
-                          TintColor="{dx:ThemeColor OnSurfaceVariant}" />
-                        </dx:DXBorder>
-                                      </VerticalStackLayout>
-                </dx:TabViewItem.HeaderContent>
+            <dx:TabViewItem SelectedHeaderBackgroundColor="LightBlue"  HeaderIcon="star.png" HeaderIconColor="Blue" >
+         
 
                 <dx:TabViewItem.Content>
                     <Grid>
                         
                       
                         <dx:DXCollectionView
-                  FilterExpression="{Binding Source={Reference collectionView}, Path=FilterExpression}"
-                  ItemsSource="{Binding Favorites}"
+                  FilterString="[IsFavorite]=True"
+                  ItemsSource="{Binding Orders}"
                   ItemTemplate="{StaticResource orderTemplate}"     
                   TapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"      
                         />

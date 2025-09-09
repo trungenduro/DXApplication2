@@ -25,7 +25,10 @@ public partial class SheetsPage1 : ContentPage
 
 	private void ToolbarItem_Clicked(object sender, EventArgs e)
 	{
-
+		DXCollectionView collectionView = new DXCollectionView();
+		//collectionView.ShowDetailEditForm();
+		//new DetailEditFormViewModel()
+		//collectionView.Commands.de.de
 	}
 
 
@@ -33,7 +36,7 @@ public partial class SheetsPage1 : ContentPage
     {
         if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
         {		
-
+			
 			form.PropertyChanged += (s, e) =>
 			{
 				if (e.PropertyName == nameof(DevExpress.Maui.Core.DetailEditFormViewModel.Item))
@@ -46,7 +49,8 @@ public partial class SheetsPage1 : ContentPage
                 if (form.DataControlContext is DatabaseViewModel viewmodel)
                 {
                     DatabaseViewModel = viewmodel;
-
+				if (form.Item is DHFOrder order)
+					DatabaseViewModel.CurrentOrder = order;
                 }
             
         }
@@ -54,6 +58,8 @@ public partial class SheetsPage1 : ContentPage
 
 	private async void collectionView_ValidateAndSave(object sender, DevExpress.Maui.Core.ValidateItemEventArgs e)
 	{
+		
+
 		if (e.Item is not ExcelSheet item)
 			return;
 		if (DatabaseViewModel.CurrentOrder is null)

@@ -37,8 +37,8 @@
                 <Image  x:Name="preview" HeightRequest="80" WidthRequest="80" IsVisible="Collapse" Source="{Binding Item,Converter={StaticResource ImageSPConverter}}"></Image>
                <Grid ColumnDefinitions="*,50,50">  
                    <dx:TextEdit LabelText="管番号"  Text="{Binding Item.SpoolNo}" />
-                    <dx:DXButton IconWidth="30" Clicked="FreeHandClicked" IconHeight="30" Grid.Column="2" ButtonType="ToolButton" Icon="freehand"></dx:DXButton>
-                    <dx:DXButton IconWidth="35" Clicked="TakePhotoClicked" IconHeight="35" Grid.Column="1" ButtonType="ToolButton" Icon="camera"></dx:DXButton>
+                    <dx:DXButton  IconWidth="30" Clicked="FreeHandClicked" IconHeight="30" Grid.Column="2" ButtonType="ToolButton" Icon="freehand"></dx:DXButton>
+                    <dx:DXButton  IconWidth="35" Clicked="TakePhotoClicked" IconHeight="35" Grid.Column="1" ButtonType="ToolButton" Icon="camera"></dx:DXButton>
                </Grid>
 
                 <!--<dx:ComboBoxEdit SelectionChanged="type_SelectionChanged" x:Name="type" SelectedIndex="{Binding Item.SpoolType}" LabelText="形式" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.SpoolTypes}">
@@ -54,13 +54,13 @@
                    </dx:ComboBoxEdit.ItemTemplate>  
                </dx:ComboBoxEdit>-->  
 
-               <dx:ComboBoxEdit LabelText="サイズ" SelectedValue="{Binding Item.Size1}" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}">  
+               <dx:ComboBoxEdit LabelText="母管サイズ" SelectedValue="{Binding Item.Size1}" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}">  
                  
                </dx:ComboBoxEdit>
 
                 <Grid ColumnDefinitions="*,40">
                     <dx:ComboBoxEdit LabelText="枝サイズ" SelectedValue="{Binding Item.Size1}" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}"/>
-                    <dx:DXButton Grid.Column="1" Icon="add" ButtonType="ToolButton" Clicked="DXButton_Clicked_1" ></dx:DXButton>
+                    <dx:DXButton Grid.Column="1" Icon="add" IconColor="#1177D7" ButtonType="ToolButton" Clicked="DXButton_Clicked_1" ></dx:DXButton>
                 </Grid>
 
             </dx:DXStackLayout>  

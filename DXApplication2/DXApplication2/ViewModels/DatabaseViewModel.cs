@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DevExpress.Maui.Core;
 using DevExpress.Spreadsheet;
+using DevExpress.Xpo;
 using DevExpress.XtraRichEdit.Forms;
 using DXApplication2.Converters;
 using DXApplication2.Domain.Data;
@@ -16,18 +17,16 @@ public partial class DatabaseViewModel : ObservableObject {
     readonly ICacheService cacheService;
 
     [ObservableProperty]
-    ObservableCollection<DHFOrder>? orders;     
+    ObservableCollection<DHFOrder>? orders;
     
+    [ObservableProperty]
+    ObservableCollection<string>? custormers;
+
+
+
+    [ObservableProperty]
+    ObservableCollection<DHFOrder>? ordersMarked;
    
-    ObservableCollection<DHFOrder>? OrdersMarked
-    {
-        get
-        {
-            if (Orders == null) return null;
-            var list = Orders.Where(x => x.IsFavorite).ToList();
-            return new ObservableCollection<DHFOrder>(list);
-        }
-    }
 
         [ObservableProperty]
     ObservableCollection<CheckerTable>? peoples;
@@ -96,20 +95,33 @@ public partial class DatabaseViewModel : ObservableObject {
 		await unitOfWork.SaveAsync();
         await GetItems();
 	}
-
-    public ObservableCollection<DHFOrder> Favorites { get; } = new ObservableCollection<DHFOrder>();
-   internal void AddToFavorites(DHFOrder house)
+	
+	public ObservableCollection<DHFOrder> Favorites
     {
-        if (Favorites.Remove(house))
+        get
         {
-            house.IsFavorite = false;
-        }
-        else
-        {
-            Favorites.Add(house);
-            house.IsFavorite = true;
+            if (Orders == null) return null;
+            return Orders?? new ObservableCollection<DHFOrder>(Orders.Where(x => x.IsFavorite));
         }
     }
+	internal async void AddToFavorites(DHFOrder house)
+    {
+		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+		house.IsFavorite = !house.IsFavorite;
+		Action? pendingAction = null;
+			
+				var k = Orders.ToList().FindIndex(x => x.Id == house.Id);
+				if (k != -1)
+				{
+					pendingAction = () =>
+						Orders[k] = house;
+
+					unitOfWork.CustomersRepository.Update(house);
+				}
+		await unitOfWork.SaveAsync();
+		pendingAction?.Invoke();
+
+	}
     internal async Task UpdateOrderAsync()
     {
         if(CurrentOrder == null)
@@ -118,7 +130,7 @@ public partial class DatabaseViewModel : ObservableObject {
 		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
 				
 			unitOfWork.CustomersRepository.Update(CurrentOrder);
-         var sheets= unitOfWork.SheetRepository.GetAsync();
+        // var sheets= unitOfWork.SheetRepository.GetAsync();
 
         
 
@@ -148,7 +160,7 @@ public partial class DatabaseViewModel : ObservableObject {
 		try
 		{
 			unitOfWork.PeoplesRepository.Add(p);
-			//await unitOfWork.SaveAsync();
+		    await unitOfWork.SaveAsync();
             List<CheckerTable> checkerTables = Peoples.ToList();
 			checkerTables.Add(p);
 			Peoples = new ObservableCollection<CheckerTable>(checkerTables);
@@ -164,7 +176,8 @@ public partial class DatabaseViewModel : ObservableObject {
 	public async Task Validate(ValidateItemEventArgs args)
 	{
 		args.AutoUpdateItemsSource = true;
-        using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+		string mess = "";
+		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
         Action? pendingAction = null;
         if (args.Item is DHFOrder order)
         {
@@ -180,19 +193,37 @@ public partial class DatabaseViewModel : ObservableObject {
                     }
                   
                 }
+				var k = Orders.ToList().FindIndex(x => x.Id == CurrentOrder.Id);
+                if (k != -1)
+                {
+                    pendingAction = () =>
+                        Orders[k] = CurrentOrder;
 
-
-                unitOfWork.CustomersRepository.Update(order);               
-            }
+                    unitOfWork.CustomersRepository.Update(order);
+                }
+			
+			}
             if (args.DataChangeType == DataChangeType.Add)
             {
+                if (string.IsNullOrEmpty(order.OrderNo))
+                    mess += "OrderNoを入力してください\n"; 
+
+                if (order.Total<=0)
+                    mess += "管数を入力してください\n";
+
+                if (Orders.Where(　x=>x.OrderNo== order.OrderNo&&　x.案件名== order.案件名 && x.客先名 == order.客先名 ).Any())
+                    mess += "オーダーが 重複してます\n";
+
+
+
                 unitOfWork.CustomersRepository.Add(order);
-            }
+				pendingAction = () => Orders.Add(order);
+			}
             if (args.DataChangeType == DataChangeType.Delete)
             {
                 unitOfWork.CustomersRepository.Delete(order);
-                //pendingAction = () => Sheets.Remove(item);
-            }
+				pendingAction = () => Orders.Remove(order);
+			}
 
         }
             if (args.Item is ExcelSheet item)
@@ -202,11 +233,12 @@ public partial class DatabaseViewModel : ObservableObject {
                 ArgumentNullException.ThrowIfNull(Orders);
                 if (item.Checked == null) item.Checked = "-";
 
+
                 if (args.DataChangeType == DataChangeType.Add)
                 {
                     // unitOfWork.SheetRepository.Add(item);
                     //pendingAction = () => Sheets.Add(item);
-                    string mess = "";
+                    
                     if (item.Kiki1 == "")
                         mess = "kiki1";
                     if (item.Kiki2 == "")
@@ -220,7 +252,7 @@ public partial class DatabaseViewModel : ObservableObject {
                 if (args.DataChangeType == DataChangeType.Edit)
                 {                   
 
-                    unitOfWork.SheetRepository.Update(item);
+                   // if(item.ID!=0) unitOfWork.SheetRepository.Update(item);
                     //pendingAction = () => Sheets[args.SourceIndex] = item;
                 }
                 if (args.DataChangeType == DataChangeType.Delete)
@@ -228,9 +260,7 @@ public partial class DatabaseViewModel : ObservableObject {
                     unitOfWork.SheetRepository.Delete(item);
                     //pendingAction = () => Sheets.Remove(item);
                 }
-                await unitOfWork.SaveAsync();
-
-              //  pendingAction?.Invoke();
+          
             }
             catch (Exception ex)
             {
@@ -257,7 +287,7 @@ public partial class DatabaseViewModel : ObservableObject {
 				}
 				if (args.DataChangeType == DataChangeType.Edit)
                 {
-                    unitOfWork.SpoolRepository.Update(sp);
+                   // unitOfWork.SpoolRepository.Update(sp);
                     //pendingAction = () => Sheets[args.SourceIndex] = item;
                 }
                 if (args.DataChangeType == DataChangeType.Delete)
@@ -308,12 +338,74 @@ public partial class DatabaseViewModel : ObservableObject {
 			}
 		}
 
-			await unitOfWork.SaveAsync();
-       // pendingAction?.Invoke();
 
-        await UpdateOrderAsync();
+		if (mess != "")
+		{
+
+			args.IsValid = false;
+			await Shell.Current.DisplayAlert("確認", mess, "OK");
+			return;
+		}
+		await unitOfWork.SaveAsync();
+        pendingAction?.Invoke();
+
+      //  await UpdateOrderAsync();
         return;
     }
+
+    public async void CheckSpool( ExcelSheet sheet, DevExpress.Maui.Core.ValidateItemEventArgs e)
+    {
+        if (CurrentOrder == null) return;
+		
+					
+		if (e.Item is not LiningSpool sp) return;
+		string mess = "";
+
+		if (sp.SpoolNo == null || sp.SpoolNo == "")
+		{
+			mess += "管番号未入力\n";
+		}
+		if (sp.Size == null || sp.Size == "")
+		{
+			mess += "管サイズ未入力\n";
+		}
+		if (mess != "")
+		{
+			e.IsValid = false;
+			await Shell.Current.DisplayAlert("確認", mess, "OK");
+			return;
+		}
+		
+            var spools = CurrentOrder.Spools.Select(x=>x.SpoolNo).ToList();
+        foreach (var item in sheet.Spools)
+        {
+            if (!spools.Contains(item.SpoolNo)) spools.Add(item.SpoolNo);
+        }
+		
+
+			if (e.DataChangeType == DataChangeType.Edit)
+			{
+				if (spools.Where(x => x.Trim().Equals(sp.SpoolNo)).Count() > 1)
+				{
+					mess += "管番号重複\n";
+				}
+			}
+			if (e.DataChangeType == DataChangeType.Add)
+			{
+				if (spools.Where(x => x.Equals(sp.SpoolNo)).Any())
+				{
+					mess += "管番号重複\n";
+				}
+			}
+			if (!string.IsNullOrEmpty(mess))
+			{
+				e.IsValid = false;
+				await Shell.Current.DisplayAlert("確認", mess, "OK");
+				return;
+			}
+		
+	}
+
 
     internal async Task DeleteSheetAsync(ExcelSheet sheet)
     {
@@ -346,8 +438,7 @@ public partial class DatabaseViewModel : ObservableObject {
         try
         {
             unitOfWork.SpoolRepository.Delete(spool);
-
-          await  unitOfWork.SaveAsync();
+            await  unitOfWork.SaveAsync();
         }
         catch (Exception e)
         {
@@ -410,9 +501,11 @@ public partial class DatabaseViewModel : ObservableObject {
         var ps = await unitOfWork.PeoplesRepository.GetAsync();
          var sheets1=  unitOfWork.context.ExcelSheet.ToList();
         var spools1=  unitOfWork.context.Spools.ToList();
-		//var spoolsa = unitOfWork.context.Spools.ToList().ToList();
-		//var orderS = spools.Where(x => x.Sheet != null).Where(x=>!x.Sheet.Spools.Where(x1=>x1.ID == x.ID).Any()).ToList();
-        
+        //var spoolsa = unitOfWork.context.Spools.ToList().ToList();
+        //var orderS = spools.Where(x => x.Sheet != null).Where(x=>!x.Sheet.Spools.Where(x1=>x1.ID == x.ID).Any()).ToList();
+
+        if(data!=null)
+            Custormers = new ObservableCollection<string>(data.GroupBy(x => x.客先名).Select(x => x.Key));
 
 		Peoples = new ObservableCollection<CheckerTable>(ps ?? Enumerable.Empty<CheckerTable>());
         return data ?? Enumerable.Empty<DHFOrder>();

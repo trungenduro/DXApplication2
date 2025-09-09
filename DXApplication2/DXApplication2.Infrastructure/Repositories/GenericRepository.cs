@@ -13,7 +13,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     readonly DbSet<TEntity> DbSet;
     readonly ICacheService cacheService;
     readonly LiningCheckContext Context;
-    readonly List<Action<IList>> PendingCacheUpdateActions;
+    public List<Action<IList>> PendingCacheUpdateActions;
 
     public GenericRepository(LiningCheckContext context, ICacheService cacheService) {
         this.cacheService = cacheService;

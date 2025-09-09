@@ -1,4 +1,6 @@
+using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
+using DevExpress.Maui.Editors;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using Microsoft.Maui.Controls;
@@ -15,7 +17,7 @@ namespace DXApplication2.Views
 		private void collectionView_DoubleTap(object sender, DevExpress.Maui.DataGrid.DataGridGestureEventArgs e)
 		{
 
-			Navigation.PushAsync(new SheetsPage());
+			//Navigation.PushAsync(new SheetsPage());
 
 		}
 
@@ -58,6 +60,43 @@ namespace DXApplication2.Views
 		{
 			DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
 			vm.SaveDatabase();
+		}
+
+		private void inputChipGroup_Completed(object sender, DevExpress.Maui.Editors.CompletedEventArgs e)
+		{
+			var chipGroup = sender as InputChipGroup;
+			if (chipGroup.EditorText == null) return;
+			if (chipGroup.EditorText.Length <= 1)
+			{
+				e.ClearEditorText = false;
+			}
+			else
+			{
+				if (chipGroup.ItemsSource is List<object> list)
+				{
+
+					list.Add(chipGroup.EditorText);
+				}
+				if (this.BindingContext is DatabaseViewModel vm)
+				{
+					vm.AddPeople(chipGroup.EditorText);					
+				}
+
+				// AddPeople
+				//	IList<CheckerTable> list = chipGroup.ItemsSource as BindingList<CheckerTable>;
+				//	list.Add(new CheckerTable() { Name = chipGroup.EditorText });
+			}
+		}
+
+		private void ChoiceChipGroup_ChipTap(object sender, ChipEventArgs e)
+		{
+			if (e.Item is string text)
+				this.label.Text += text;
+		}
+
+		private void DXButton_Clicked(object sender, EventArgs e)
+		{
+			
 		}
 	}
 }

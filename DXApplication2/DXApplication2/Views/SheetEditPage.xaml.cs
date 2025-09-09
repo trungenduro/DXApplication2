@@ -1,3 +1,4 @@
+using AndroidX.Lifecycle;
 using DevExpress.Maui.Charts;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
@@ -67,50 +68,12 @@ public partial class SheetEditPage : ContentPage
             if (e.Item is LiningSpool sp)
 			{
 				string mess = "";
-
-                if (sp.SpoolNo == null || sp.SpoolNo == "")
-                {
-                    mess += "管番号未入力\n";
-                }
-				else if (order != null)
+				if (Sheet != null)
 				{
-					if( order.Spools.Where(x=> x.ID!=sp.ID && x.SpoolNo.Equals( sp.SpoolNo)).Any())
-					{
-                        mess += "管番号重複\n";
-                    }
-					
+					DatabaseViewModel.CheckSpool(Sheet, e);
 
-
-                }
-                if (sp.Size == null || sp.Size == "")
-                {
-                    mess += "管サイズ未入力\n";
-                }
-
-
-                if (mess != "")
-				{
-
-					e.IsValid = false;
-                    await Shell.Current.DisplayAlert("確認", mess, "OK");
-                    return;
 				}
-
-				if(e.DataChangeType== DataChangeType.Edit)
-				{
-                   // DatabaseViewModel.sa
-
-                }
-				if(e.DataChangeType== DataChangeType.Add)
-				{
-					if(sp.SpoolType == 3)
-					{
-						//var ocrpage = new CameraView(sp);
-
-						//Navigation.PushAsync(ocrpage);
-
-					}
-				}
+				
 			}
 
             DatabaseViewModel.Validate(e);
@@ -122,14 +85,16 @@ public partial class SheetEditPage : ContentPage
 	DevExpress.Maui.Core.DetailEditFormViewModel editform;
 
 	DHFOrder order;
+	ExcelSheet Sheet;
 
-    private void ContentPage_BindingContextChanged(object sender, EventArgs e)
+	private void ContentPage_BindingContextChanged(object sender, EventArgs e)
 	{
 		if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
 		{
 			editform = form;
-
-            if (form.DataControlContext is DetailEditFormViewModel form1)
+			if(form.Item is ExcelSheet sh)
+				Sheet = sh;
+			if (form.DataControlContext is DetailEditFormViewModel form1)
 			{
 				order = form1.Item as DHFOrder;				
 				if (form1.DataControlContext is DatabaseViewModel viewmodel)

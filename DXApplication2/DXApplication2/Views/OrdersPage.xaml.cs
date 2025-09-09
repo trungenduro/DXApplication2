@@ -1,5 +1,6 @@
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
+using DevExpress.Maui.Editors;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using Microsoft.Maui.Controls;
@@ -13,6 +14,8 @@ namespace DXApplication2.Views
         public OrdersPage()
         {
             InitializeComponent();
+
+            
         }
 
 		private void collectionView_DoubleTap(object sender, DevExpress.Maui.DataGrid.DataGridGestureEventArgs e)
@@ -64,9 +67,9 @@ namespace DXApplication2.Views
                if(border.BindingContext is DHFOrder order)
                 {
                    // order.IsFavorite = !order.IsFavorite;
-                    border.BackgroundColor = order.IsFavorite ? Colors.AliceBlue : Colors.Transparent;
-                    if(border.Content is DXImage image)
-                        image.TintColor = order.IsFavorite ? Colors.Red : Colors.Black;
+                  //  border.BackgroundColor = order.IsFavorite ? Colors.AliceBlue : Colors.Transparent;
+                  //  if(border.Content is DXImage image)
+                   //     image.TintColor = order.IsFavorite ? Colors.Red : Colors.Black;
                     DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
                     vm.AddToFavorites( order);
                    // await vm.UpdateOrderAsync();
@@ -88,5 +91,34 @@ namespace DXApplication2.Views
         {
 
         }
-    }
+		private void inputChipGroup_Completed(object sender, DevExpress.Maui.Editors.CompletedEventArgs e)
+		{
+			var chipGroup = sender as InputChipGroup;
+			if (chipGroup.EditorText == null) return;
+			if (chipGroup.EditorText.Length <= 1)
+			{
+				e.ClearEditorText = false;
+			}
+			else
+			{
+				if (chipGroup.ItemsSource is List<object> list)
+				{
+
+					list.Add(chipGroup.EditorText);
+				}
+				if (this.BindingContext is DetailEditFormViewModel form)
+				{
+
+					if (form.DataControlContext is DetailEditFormViewModel form1)
+					{
+						//form1.DeleteCommand
+						if (form1.DataControlContext is DatabaseViewModel vm) vm.AddPeople(chipGroup.EditorText);
+					}
+				}
+				// AddPeople
+				//	IList<CheckerTable> list = chipGroup.ItemsSource as BindingList<CheckerTable>;
+				//	list.Add(new CheckerTable() { Name = chipGroup.EditorText });
+			}
+		}
+	}
 }

@@ -3,12 +3,13 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
             x:Class="DXApplication2.Views.SheetsPage1"  
             xmlns:dx="http://schemas.devexpress.com/maui"  
+               xmlns:local="clr-namespace:DemoCenter.Maui.Views"
             xmlns:dxc="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"  
             xmlns:converters="clr-namespace:DXApplication2.Converters;assembly=DXApplication2"  
             BindingContextChanged="ContentPage_BindingContextChanged"  
             xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"  
             xmlns:models="clr-namespace:LiningCheckRecord;assembly=DXApplication2.Infrastructure"  
-            Title="{Binding Item.OrderNo,StringFormat='Order {0}'}">
+            Title="{Binding Item.OrderNo,StringFormat='{0}'}">
     <ContentPage.Resources>
         <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
         <converters:IntToImageConverter x:Key="ImageIntConverter" />
@@ -17,26 +18,42 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <!--<ToolbarItem Text="{Binding Source={x:Reference sheetGrid1}}" />-->
+        <ToolbarItem Text="シート作成" IconImageSource="delete.png"  Command="{Binding DeleteCommand}" />
         <ToolbarItem Text="シート作成" IconImageSource="addlist.svg"  Command="{Binding Source={x:Reference sheetGrid1}, Path=Commands.ShowDetailNewItemForm}" />
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <Grid>
+        <dx:DXScrollView>
+            
+      
         <VerticalStackLayout Margin="10,0,10,0">
 
             <!--<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">-->
-
-            <dx:TextEdit HeightRequest="60" TextVerticalAlignment="Center" Grid.Column="1" LabelText="オーダー番号" Text="{Binding Item.OrderNo}" ClearIconVisibility="Never"></dx:TextEdit>
-            <dx:TextEdit Margin="0,5,0,0" HeightRequest="60" TextVerticalAlignment="Center" LabelText="客先名" PlaceholderText="客先名" Text="{Binding Item.客先名}" ClearIconVisibility="Never" />
-            <dx:TextEdit Margin="0,5,0,0" HeightRequest="60" TextVerticalAlignment="Center" LabelText="案件名" PlaceholderText="案件名" Text="{Binding Item.案件名}" ClearIconVisibility="Never"/>
-            <dx:TextEdit Margin="0,5,0,0" HeightRequest="60" TextVerticalAlignment="Center" LabelText="管数" Keyboard="Numeric" Text="{Binding Item.Total}" ClearIconVisibility="Never"/>
-
-
-            <dx:DXScrollView>
+            <dx:DXExpander VerticalExpandMode="FromEndToStart" IsExpanded="False" >
                 
-            <dx:DXCollectionView Margin="0,0,0,0" x:Name="sheetGrid1" SelectionMode="Single" UseRippleEffect="True" ItemSpanCount="1" DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"  
+            </dx:DXExpander>
+            <dx:TextEdit HeightRequest="60" TextVerticalAlignment="Center" Grid.Column="1" LabelText="オーダー番号" Text="{Binding Item.OrderNo}" ClearIconVisibility="Never"></dx:TextEdit>
+                  <dx:TextEdit Margin="0,5,0,0" HeightRequest="60" TextVerticalAlignment="Center" LabelText="客先名" PlaceholderText="客先名" Text="{Binding Item.客先名}" ClearIconVisibility="Never" />
+            <dx:TextEdit Margin="0,5,0,0" HeightRequest="60" TextVerticalAlignment="Center" LabelText="案件名" PlaceholderText="案件名" Text="{Binding Item.案件名}" ClearIconVisibility="Never"/>
+
+        
+                
+            <dx:TextEdit  Margin="0,5,0,0" HeightRequest="60"  TextVerticalAlignment="Center" LabelText="管数" Keyboard="Numeric" Text="{Binding Item.Total}" ClearIconVisibility="Never"/>
+                <!--<local:BarControl HorizontalOptions="Fill" HeightRequest="30" VerticalOptions="End" ZIndex="2" Color="Yellow"-->
+                    
+                     <!--MaxValue="{Binding Item.Total}" Value="{Binding Item.SpoolsCount}" />-->
+         
+
+
+            
+                
+            <dx:DXCollectionView Margin="0,10,0,0" x:Name="sheetGrid1" SelectionMode="Single" UseRippleEffect="True" ItemSpanCount="1" DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"  
             Tap="spoolGrid_Tap"                DoubleTapCommand="{Binding Source={RelativeSource Mode=Self}, Path=Commands.ShowDetailEditForm}" ValidateAndSave="collectionView_ValidateAndSave"  
                             ItemsSource="{Binding Item.ExcelSheets}" ItemSpacing="16" DetailNewItemFormTemplate="{DataTemplate views:NewSheetView}">
-            <dx:DXCollectionView.ItemTemplate>
+                    <dx:DXCollectionView.SortDescriptions>
+                        <dx:SortDescription FieldName="SheetNo" ></dx:SortDescription>
+                    </dx:DXCollectionView.SortDescriptions>
+                    <dx:DXCollectionView.ItemTemplate>
                 <DataTemplate>
                     <dx:DXBorder CornerRadius="10"  
                                 BorderColor="LightGray"  
@@ -67,16 +84,17 @@
                                     <Label Margin="10,0,0,0" Text="{Binding CheckDate2,StringFormat='原管入荷:{0:yy/MM/dd}'}"      
                                           VerticalOptions="End"  
                                           HorizontalOptions="End" />
-                                <HorizontalStackLayout Spacing="10">
+                                        </HorizontalStackLayout>
+                                  <HorizontalStackLayout Spacing="10">
                                     <Label Margin="10,0,0,0"    VerticalOptions="End"  Text="{Binding Checker, StringFormat='検査員: {0}'}"  />
                                     <Label Margin="10,0,0,0" VerticalOptions="End"  Text="{Binding Checked, StringFormat=' 品証: {0}'}"  />
-                                    <Label Text="{Binding SpoolsCount, StringFormat='管数: {0}'}" FontSize="12" />
+                                    <Label Text="{Binding SpoolsCount, StringFormat='管数: {0}'}"  />
                                 </HorizontalStackLayout>
                                     <!--<Label Text="{Binding Checked, StringFormat='判定: {0}'}" FontSize="12" />-->
                                     <!--<Label  Text="{Binding Checker, StringFormat='検査員: {0}'}"  />-->
                                    
                                   
-                                </HorizontalStackLayout>
+                               
 
                                 <dx:DXWrapLayout ItemsSource="{Binding Spools}" ItemSpacing="10"  >
                                     <dx:DXWrapLayout.ItemTemplate>
@@ -129,7 +147,7 @@
                 </DataTemplate>
             </dx:DXCollectionView.ItemTemplate>
         </dx:DXCollectionView>
-            </dx:DXScrollView>
+          
             
             
         <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext}"            
@@ -166,6 +184,7 @@
         </dx:DXPopup>
 
         </VerticalStackLayout>
+        </dx:DXScrollView>
         <ActivityIndicator  
         IsRunning="{Binding InitializeCommand.IsRunning}"  
         HorizontalOptions="Center"  

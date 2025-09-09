@@ -9,11 +9,12 @@
       xmlns:local="clr-namespace:DemoCenter.Maui.Views"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
+     xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
     xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
     xmlns:models="clr-namespace:DXApplication2.Domain.Data;assembly=DXApplication2.Domain"
    
     BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
-    Title="オーダーリスト">
+    Title="検査員リスト編集">
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
@@ -22,15 +23,13 @@
 
     <ContentPage.ToolbarItems>
         <!--Command="{Binding RefreshCommand"-->
-        <ToolbarItem Text="Refresh"  Clicked="ToolbarItem_Clicked" />
-        <ToolbarItem Text="Create" IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
       
         <ToolbarItem Text="Create" IconImageSource="save.svg" Clicked="save_Clicked" />
        
     </ContentPage.ToolbarItems>
 
-    <Grid>
-        <dx:DataGridView Margin="20,10,10,10" HorizontalOptions="Center" WidthRequest="200" EditorShowMode="Tap" 
+    <VerticalStackLayout>
+        <!--<dx:DataGridView Margin="20,10,10,10" HorizontalOptions="Center" WidthRequest="200" EditorShowMode="Tap" 
             x:Name="collectionView"  DetailNewItemFormTemplate="{DataTemplate views:NewPeopleView}" DetailEditFormTemplate="{DataTemplate views:NewPeopleView}"
             ItemsSource="{Binding Peoples}" ValidateAndSave="collectionView_ValidateAndSave"
               RowDoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"
@@ -45,17 +44,59 @@
             </dx:DataGridView.EndSwipeItems>
 
             <dx:DataGridView.Columns>
-                     <dx:TextColumn Caption="名" FieldName="Name" Width="180" AutoFilterCondition="Contains"   />
+                     <dx:TextColumn Caption="検査員名前" FieldName="Name" Width="180" AutoFilterCondition="Contains"   />
                    
             </dx:DataGridView.Columns>
 
+          
+
+        </dx:DataGridView>-->
+        <dxe:InputChipGroup x:Name="inputchip"
+                            ItemsSource="{Binding Peoples}" Padding="30,20,20,0" EditorPlaceholderText="名前入力" DisplayMember="Name"
+ IsMultiline="True" Completed="inputChipGroup_Completed" 
+IconMember="add.svg" ChipCheckIcon="add.svg" 
+>
+        </dxe:InputChipGroup>
+        
+        <dx:SlideView x:Name="slide" AllowLooping="True"  
+              AllowSwipe="True">
+            <dx:SlideView.Items>
+                <VerticalStackLayout>
+                    <Label Text="slide 1"/>
+                    <dx:DXImage Source="addlist.png"></dx:DXImage>
+                    <dx:DXButton Content="&gt;" Command="{Binding Source={x:Reference slide}, Path=Commands.ShowNext}"></dx:DXButton>
+                </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <Label Text="slide 2"/>
+                    <dx:DXImage Source="people.png"></dx:DXImage>
+                    <dx:DXButton ButtonType="ToolButton" Content="&lt;" Command="{Binding Source={x:Reference slide}, Path=Commands.ShowPrevious}"></dx:DXButton>
+                </VerticalStackLayout>
+              
+            </dx:SlideView.Items>
+        </dx:SlideView>
+        
+        <Label Text="{Binding}"  />
+        <Label x:Name="label"/>
+        <dx:ChoiceChipGroup ItemsSource="{Binding Sizes}" ChipTap="ChoiceChipGroup_ChipTap" DisplayMember="Name"  >
+           
+        </dx:ChoiceChipGroup>
+        <dx:ChoiceChipGroup DisplayMember="Name" ItemsSource="{Binding Peoples}"></dx:ChoiceChipGroup>
+        <dx:FormItem >
+            <VerticalStackLayout>
+                
+            <dx:FormListPickerItem ImageSource="people.png" Text="sss" InlineContent="{x:Null}" IsMultipleSelectionEnabled="True" ItemsSource="{Binding Sizes}" PickerTitle="検査員選択" />
+                <dx:FormGroupItem >                    
+                <dx:FormCheckItem ></dx:FormCheckItem>
+                <dx:FormCheckItem ></dx:FormCheckItem>
+                </dx:FormGroupItem>
+            </VerticalStackLayout>
+        </dx:FormItem>
 
 
-        </dx:DataGridView>
 
         <ActivityIndicator
             IsRunning="{Binding InitializeCommand.IsRunning}"
             HorizontalOptions="Center"
             VerticalOptions="Center" />
-    </Grid>
+    </VerticalStackLayout>
 </ContentPage>
