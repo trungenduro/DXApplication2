@@ -2,13 +2,15 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DevExpress.Maui.Core;
+using DevExpress.Maui.Pdf;
 using DevExpress.Spreadsheet;
-using DevExpress.Xpo;
-using DevExpress.XtraRichEdit.Forms;
+
+
 using DXApplication2.Converters;
 using DXApplication2.Domain.Data;
 using DXApplication2.Domain.Services;
 using DXApplication2.Infrastructure.Data;
+
 using LiningCheckRecord;
 
 namespace DXApplication2.ViewModels;
@@ -52,6 +54,8 @@ public partial class DatabaseViewModel : ObservableObject {
     [NotifyCanExecuteChangedFor(nameof(InitializeCommand))]
     bool isInitialized;
 
+
+
     public DatabaseViewModel(ICacheService cacheService) {
         this.cacheService = cacheService;
     }
@@ -64,6 +68,35 @@ public partial class DatabaseViewModel : ObservableObject {
 
         IsInitialized = true;
     }
+
+    [ObservableProperty]
+    PdfDocumentSource? documentSource;
+
+    [RelayCommand()]
+    async Task InitializePDFAsync() {
+        IsInitialized = false;
+        if (CurrentSheet == null)
+        if (Orders != null)
+            if(Orders.Count>0)
+                if (Orders[0].ExcelSheets.Count>0)
+                    CurrentSheet= Orders[0].ExcelSheets[0];
+
+        if (CurrentSheet != null)
+        {
+            
+            var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= CurrentSheet .Spools} ;
+            report.CreateDocument();
+            string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
+            await report.ExportToPdfAsync(resultFile);
+            DocumentSource = PdfDocumentSource.FromFile(resultFile);
+            //LinningReport 
+            // LinningReport
+        }
+       
+        IsInitialized = true;
+    }
+
+
 
     [RelayCommand]
     async Task Refresh()
@@ -148,6 +181,16 @@ public partial class DatabaseViewModel : ObservableObject {
        await InitializeAsync();
     }
 
+    public static List<LiningSpool> liningSpools;
+    //public List<LiningSpool> Spools
+    //{
+    //    get
+    //    {
+    //        if (CurrentSheet == null) return new List<LiningSpool>();
+    //        return CurrentSheet.Spools;
+    //    }
+    //}
+            
 
 	public IEnumerable<SpoolType> SpoolTypes => Enum.GetValues(typeof(SpoolType)).Cast<SpoolType>();
 
@@ -181,8 +224,28 @@ public partial class DatabaseViewModel : ObservableObject {
         Action? pendingAction = null;
         if (args.Item is DHFOrder order)
         {
+            if (string.IsNullOrEmpty(order.OrderNo))
+                mess += "OrderNoを入力してください\n";
+            if (string.IsNullOrEmpty(order.客先名))
+                mess += "客先名を入力してください\n";
+              if (string.IsNullOrEmpty(order.案件名))
+                mess += "案件名を入力してください\n";
+            if (order.Total <= 0)
+                mess += "管数を入力してください\n";
+            if(args.DataChangeType == DataChangeType.Add)
+            if (Orders.Where(x => x.OrderNo == order.OrderNo && x.案件名 == order.案件名 && x.客先名 == order.客先名).Any())
+                mess += "オーダーが 重複してます\n";
+            if (mess != "")
+            {
+
+                args.IsValid = false;
+                await Shell.Current.DisplayAlert("確認", mess, "OK");
+                return;
+            }
+
             if (args.DataChangeType == DataChangeType.Edit)
             {
+
                 var sheets = await unitOfWork.SheetRepository.GetAsync();
                 var orderS= sheets.Where(x=>x.Order!=null).Where(x => x.Order.Id == order.Id).ToList();
                 foreach (var sh in orderS)
@@ -205,14 +268,7 @@ public partial class DatabaseViewModel : ObservableObject {
 			}
             if (args.DataChangeType == DataChangeType.Add)
             {
-                if (string.IsNullOrEmpty(order.OrderNo))
-                    mess += "OrderNoを入力してください\n"; 
-
-                if (order.Total<=0)
-                    mess += "管数を入力してください\n";
-
-                if (Orders.Where(　x=>x.OrderNo== order.OrderNo&&　x.案件名== order.案件名 && x.客先名 == order.客先名 ).Any())
-                    mess += "オーダーが 重複してます\n";
+                
 
 
 
@@ -232,21 +288,28 @@ public partial class DatabaseViewModel : ObservableObject {
             {
                 ArgumentNullException.ThrowIfNull(Orders);
                 if (item.Checked == null) item.Checked = "-";
+                if (item.Kiki1 == "" || item.Kiki2=="")
+                    mess = "機器名を入力してください";
+               
+                if (item.ThickNess <= 0)
+                    mess = "指定膜厚を入力してください";
+                if (item.Checker == "")
+                    mess = "検査員を入力してください";
 
+                if (mess != "")
+                {
+
+                    args.IsValid = false;
+                    await Shell.Current.DisplayAlert("確認", mess, "OK");
+                    return;
+                }
 
                 if (args.DataChangeType == DataChangeType.Add)
                 {
                     // unitOfWork.SheetRepository.Add(item);
                     //pendingAction = () => Sheets.Add(item);
                     
-                    if (item.Kiki1 == "")
-                        mess = "kiki1";
-                    if (item.Kiki2 == "")
-                        mess = "kiki1";
-                    if (item.ThickNess <=0)
-                        mess = "ThickNess";
-                    if (item.Checker=="")
-                        mess = "Checker";
+                
 
                 }
                 if (args.DataChangeType == DataChangeType.Edit)

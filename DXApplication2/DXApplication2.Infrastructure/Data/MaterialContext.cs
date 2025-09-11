@@ -154,14 +154,16 @@ namespace LiningCheckRecord
 		//	modelBuilder.Entity<ExcelSheet>().HasData(new List<ExcelSheet> { excelSheet });
 			var customers1 = new List<DHFOrder>();
 		
-				customers1.Add(new DHFOrder {Id=1, 客先名 = $"JFE", 案件名="JFE1", OrderNo = $"00001-000", Total = 10
-                ,
-					
-				});
+				customers1.Add(new DHFOrder {Id=1, 客先名 = $"JFE", 案件名="佐世保", OrderNo = $"00001-0000", Total = 10,});
+				customers1.Add(new DHFOrder {Id=2, 客先名 = $"JGC", 案件名="名古屋", OrderNo = $"00001-0001", Total = 5,});
 
-			excelSheet.Order = customers1[0];
+            var checker = new List<CheckerTable>();
+            checker.Add(new CheckerTable { ID = 1, Name = "太郎1" });
+            checker.Add(new CheckerTable { ID = 2, Name = "太郎2" });
 
-			modelBuilder.Entity<DHFOrder>().HasData(customers1);
+
+            modelBuilder.Entity<DHFOrder>().HasData(customers1);
+            modelBuilder.Entity<CheckerTable>().HasData(checker);
 		//	modelBuilder.Entity<ExcelSheet>().HasData(new List<ExcelSheet>() { excelSheet});
 
 		

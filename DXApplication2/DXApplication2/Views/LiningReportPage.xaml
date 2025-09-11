@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+     x:Name="page"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DXApplication2.Views.LiningReportPage"
+               xmlns:dx="http://schemas.devexpress.com/maui"
+  xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
+  xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+  BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
+             Title="LiningReportPage">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializePDFCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
+ </ContentPage.Behaviors>
+
+    <Grid>
+        <!--<dx:DXButton ZIndex="1"  Content="TEst" VerticalOptions="Center" Command="{Binding InitializePDFCommand}"></dx:DXButton>-->
+        <dx:PdfViewer ShowToolbar="True" ShowEditToolbar="True" DocumentSource="{Binding DocumentSource}" />
+
+        <!--<ActivityIndicator
+         IsRunning="{Binding InitializePDFCommand.IsRunning}"
+         HorizontalOptions="Center"
+         VerticalOptions="Center" />-->
+    </Grid>
+</ContentPage>

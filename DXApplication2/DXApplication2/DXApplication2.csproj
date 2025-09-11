@@ -45,30 +45,35 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Maui.Camera" Version="3.0.1" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.80" />
-    <PackageReference Include="DevExpress.Data" Version="25.1.*-*" />
-    <PackageReference Include="DevExpress.Maui.Controls" Version="25.1.*-*" />
-    <PackageReference Include="DevExpress.Maui.CollectionView" Version="25.1.*-*" />
-    <PackageReference Include="DevExpress.Maui.Editors" Version="25.1.*-*" />
-    <PackageReference Include="DevExpress.Maui.DataGrid" Version="25.1.*-*" />
-    <PackageReference Include="DevExpress.Maui.TreeView" Version="25.1.*-*" />
-    <PackageReference Include="DevExpress.Maui.Scheduler" Version="25.1.*-*" />
-    <PackageReference Include="DevExpress.Maui.Gauges" Version="25.1.*-*" />
-    <PackageReference Include="DevExpress.Maui.Charts" Version="25.1.*-*" />
+    <PackageReference Include="DevExpress.Data" Version="25.1.3" />
+    <PackageReference Include="DevExpress.Maui.Controls" Version="25.1.3" />
+    <PackageReference Include="DevExpress.Maui.CollectionView" Version="25.1.3" />
+    <PackageReference Include="DevExpress.Maui.Editors" Version="25.1.3" />
+    <PackageReference Include="DevExpress.Maui.DataGrid" Version="25.1.3" />
+    <PackageReference Include="DevExpress.Maui.Charts" Version="25.1.3" />
+	  <PackageReference Include="DevExpress.Reporting.Core" Version="25.1.3" />
+	  <PackageReference Include="SkiaSharp" Version="3.119.0" />
+	  <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.0" />
+
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
-    <PackageReference Include="DevExpress.Document.Processor" Version="25.1.*-*" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="10.0.0" />
+    <PackageReference Include="DevExpress.Document.Processor" Version="25.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="DevExpress.Maui.Pdf" Version="25.1.*-*" />
+    <PackageReference Include="DevExpress.Maui.Pdf" Version="25.1.3" />
     <PackageReference Include="Syncfusion.Maui.ImageEditor" Version="30.2.7" />
     <PackageReference Include="Xamarin.Google.MLKit.TextRecognition.Japanese" Version="116.0.1.4" />
+    <ProjectReference Include="..\DXApplication2.Domain\DXApplication2.Domain.csproj" />
     <ProjectReference Include="..\DXApplication2.ReportLibrary\DXApplication2.ReportLibrary.csproj" />
     <ProjectReference Include="..\DXApplication2.Infrastructure\DXApplication2.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Report\XtraReportLiningSpool.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
     <Compile Update="Views\CameraView.xaml.cs">
       <DependentUpon>CameraView.xaml</DependentUpon>
     </Compile>
@@ -94,6 +99,9 @@
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\ImageEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\LiningReportPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\NewPeopleView.xaml">
@@ -133,6 +141,5 @@
 
   <ItemGroup>
     <Folder Include="SpoolImage\" />
-    <Folder Include="新しいフォルダー\" />
   </ItemGroup>
 </Project>

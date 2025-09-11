@@ -1,9 +1,11 @@
+using CommunityToolkit.Maui.Media;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
 using DevExpress.Maui.Editors;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using Microsoft.Maui.Controls;
+using System.Globalization;
 
 namespace DXApplication2.Views
 {
@@ -13,8 +15,8 @@ namespace DXApplication2.Views
         {
             InitializeComponent();
         }
-
-		private void collectionView_DoubleTap(object sender, DevExpress.Maui.DataGrid.DataGridGestureEventArgs e)
+      
+        private void collectionView_DoubleTap(object sender, DevExpress.Maui.DataGrid.DataGridGestureEventArgs e)
 		{
 
 			//Navigation.PushAsync(new SheetsPage());

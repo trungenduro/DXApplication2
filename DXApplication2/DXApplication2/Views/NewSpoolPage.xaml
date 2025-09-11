@@ -17,8 +17,14 @@
        
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
-    <dx:DXScrollView>  
-       <dx:DXStackLayout ItemSpacing="24" Margin="6">  
+    <dx:SlideView x:Name="slider">
+        <dx:SlideView.Items>
+            
+       
+
+            <dx:DXScrollView>  
+        
+                    <dx:DXStackLayout ItemSpacing="24" Margin="6">  
            <dx:DXStackLayout ItemSpacing="8">                
                 <dxe:ChoiceChipGroup HorizontalOptions="Center" x:Name="types" ChipCornerRadius="0" SelectionChanged="types_SelectionChanged" ChipSelectedDisabledIconColor="Red"  SelectedIndex="{Binding Item.SpoolType}" BoxMode="Outlined" 
     ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.SpoolTypes}"   
@@ -67,5 +73,10 @@
 
           
        </dx:DXStackLayout>  
-   </dx:DXScrollView>  
+         </dx:DXScrollView>
+            <dx:DXStackLayout>
+                <Label Text="管データ入力　➔" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="Gray" />
+            </dx:DXStackLayout>
+        </dx:SlideView.Items>
+    </dx:SlideView>
 </ContentPage>

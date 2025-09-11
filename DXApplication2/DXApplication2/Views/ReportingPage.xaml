@@ -5,26 +5,25 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:dx="http://schemas.devexpress.com/maui"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
-    x:DataType="viewModels:ReportingViewModel"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
+  
     Title="ReportingPage">
 
-    <ContentPage.BindingContext>
-        <viewModels:ReportingViewModel />
-    </ContentPage.BindingContext>
+   
 
-    <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
-    </ContentPage.Behaviors>
+    <!--<ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializePDFCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
+    </ContentPage.Behaviors>-->
 
     <Grid>
         <dx:PdfViewer DocumentSource="{Binding DocumentSource}" />
 
-        <ActivityIndicator
-            IsRunning="{Binding InitializeCommand.IsRunning}"
+        <!--<ActivityIndicator
+            IsRunning="{Binding InitializePDFCommand.IsRunning}"
             HorizontalOptions="Center"
-            VerticalOptions="Center" />
+            VerticalOptions="Center" />-->
     </Grid>
 
 </ContentPage>

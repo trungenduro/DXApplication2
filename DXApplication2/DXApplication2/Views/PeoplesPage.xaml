@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Name="page"
+   
+ xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
     x:Class="DXApplication2.Views.PeoplesPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -57,7 +59,12 @@
 IconMember="add.svg" ChipCheckIcon="add.svg" 
 >
         </dxe:InputChipGroup>
-        
+
+        <Entry 
+    Placeholder="Speak your input"
+    android:Entry.ImeOptions="Default"  />
+
+
         <dx:SlideView x:Name="slide" AllowLooping="True"  
               AllowSwipe="True">
             <dx:SlideView.Items>

@@ -42,10 +42,13 @@
                 <!--<local:BarControl HorizontalOptions="Fill" HeightRequest="30" VerticalOptions="End" ZIndex="2" Color="Yellow"-->
                     
                      <!--MaxValue="{Binding Item.Total}" Value="{Binding Item.SpoolsCount}" />-->
-         
 
 
-            
+
+                <Grid>
+                    
+                    <Label Text="成績表がありません" Margin="5,10,0,0" FontSize="20" HorizontalOptions="Center" VerticalOptions="Start"></Label>
+               
                 
             <dx:DXCollectionView Margin="0,10,0,0" x:Name="sheetGrid1" SelectionMode="Single" UseRippleEffect="True" ItemSpanCount="1" DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"  
             Tap="spoolGrid_Tap"                DoubleTapCommand="{Binding Source={RelativeSource Mode=Self}, Path=Commands.ShowDetailEditForm}" ValidateAndSave="collectionView_ValidateAndSave"  
@@ -147,10 +150,10 @@
                 </DataTemplate>
             </dx:DXCollectionView.ItemTemplate>
         </dx:DXCollectionView>
-          
-            
-            
-        <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext}"            
+
+                </Grid>
+
+                <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext}"            
         AllowScrim="True"
         CloseOnScrimTap="True"
         VerticalAlignment="Bottom"

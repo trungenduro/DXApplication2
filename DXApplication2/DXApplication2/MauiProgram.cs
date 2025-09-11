@@ -18,35 +18,38 @@ public static class MauiProgram {
 
 		Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDAwNzM3MkAzMzMwMmUzMDJlMzAzYjMzMzQzYktCQkpsb0VkWjZJcjI0NTVoRTZmZU80QXU3dnZjWmNBV1NkdFlpWHp4Zlk9");
 
-		var builder = MauiApp.CreateBuilder()
+        var builder = MauiApp.CreateBuilder()
             .UseMauiApp<App>()
-			 .ConfigureSyncfusionCore()
+             .ConfigureSyncfusionCore()
+               .ConfigureFonts(fonts =>
+               {
+                   fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                   fonts.AddFont("NotoSans-Regular.ttf", "NotosRegular");
+                   fonts.AddFont("roboto-bold.ttf", "Roboto-Bold");
+                   fonts.AddFont("roboto-medium.ttf", "Roboto-Medium");
+                   fonts.AddFont("roboto-regular.ttf", "Roboto");
+               })
             .UseDevExpress(useLocalization: false)
             .UseDevExpressControls()
-           // .UseDevExpressCharts()
-           // .UseDevExpressTreeView()
+            // .UseDevExpressCharts()
+            // .UseDevExpressTreeView()
             .UseDevExpressCollectionView()
             .UseDevExpressEditors()
             .UseDevExpressDataGrid()
-           // .UseDevExpressScheduler()
+            // .UseDevExpressScheduler()
             //.UseDevExpressGauges()
-		    .UseMauiCommunityToolkit()         
+            .UseMauiCommunityToolkit()
             .RegisterAppServices()
             .RegisterViewModels()
-			.UseMauiCommunityToolkitCamera()
-            
+            .UseMauiCommunityToolkitCamera()
 
-			.ConfigureMauiHandlers(handlers =>
-			{
-				handlers.AddHandler<CameraView, CameraViewHandler>();
-			})
 
-            .ConfigureFonts(fonts => {
-                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                fonts.AddFont("roboto-bold.ttf", "Roboto-Bold");
-                fonts.AddFont("roboto-medium.ttf", "Roboto-Medium");
-                fonts.AddFont("roboto-regular.ttf", "Roboto");
+            .ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddHandler<CameraView, CameraViewHandler>();
             });
+
+            
         return builder.Build();
     }
 

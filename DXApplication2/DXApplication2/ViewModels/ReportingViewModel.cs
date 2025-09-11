@@ -17,11 +17,7 @@ public partial class ReportingViewModel : ObservableObject {
     [RelayCommand(CanExecute = nameof(CanInitialize))]
     async Task InitializeAsync() {
         await Task.Run(() => {
-            var report = new XtraReportInstance() { Name = "Sample" };
-            report.CreateDocument();
-            string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
-            report.ExportToPdf(resultFile);
-            DocumentSource = PdfDocumentSource.FromFile(resultFile);
+           
         });
         IsInitialized = true;
     }
