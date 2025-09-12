@@ -84,7 +84,7 @@ public partial class DatabaseViewModel : ObservableObject {
         if (CurrentSheet != null)
         {
             
-            var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= CurrentSheet .Spools} ;
+            var report = new DXApplication2.XtraReportLiningSpool() { Name="test",DataSource= CurrentSheet .Spools} ;
             report.CreateDocument();
             string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
             await report.ExportToPdfAsync(resultFile);

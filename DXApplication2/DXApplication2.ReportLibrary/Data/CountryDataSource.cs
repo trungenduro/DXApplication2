@@ -10,6 +10,7 @@ namespace DXApplication2.ReportLibrary.Data
                 new LiningSpool { ID = i, SpoolNo = $"Spool{i}", Size1 = $"{i * 25}A" }
                 ).ToList();
            
+
             this.AddRange(sales);
         }
     }
