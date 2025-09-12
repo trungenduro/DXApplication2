@@ -512,7 +512,6 @@ namespace LiningCheckRecord
     
     }
 
-
 	public class LiningSpool
     {
 

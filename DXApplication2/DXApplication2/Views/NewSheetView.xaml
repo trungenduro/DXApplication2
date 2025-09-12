@@ -41,7 +41,7 @@
                          </Grid>
 
                             <Grid ColumnDefinitions="1*,*">
-                    <dx:TextEdit LabelFontSize="12"   TextFontSize="16"  Keyboard="Numeric" LabelText="ピンホール検査機器名" Text="{Binding Item.Kiki1}" Prefix="LP-0" Mask=""  />
+                    <dx:TextEdit  LabelFontSize="12" TextVerticalAlignment="Start" VerticalOptions="Start" TextFontSize="16"  Keyboard="Numeric" LabelText="ピンホール検査機器名" Text="{Binding Item.Kiki1}" Prefix="LP-0" Mask=""  />
                   
                         <!--<Label VerticalOptions="Center" Text=" 検査電圧"></Label>    
                     <dxe:ChoiceChipGroup ChipFontSize="15" Grid.Column="1" SelectedIndex="{Binding Item.Option1}" HorizontalOptions="Center" ChipCornerRadius="0" ChipSelectedDisabledIconColor="Red"  DisplayMember="Name"  BoxMode="Outlined" IsMultiline="True"
@@ -92,38 +92,93 @@ ItemsSource="{Binding DataControlContext.DataControlContext.Options1}" />-->
                                  DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}" >
                     <dx:DXCollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid >
-                                <Grid>
-                                    <Image Margin="5" VerticalOptions="Start" WidthRequest="30" HeightRequest="30" HorizontalOptions="Start"  Source="{Binding Converter={StaticResource SpoolIcon}}"></Image>
-                                    <dx:DXToolbar Padding="0" HeightRequest="30" Margin="0,-15,0,0" BackgroundColor="Transparent" WidthRequest="30" HorizontalOptions="End">
-                                        <dx:ToolbarButton Padding="0"  WidthRequest="30" Margin="-5,10,5,5" HeightRequest="30" VerticalContentAlignment="End"   Icon="edit.png"  FontSize="10" 
-Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailEditForm}" 
-CommandParameter="{Binding .}"
-/>
-                                        <!--<dx:ToolbarButton Content="{Binding Source={RelativeSource AncestorType=ContentPage},Path=BindingContext.DataControlContext}"                                       
-CommandParameter="{Binding .}"                                        />-->
+                                    <dx:DXBorder BorderColor="Red" BorderThickness="2" VerticalOptions="Start"
+                        CornerRadius="5"
+                        Padding="0"
+                        Margin="1">
+                                        <Grid  MinimumHeightRequest="150" ColumnDefinitions="2*,5*,0.8*" RowDefinitions="*,5*">
+                                            <Grid.Resources>
+                                                <Style TargetType="dx:TextEdit">
+                                                    <Setter Property="BackgroundColor" Value="WhiteSmoke"></Setter>
+                                                    <Setter Property="BorderThickness" Value="1"></Setter>
+                                                    <Setter Property="BorderColor" Value="Black"></Setter>
+                                                    <Setter Property="Margin" Value="1,1,1,1"></Setter>
+                                                </Style>
+                                            </Grid.Resources>
 
-                                    </dx:DXToolbar>
+                                            <Grid Grid.Row="1"   />
 
-                                </Grid>
-                                <dx:DXBorder BorderColor="Red" BorderThickness="2" VerticalOptions="Start"
-                          CornerRadius="5"
-                          Padding="0"
-                          Margin="1">
-                                    <Grid  MinimumHeightRequest="150" ColumnDefinitions="2*,5*,0.5*" RowDefinitions="*,5*">
+                                            <Label Padding="5" Text="{Binding SpoolNo}" FontSize="17" Grid.ColumnSpan="1" HorizontalOptions="Center" />
 
-                                        <Grid Grid.Row="1"   />
+                                            <Image Grid.Row="1"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
 
-                                        <Label Padding="5" Text="{Binding SpoolNo}" FontSize="17" Grid.ColumnSpan="1" HorizontalOptions="Center" />
+                                            <!--<Label Padding="0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="良" FontSize="15" FontAttributes="Bold"/>-->
+                                            <dx:ComboBoxEdit  Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" SelectedValue="{Binding Item.CheckShape}">
+                                                <dx:ComboBoxEdit.ItemsSource>         
+                                                    <x:Array Type="{x:Type x:String}">
+                                                        <x:String>-</x:String>
+                                                        <x:String>良</x:String>
+                                                        <x:String>不良</x:String>
+                                                       
+                                                    </x:Array>
+                                                </dx:ComboBoxEdit.ItemsSource>
+                                            </dx:ComboBoxEdit>
+                                            
+                                            
+                                            <Grid  x:Name="numberGrid" BackgroundColor="LightBlue" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" RowDefinitions="*,*,*,*,*,*" ColumnDefinitions="*,*,*,*,*,*">
 
-                                        <Image Grid.Row="1"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
+                                                <Label Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="A" FontSize="15" FontAttributes="Bold"/>
+                                                <Label Padding="0" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="B" FontSize="15" FontAttributes="Bold"/>
+                                                <Label Padding="0" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="C" FontSize="15" FontAttributes="Bold"/>
+                                                <Label Padding="0" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="D" FontSize="15" FontAttributes="Bold"/>
+                                                <Label Padding="0" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="E" FontSize="15" FontAttributes="Bold"/>
 
-                                        <Label Padding="0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="良" FontSize="15" FontAttributes="Bold"/>
+                                                <Label Grid.Row="5" Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="備考" FontSize="15" FontAttributes="Bold"/>
 
-                                               </Grid>
-                                </dx:DXBorder>
-                            </Grid>
-                        </DataTemplate>
+                                                <dx:TextEdit BackgroundColor="Red"  Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding A1}" Grid.Column="0" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding A2}" Grid.Column="0" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding A3}" Grid.Column="0" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"   />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding A4}" Grid.Column="0" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"   />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" SemanticProperties.Hint="ddd" Text="{Binding B1}" Grid.Column="1" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never"  Text="{Binding B2}" Grid.Column="1" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"   />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never"  Text="{Binding B3}" Grid.Column="1" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"   />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never"  Text="{Binding B4}" Grid.Column="1" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"   />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding C1}" Grid.Column="2" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding C2}" Grid.Column="2" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding C3}" Grid.Column="2" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding C4}" Grid.Column="2" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding D1}" Grid.Column="3" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding D2}" Grid.Column="3" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding D3}" Grid.Column="3" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding D4}" Grid.Column="3" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding E1}" Grid.Column="4" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding E2}" Grid.Column="4" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding E3}" Grid.Column="4" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding E4}" Grid.Column="4" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding F1}" Grid.Column="5" Grid.Row="1" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding F2}" Grid.Column="5" Grid.Row="2" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed" ClearIconVisibility="Never" Text="{Binding F3}" Grid.Column="5" Grid.Row="3" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric"  />
+                                                <dx:TextEdit Completed="TextEdit_Completed"  ClearIconVisibility="Never" Text="{Binding F4}" Grid.Column="5" Grid.Row="4" HeightRequest="30" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" Keyboard="Numeric" />
+
+
+                                                <dx:TextEdit HeightRequest="30" ClearIconVisibility="Never" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="6" BoxPadding="1" BorderThickness="0" Text="{ Binding MeMo}" VerticalOptions="Fill"/>
+
+                                                <Label Padding="0" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="F" FontSize="15" FontAttributes="Bold"/>
+
+
+                                                <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="1"     />
+
+                                                <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="3"     />
+                                                <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="5"     />
+
+
+
+
+                                            </Grid>
+
+                                        </Grid>
+                                    </dx:DXBorder>
+                                </DataTemplate>
                     </dx:DXCollectionView.ItemTemplate>
                 </dx:DXCollectionView>
                     </VerticalStackLayout>

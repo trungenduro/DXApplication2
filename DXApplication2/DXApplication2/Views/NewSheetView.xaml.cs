@@ -149,4 +149,15 @@ public partial class NewSheetView : ContentPage
     {
 
     }
+
+	private void TextEdit_Completed(object sender, EventArgs e)
+	{
+		TextEdit textEdit = sender as TextEdit;
+
+		var grid = textEdit.Parent as Grid;
+
+		var ind = grid.Children.ToList().FindIndex(x => x == textEdit);
+
+		grid.Children[ind + 1].Focus();
+	}
 }

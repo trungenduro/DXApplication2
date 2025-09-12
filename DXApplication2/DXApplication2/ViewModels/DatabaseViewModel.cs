@@ -75,16 +75,25 @@ public partial class DatabaseViewModel : ObservableObject {
     [RelayCommand()]
     async Task InitializePDFAsync() {
         IsInitialized = false;
+            List<LiningSpool> liningSpools = new List<LiningSpool>();
         if (CurrentSheet == null)
-        if (Orders != null)
-            if(Orders.Count>0)
-                if (Orders[0].ExcelSheets.Count>0)
-                    CurrentSheet= Orders[0].ExcelSheets[0];
-
-        if (CurrentSheet != null)
         {
-            
-            var report = new DXApplication2.XtraReportLiningSpool() { Name="test",DataSource= CurrentSheet .Spools} ;
+            if (Orders != null)
+                if (Orders.Count > 0)
+                    if (Orders[0].ExcelSheets.Count > 0)
+                        liningSpools = new List<LiningSpool>(Orders[0].ExcelSheets[0].Spools);
+        }
+        else
+        { liningSpools = new List<LiningSpool>(CurrentSheet.Spools); }
+        
+        for (int i = 0; i < 10 && liningSpools.Count <10; i++)
+		{
+            liningSpools.Add(new LiningSpool {SpoolNo="",Size1="" });
+		}
+
+		if (liningSpools.Count >0)
+        {            
+            var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= liningSpools} ;
             report.CreateDocument();
             string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
             await report.ExportToPdfAsync(resultFile);

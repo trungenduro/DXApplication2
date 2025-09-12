@@ -2,11 +2,80 @@
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+     xmlns:converters="clr-namespace:DXApplication2.Converters"
     xmlns:dx="http://schemas.devexpress.com/maui">
-
+   
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{dx:ThemeColor Primary}" />
     </Style>
+    <DataTemplate x:Key="spoolTemplate">
+        <Grid >
+            <Grid.Resources>
+                
+           
+                <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
+                <converters:SpoolToChartDataConverter x:Key="ChartDataConverter" />
+                <converters:SpoolToIconConverter x:Key="SpoolIcon" />
+                <converters:ListIndexConverter x:Key="ListConvert" />
+                <converters:SheetNumberConverter x:Key="SheetNoConvert" />
+            </Grid.Resources>
+            <Grid>
+                <Image Margin="5" VerticalOptions="Start" WidthRequest="30" HeightRequest="30" HorizontalOptions="Start"  Source="{Binding Converter={StaticResource SpoolIcon}}"></Image>
+                <dx:DXToolbar Padding="0" HeightRequest="30" Margin="0,-15,0,0" BackgroundColor="Transparent" WidthRequest="30" HorizontalOptions="End">
+                    <dx:ToolbarButton Padding="0"  WidthRequest="30" Margin="-5,10,5,5" HeightRequest="30" VerticalContentAlignment="End"   Icon="edit.png"  FontSize="10" 
+Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailEditForm}" 
+CommandParameter="{Binding .}"
+/>
+                    <!--<dx:ToolbarButton Content="{Binding Source={RelativeSource AncestorType=ContentPage},Path=BindingContext.DataControlContext}"                                       
+CommandParameter="{Binding .}"                                        />-->
+
+                </dx:DXToolbar>
+
+            </Grid>
+            <dx:DXBorder BorderColor="Red" BorderThickness="2" VerticalOptions="Start"
+                          CornerRadius="5"
+                          Padding="0"
+                          Margin="1">
+                <Grid  MinimumHeightRequest="150" ColumnDefinitions="2*,5*,0.5*" RowDefinitions="*,5*">
+
+                    <Grid Grid.Row="1"   />
+
+                    <Label Padding="5" Text="Dic Binding SpoolNo}" FontSize="17" Grid.ColumnSpan="1" HorizontalOptions="Center" />
+
+                    <Image Grid.Row="1"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
+
+                    <Label Padding="0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="良" FontSize="15" FontAttributes="Bold"/>
+  <Grid  x:Name="numberGrid" BackgroundColor="LightGray" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" RowDefinitions="*,*,*,*,*,*" ColumnDefinitions="*,*,*,*,*,*">
+
+      <Label Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="A" FontSize="15" FontAttributes="Bold"/>
+      <Label Padding="0" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="B" FontSize="15" FontAttributes="Bold"/>
+      <Label Padding="0" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="C" FontSize="15" FontAttributes="Bold"/>
+      <Label Padding="0" Grid.Column="3" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="D" FontSize="15" FontAttributes="Bold"/>
+      <Label Padding="0" Grid.Column="4" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="E" FontSize="15" FontAttributes="Bold"/>
+
+      <Label Grid.Row="5" Padding="0" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="備考" FontSize="15" FontAttributes="Bold"/>
+
+    
+      
+      <dx:TextEdit Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="5" BoxPadding="1" BorderThickness="0" VerticalOptions="Fill"/>
+
+      <Label Padding="0" Grid.Column="5" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="F" FontSize="15" FontAttributes="Bold"/>
+
+
+      <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="1"     />
+
+      <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="3"     />
+      <Border  ZIndex="-2" StrokeThickness="1" Stroke="White" Grid.Column="0" Grid.ColumnSpan="10"  Grid.Row="5"     />
+
+
+
+
+  </Grid>
+                    
+                </Grid>
+            </dx:DXBorder>
+        </Grid>
+    </DataTemplate>
 
     <Style TargetType="Button">
         <Setter Property="TextColor" Value="{dx:ThemeColor OnPrimary}" />
