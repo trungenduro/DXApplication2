@@ -35,7 +35,7 @@
                 InputTransparent="True" />
         </DataTemplate>
     </Shell.ItemTemplate>
-    
+   
     <ShellContent
         Title="DHF O/# 一覧表"
         Icon="logo_dhf1.png"

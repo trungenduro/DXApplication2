@@ -14,7 +14,7 @@ public partial class NewSpoolPage : ContentPage
 	public NewSpoolPage()
 	{
 		InitializeComponent();
-		finished = true;
+	//	finished = true;
 	}
 
 	DatabaseViewModel DatabaseViewModel;
@@ -25,7 +25,7 @@ public partial class NewSpoolPage : ContentPage
 		this.BindingContext = model;
 		InitializeComponent();
 
-		finished = true;
+		//finished = true;
 	}
 	bool finished = false;
     LiningSpool sp;
@@ -167,7 +167,6 @@ public partial class NewSpoolPage : ContentPage
         editorPage.Handler.DisconnectHandler();    
 
         
-
         if (cropResult != null)
         {
             sp.ImagePath = cropResult;
@@ -178,6 +177,18 @@ public partial class NewSpoolPage : ContentPage
 
 	private void types_SelectionChanged(object sender, EventArgs e)
 	{
+		if (finished)
+		{
+			if (this.types.SelectedIndex == 3)
+				TakePhotoClicked(sender, e);	
+			if (this.types.SelectedIndex == 4)
+				FreeHandClicked(sender, e);
+				
+		}
+	}
 
+	private void ContentPage_Loaded(object sender, EventArgs e)
+	{
+		finished = true;
 	}
 }

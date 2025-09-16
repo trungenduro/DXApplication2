@@ -26,7 +26,7 @@
     <ContentPage.ToolbarItems>
         <!--Command="{Binding RefreshCommand"-->
       
-        <ToolbarItem Text="Create" IconImageSource="save.svg" Clicked="save_Clicked" />
+        <!--<ToolbarItem Text="Create" IconImageSource="save.svg" Clicked="save_Clicked" />-->
        
     </ContentPage.ToolbarItems>
 
@@ -60,7 +60,7 @@ IconMember="add.svg" ChipCheckIcon="add.svg"
 >
         </dxe:InputChipGroup>
 
-        <Entry 
+        <!--<Entry 
     Placeholder="Speak your input"
     android:Entry.ImeOptions="Default"  />
 
@@ -97,7 +97,7 @@ IconMember="add.svg" ChipCheckIcon="add.svg"
                 <dx:FormCheckItem ></dx:FormCheckItem>
                 </dx:FormGroupItem>
             </VerticalStackLayout>
-        </dx:FormItem>
+        </dx:FormItem>-->
 
 
 

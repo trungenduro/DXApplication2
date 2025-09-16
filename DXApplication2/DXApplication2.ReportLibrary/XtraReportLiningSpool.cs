@@ -4,6 +4,7 @@ using LiningCheckRecord;
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace DXApplication2.ReportLibrary
@@ -45,6 +46,14 @@ namespace DXApplication2.ReportLibrary
 				this.xrPictureBox1.ImageUrl = $"type{spools[i].SpoolType+1}.png";
 				if (spools[i].SpoolType > 2 && File.Exists(spools[i].ImagePath))
 				{
+
+					FileInfo fileInfo = new FileInfo(spools[i].ImagePath);
+
+					long fileSizeInBytes = fileInfo.Length;
+					double fileSizeInKB = fileSizeInBytes / 1024.0;
+
+					Debug.WriteLine($"File size: {fileSizeInKB:F2} KB");
+
 					xrPictureBox1.ImageSource = ImageSource.FromFile(spools[i].ImagePath);
 				}
 			}

@@ -51,7 +51,7 @@ namespace DXApplication2.Converters
 				case SpoolType.カメラ:
 					return new Uri("camera.svg", UriKind.RelativeOrAbsolute);
 				case SpoolType.手書き:
-					return new Uri("photo.svg", UriKind.RelativeOrAbsolute);
+					return new Uri("freehand.svg", UriKind.RelativeOrAbsolute);
 				default:
 					return null;
 			}

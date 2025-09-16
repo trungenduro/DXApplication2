@@ -32,6 +32,10 @@ public partial class DatabaseViewModel : ObservableObject {
 
         [ObservableProperty]
     ObservableCollection<CheckerTable>? peoples;
+       [ObservableProperty]
+    ObservableCollection<string>? orderFilter;
+
+
 
     [ObservableProperty]
     ObservableCollection<ExcelSheet>? sheets;
@@ -65,10 +69,43 @@ public partial class DatabaseViewModel : ObservableObject {
         var data = await GetItems();
         Orders = new ObservableCollection<DHFOrder>(data);
 
+        OrderFilter = new ObservableCollection<string> { "ñ¢äÆê¨" };
 
-        IsInitialized = true;
+        if (Orders != null)
+        {
+            var cus1 = Orders.Select(x => x.ãqêÊñº).ToList();
+            var cus2 = Orders.Select(x => x.àƒåèñº).ToList();
+            cus1.AddRange(cus2);
+
+            FilterList = cus1;
+        }
+            IsInitialized = true;
     }
 
+	[ObservableProperty]
+	public List<string> filterList;
+  
+    public void AddFilter(string str)
+    {
+        if (OrderFilter == null) return;
+		{
+			
+		}
+		List<string> filters = OrderFilter.ToList();
+
+        if(filters.Contains(str))
+		{
+			filters.Remove(str);
+		}
+		else
+		{
+			filters.Add(str);
+		}
+
+		OrderFilter = new ObservableCollection<string>(filters);        
+	}
+
+  
     [ObservableProperty]
     PdfDocumentSource? documentSource;
 
@@ -96,8 +133,10 @@ public partial class DatabaseViewModel : ObservableObject {
             var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= liningSpools} ;
             report.CreateDocument();
             string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
-            await report.ExportToPdfAsync(resultFile);
-            DocumentSource = PdfDocumentSource.FromFile(resultFile);
+			MemoryStream stream = new MemoryStream();
+            await report.ExportToPdfAsync(stream);
+				
+			DocumentSource = stream;
             //LinningReport 
             // LinningReport
         }
@@ -535,13 +574,14 @@ public partial class DatabaseViewModel : ObservableObject {
             using var unitOfWork = new SQLiteUnitOfWork(cacheService);
             if (args.DataChangeType == DataChangeType.Add) {
                 unitOfWork.CustomersRepository.Add(item);
-                pendingAction = () => Orders.Add(item);
+                //pendingAction = () => Orders.Add(item);
             }
             if (args.DataChangeType == DataChangeType.Edit) {
                 unitOfWork.CustomersRepository.Update(item);
                 pendingAction = () => Orders[args.SourceIndex] = item;
             }
             if (args.DataChangeType == DataChangeType.Delete) {
+
                 unitOfWork.CustomersRepository.Delete(item);
                 pendingAction = () => Orders.Remove(item);
             }

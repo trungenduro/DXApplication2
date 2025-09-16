@@ -22,36 +22,93 @@
         <ToolbarItem Text="シート作成" IconImageSource="addlist.svg"  Command="{Binding Source={x:Reference sheetGrid1}, Path=Commands.ShowDetailNewItemForm}" />
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
-    <Grid>
-        <dx:DXScrollView>
+    <Shell.TitleView>
+        <Grid >
+          
+            <dx:TextEdit PlaceholderText="検索" HeightRequest="35"  IconVerticalAlignment="Center" Completed="TextEdit_Completed" TextVerticalAlignment="Center" Margin="1,0,0,0" BoxPadding="1" VerticalOptions="Center" StartIcon="search.png" ></dx:TextEdit>
+        </Grid>
+    </Shell.TitleView>
+        <Grid>
+    <dx:DXScrollView>
+        
+   
             
       
         <VerticalStackLayout Margin="10,0,10,0">
-
+       
             <!--<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">-->
-            <dx:DXExpander VerticalExpandMode="FromEndToStart" IsExpanded="False" >
+           <dx:DXBorder BorderThickness="0"  BorderColor="Black" BackgroundColor="Cyan"
+    CornerRadius="12"
+    Margin="0,0,0,0"    >
+          
+<Grid RowDefinitions="40,40,40,40" ColumnDefinitions="50,*" Margin="0,0,5,0" >
                 
-            </dx:DXExpander>
-            <dx:TextEdit HeightRequest="60" TextVerticalAlignment="Center" Grid.Column="1" LabelText="オーダー番号" Text="{Binding Item.OrderNo}" ClearIconVisibility="Never"></dx:TextEdit>
-                  <dx:TextEdit Margin="0,5,0,0" HeightRequest="60" TextVerticalAlignment="Center" LabelText="客先名" PlaceholderText="客先名" Text="{Binding Item.客先名}" ClearIconVisibility="Never" />
-            <dx:TextEdit Margin="0,5,0,0" HeightRequest="60" TextVerticalAlignment="Center" LabelText="案件名" PlaceholderText="案件名" Text="{Binding Item.案件名}" ClearIconVisibility="Never"/>
-
+                        <Grid.Resources>
+                            <Style TargetType="dx:TextEdit">
+                                <Setter Property="Margin" Value="5,0,5,0"></Setter>
+                                <Setter Property="HeightRequest" Value="32"></Setter>
+                            <Setter Property="TextVerticalAlignment" Value="Center"/>
+                            <Setter Property="ClearIconVisibility" Value="Never"/>
+                            <Setter Property="BoxPadding" Value="10,0,0,00"/>
+                        </Style>
+                        </Grid.Resources>
+                      
+                     
+                            <Label HorizontalOptions="Center" Grid.Column="0" Text="O/#" VerticalTextAlignment="Center"/>
+                            <dx:TextEdit Grid.Column="1"  HorizontalOptions="Fill"
+                Text="{Binding Item.OrderNo}"  Margin="5,0,5,0"      ClearIconVisibility="Never" HeightRequest="30" TextVerticalAlignment="Center" BoxPadding="10,0,0,0"    
+                 />                      
         
+                <Image Grid.Row="1" Grid.Column="0" Source="people" WidthRequest="24"></Image>
+                    <dx:TextEdit Margin="5,0,5,0" Grid.Row="1" Grid.Column="1" BoxPadding="10,0,0,0" TextVerticalAlignment="Center" ClearIconVisibility="Never"
+                         Text="{Binding Item.客先名}"     
+                        />
+
+                    <Image Grid.Row="2" Grid.Column="0" Source="location" WidthRequest="24"></Image>
+                    <dx:TextEdit  Grid.Row="2" Grid.Column="1" 
+                Text="{Binding Item.案件名}" Margin="5,0,5,0"   />
+
+
+
+                    <!--<Image Grid.Row="3"  HorizontalOptions="Center" Source="document" WidthRequest="24"></Image>
+                    <Label Grid.Row="3" Margin="10,0,0,0" VerticalOptions="Center" VerticalTextAlignment="Center"
+                    Text="{Binding ExcelSheetsCount}"  FontSize="16"   ></Label>-->
+
+
+                    <Label Grid.Row="3" HorizontalOptions="Center" Grid.Column="0" Text="　" VerticalTextAlignment="Center"/>
+                    <dx:TextEdit  Grid.Row="3" Grid.Column="1" Keyboard="Numeric" Text="{Binding Item.Total}"></dx:TextEdit>
+    
+                    <!--<Grid Grid.Row="3" Grid.Column="1" Margin="5,0,5,5">
+                <Label HorizontalOptions="Center" VerticalTextAlignment="Center" ZIndex="3"  TextColor="Black">
+                    <Label.Text>
+                                <MultiBinding StringFormat="進捗:{0}/{1}">
+                            <Binding Path="Item.SpoolsCount" />
+                            <Binding Path="Item.Total" />                                        
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
+                <BoxView ZIndex="2" ></BoxView>
+                 <local:BarControl HorizontalOptions="Fill" ZIndex="2" Color="Yellow"
+                                   HeightRequest="20" 
+                                   MaxValue="{Binding item.Total}" Value="{Binding Item.SpoolsCount}" />
                 
-            <dx:TextEdit  Margin="0,5,0,0" HeightRequest="60"  TextVerticalAlignment="Center" LabelText="管数" Keyboard="Numeric" Text="{Binding Item.Total}" ClearIconVisibility="Never"/>
-                <!--<local:BarControl HorizontalOptions="Fill" HeightRequest="30" VerticalOptions="End" ZIndex="2" Color="Yellow"-->
+            </Grid>-->
+
+
+     
+    </Grid>
+</dx:DXBorder>
+                    <!--MaxValue="{Binding Item.Total}" Value="{Binding Item.SpoolsCount}" />-->
+
+
+              
                     
-                     <!--MaxValue="{Binding Item.Total}" Value="{Binding Item.SpoolsCount}" />-->
+                    <!--<Label Text="成績表がありません" Margin="5,10,0,0" FontSize="20" HorizontalOptions="Center" VerticalOptions="Start"></Label>-->
 
+            
 
-
-                <Grid>
-                    
-                    <Label Text="成績表がありません" Margin="5,10,0,0" FontSize="20" HorizontalOptions="Center" VerticalOptions="Start"></Label>
-               
-                
-            <dx:DXCollectionView Margin="0,10,0,0" x:Name="sheetGrid1" SelectionMode="Single" UseRippleEffect="True" ItemSpanCount="1" DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"  
-            Tap="spoolGrid_Tap"                DoubleTapCommand="{Binding Source={RelativeSource Mode=Self}, Path=Commands.ShowDetailEditForm}" ValidateAndSave="collectionView_ValidateAndSave"  
+                <dx:DXCollectionView Margin="0,10,0,0" x:Name="sheetGrid1" SelectionMode="Single" UseRippleEffect="True" ItemSpanCount="1" DetailEditFormTemplate="{DataTemplate views:SheetEditPage}"  
+            Tap="spoolGrid_Tap"     CreateDetailFormViewModel="sheetGrid1_CreateDetailFormViewModel"          DoubleTapCommand="{Binding Source={RelativeSource Mode=Self}, Path=Commands.ShowDetailEditForm}" ValidateAndSave="collectionView_ValidateAndSave"  
                             ItemsSource="{Binding Item.ExcelSheets}" ItemSpacing="16" DetailNewItemFormTemplate="{DataTemplate views:NewSheetView}">
                     <dx:DXCollectionView.SortDescriptions>
                         <dx:SortDescription FieldName="SheetNo" ></dx:SortDescription>
@@ -151,9 +208,10 @@
             </dx:DXCollectionView.ItemTemplate>
         </dx:DXCollectionView>
 
-                </Grid>
 
-                <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext}"            
+           
+
+            <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext}"            
         AllowScrim="True"
         CloseOnScrimTap="True"
         VerticalAlignment="Bottom"
@@ -168,10 +226,10 @@
                 <dx:DXSeparator/>
 
 
-                <dx:DXButton ButtonType="ToolButton" Content="シート編集"
+                <dx:DXButton ButtonType="ToolButton" Content="PDF成績表作成"
       Icon="edit" 
       Clicked="EditClick" /> 
-                <dx:DXButton ButtonType="ToolButton" Content="管編集" 
+                <dx:DXButton ButtonType="ToolButton" Content="編集" 
       Icon="edit" 
       Clicked="EditClick" />
 
@@ -185,12 +243,10 @@
             </VerticalStackLayout>
 
         </dx:DXPopup>
-
-        </VerticalStackLayout>
-        </dx:DXScrollView>
-        <ActivityIndicator  
-        IsRunning="{Binding InitializeCommand.IsRunning}"  
-        HorizontalOptions="Center"  
-        VerticalOptions="Center" />
+       
+    </VerticalStackLayout>
+       
+      
+    </dx:DXScrollView>
     </Grid>
 </ContentPage>

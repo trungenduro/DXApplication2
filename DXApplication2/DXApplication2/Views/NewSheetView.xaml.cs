@@ -153,7 +153,13 @@ public partial class NewSheetView : ContentPage
 	private void TextEdit_Completed(object sender, EventArgs e)
 	{
 		TextEdit textEdit = sender as TextEdit;
-
+		if (textEdit.Text.StartsWith("."))
+		{
+			if (Sheet != null)
+			{
+				textEdit.Text = $"{Sheet.ThickNess}{textEdit.Text}";
+			}
+		}
 		var grid = textEdit.Parent as Grid;
 
 		var ind = grid.Children.ToList().FindIndex(x => x == textEdit);

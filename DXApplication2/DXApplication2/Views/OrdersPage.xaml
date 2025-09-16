@@ -13,6 +13,7 @@
     xmlns:models="clr-namespace:DXApplication2.Domain.Data;assembly=DXApplication2.Domain"
       xmlns:converters="clr-namespace:DXApplication2.Converters;assembly=DXApplication2"  
     BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
+    xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
     Title="オーダーリスト">
     
     <ContentPage.Resources>     
@@ -118,12 +119,23 @@
     <ContentPage.ToolbarItems>
         <!--Command="{Binding RefreshCommand"-->
         <!--<ToolbarItem Text="Refresh"  Clicked="ToolbarItem_Clicked" />-->
-        <ToolbarItem Text="Create"  IconImageSource="filter.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowFilteringUIForm}" />
+        <!--<ToolbarItem Text="Create"  IconImageSource="filter.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowFilteringUIForm}" />-->
         <ToolbarItem Text="Create"  IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
     </ContentPage.ToolbarItems>
-  
+    <Shell.TitleView>
+        <HorizontalStackLayout Spacing="0">
+            <dxe:InputChipGroup IsScrollBarVisible="True" x:Name="inputchip" VerticalOptions="Center" BoxMode="Filled"  ChildRemoved="inputchip_ChildRemoved" 
+                            Padding="0,0,10,0" EditorPlaceholderText="検索" ItemsSource="{Binding OrderFilter}" Completed="inputchip_Completed"
+ IsMultiline="True" 
+IconMember="add.svg" ChipCheckIcon="add.svg" 
+>
+            </dxe:InputChipGroup>
+            <!--<dxe:FormListPickerItem HeightRequest="35" IsVisible="False" PickerShowMode="Page" ></dxe:FormListPickerItem>-->
+            <!--<dx:TextEdit PlaceholderText="検索" HeightRequest="35" HorizontalOptions="Fill" MinimumWidthRequest="200" IconVerticalAlignment="Center" Completed="TextEdit_Completed" TextVerticalAlignment="Center" Margin="1,0,0,0" BoxPadding="1" VerticalOptions="Center" StartIcon="search.png" TextChanged="TextEdit_TextChanged"></dx:TextEdit>-->          
+        </HorizontalStackLayout>
+    </Shell.TitleView>
     <Grid>
-        
+       
         <!--#region NewRegion -->
         <!--<dx:DataGridView
             x:Name="collectionView" ShowAutoFilterRow="True"
@@ -202,7 +214,8 @@
                         <!--<dx:FilterChipGroupItem Text="ff"  Context="{Binding Source={x:Reference collectionView}, Path=FilteringContext}"  FieldName="IsFinished" >
                             
                         </dx:FilterChipGroupItem>-->
-
+                        <dx:CheckEdit x:Name="checkbox"  Margin="15,0,0,0" Label="未完成のみ" LabelFontSize="13" CheckedChanged="CheckEdit_CheckedChanged"/>
+                        <!--<dx:FormListPickerItem TextFontSize="15" ItemsSource="{Binding FilterList}" IsMultipleSelectionEnabled="True" Text="フィルター" ></dx:FormListPickerItem>-->                      
                         <dx:DXCollectionView
                   x:Name="collectionView" FilterString="[IsFinished]=False"
                  ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave" 
@@ -214,9 +227,9 @@
                          DoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"      
                 
                   >
-                        <dx:DXCollectionView.GroupDescription>
+                        <!--<dx:DXCollectionView.GroupDescription>
                             <dx:GroupDescription FieldName="客先名"></dx:GroupDescription>
-                        </dx:DXCollectionView.GroupDescription>
+                        </dx:DXCollectionView.GroupDescription>-->
                         <dx:DXCollectionView.SortDescriptions>
                             <dx:SortDescription FieldName="客先名" ></dx:SortDescription>
                         </dx:DXCollectionView.SortDescriptions>

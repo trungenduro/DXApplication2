@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui.Views;
+using DevExpress.Android.Editors;
 using DevExpress.Maui.CollectionView;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
@@ -173,4 +174,31 @@ public partial class SheetsPage1 : ContentPage
         //  popup.PlacementTarget = view;
         if (ActiveSheet != null) this.sheetGrid1.ShowDetailEditForm(ActiveHandle);
     }
+
+	private void TextEdit_Completed(object sender, EventArgs e)
+	{
+		if(sender is TextEdit edit)
+		{
+			//this.sheetGrid1.FilterString = "Contains([])"
+		}
+    }
+
+	private void sheetGrid1_CreateDetailFormViewModel(object sender, CreateDetailFormViewModelEventArgs e)
+	{
+		if (e.DetailFormType == DetailFormType.New)
+		{
+			//var editItem = new exce(DateTime.Today, true, ProductName.IponCoffee, 55, PackagingType.PlasticBox);
+			//e.Result = new DetailEditFormViewModel(editItem, isNew: true, context: null);
+		}
+	}
+
+	private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+	{
+		
+	}
+
+	private void TextEdit_Completed_1(object sender, EventArgs e)
+	{
+
+	}
 }

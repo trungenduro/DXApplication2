@@ -8,14 +8,19 @@
   xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
   xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
   BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
-             Title="LiningReportPage">
+             Title="成績表">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializePDFCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
- </ContentPage.Behaviors>
+       
+    </ContentPage.Behaviors>
+    <ContentPage.ToolbarItems >
+     
+        <ToolbarItem IconImageSource="share.png" Command="{Binding Commands.ShareDocument, Source={x:Reference pdfViewer}}" />
 
+    </ContentPage.ToolbarItems>
     <Grid>
         <!--<dx:DXButton ZIndex="1"  Content="TEst" VerticalOptions="Center" Command="{Binding InitializePDFCommand}"></dx:DXButton>-->
-        <dx:PdfViewer ShowToolbar="True" ShowEditToolbar="True" DocumentSource="{Binding DocumentSource}" />
+        <dx:PdfViewer x:Name="pdfViewer" ShowToolbar="True" ShowEditToolbar="True" DocumentSource="{Binding DocumentSource}" />
 
         <!--<ActivityIndicator
          IsRunning="{Binding InitializePDFCommand.IsRunning}"

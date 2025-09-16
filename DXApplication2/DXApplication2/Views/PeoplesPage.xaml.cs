@@ -92,8 +92,8 @@ namespace DXApplication2.Views
 
 		private void ChoiceChipGroup_ChipTap(object sender, ChipEventArgs e)
 		{
-			if (e.Item is string text)
-				this.label.Text += text;
+		//	if (e.Item is string text)
+			//	this.label.Text += text;
 		}
 
 		private void DXButton_Clicked(object sender, EventArgs e)

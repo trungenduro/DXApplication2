@@ -256,7 +256,13 @@ public partial class ImageEditView : ContentPage {
 
 			}
 			editor.SaveEdits();
-			editor.Save(Syncfusion.Maui.ImageEditor.ImageFileType.Png, filePath);
+            var size=  editor.OriginalImageSize;
+
+			int newWidth = 400;
+			int newHeight = (int)(size.Height * (newWidth / size.Width));
+
+
+			editor.Save(Syncfusion.Maui.ImageEditor.ImageFileType.Png, filePath,null, new Microsoft.Maui.Graphics.Size(newWidth, newHeight));
 			var files = Directory.GetFiles(Path.Combine(FileSystem.Current.AppDataDirectory, "Photo"), "*.*").ToList();
 
                 pageResultCompletionSource.SetResult(filePath);

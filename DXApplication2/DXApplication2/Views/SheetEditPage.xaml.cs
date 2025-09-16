@@ -1,4 +1,5 @@
 using AndroidX.Lifecycle;
+using DevExpress.Android.Editors;
 using DevExpress.Maui.Charts;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
@@ -169,9 +170,26 @@ public partial class SheetEditPage : ContentPage
 
     }
 
+	private void TextEdit_Completed(object sender, EventArgs e)
+	{
+		TextEdit textEdit = sender as TextEdit;
+		if (textEdit.Text.StartsWith("."))
+		{
+			if (Sheet != null)
+			{
+				textEdit.Text = $"{Sheet.ThickNess}{textEdit.Text}";
+			}
+		}
+		var grid = textEdit.Parent as Grid;
 
-   
-    }
+		if (grid == null) return;
+		var ind = grid.Children.ToList().FindIndex(x => x == textEdit);
+
+		grid.Children[ind + 1].Focus();
+
+
+	}
+}
 
 public class CustomColorizer : ICustomPointColorizer
 {

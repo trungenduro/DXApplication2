@@ -6,7 +6,7 @@
              xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
             xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"  
             xmlns:converters="clr-namespace:DXApplication2.Converters"  
-            BindingContextChanged="ContentPage_BindingContextChanged"  
+            BindingContextChanged="ContentPage_BindingContextChanged"  Loaded="ContentPage_Loaded"
             Title="管番号追加">  
    <ContentPage.Resources>  
        <converters:ImageEnumConverter x:Key="ImageEnumConverter" />  
@@ -34,17 +34,17 @@
                             <Grid  ColumnDefinitions="*,*">
                                 <!--<Label Margin="10,0,10,0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="0" FontSize="16" Text="{Binding StringFormat='{0}  '}" />-->
 
-                                <Image Grid.Column="1" HorizontalOptions="Center" WidthRequest="86" HeightRequest="86"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
+                                <Image Grid.Column="1" HorizontalOptions="Center" WidthRequest="40" HeightRequest="40"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
 
                             </Grid>
                         </DataTemplate>
                     </dxe:ChoiceChipGroup.ChipContentTemplate>
                 </dxe:ChoiceChipGroup>
                 <Image  x:Name="preview" HeightRequest="80" WidthRequest="80" IsVisible="Collapse" Source="{Binding Item,Converter={StaticResource ImageSPConverter}}"></Image>
-               <Grid ColumnDefinitions="*,50,50">  
+               <Grid ColumnDefinitions="*">  
                    <dx:TextEdit LabelText="管番号"  Text="{Binding Item.SpoolNo}" />
-                    <dx:DXButton  IconWidth="30" Clicked="FreeHandClicked" IconHeight="30" Grid.Column="2" ButtonType="ToolButton" Icon="freehand"></dx:DXButton>
-                    <dx:DXButton  IconWidth="35" Clicked="TakePhotoClicked" IconHeight="35" Grid.Column="1" ButtonType="ToolButton" Icon="camera"></dx:DXButton>
+                    <!--<dx:DXButton  IconWidth="30" Clicked="FreeHandClicked" IconHeight="30" Grid.Column="2" ButtonType="ToolButton" Icon="freehand"></dx:DXButton>
+                    <dx:DXButton  IconWidth="35" Clicked="TakePhotoClicked" IconHeight="35" Grid.Column="1" ButtonType="ToolButton" Icon="camera"></dx:DXButton>-->
                </Grid>
 
                 <!--<dx:ComboBoxEdit SelectionChanged="type_SelectionChanged" x:Name="type" SelectedIndex="{Binding Item.SpoolType}" LabelText="形式" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.SpoolTypes}">

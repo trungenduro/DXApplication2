@@ -6,6 +6,11 @@ namespace DXApplication2.Views
         {
             InitializeComponent();
         }
+
+		private void ActionButton_Clicked(object sender, EventArgs e)
+		{
+
+        }
     }
 
 }
