@@ -20,7 +20,7 @@
     </ContentPage.ToolbarItems>
     <Grid>
         <!--<dx:DXButton ZIndex="1"  Content="TEst" VerticalOptions="Center" Command="{Binding InitializePDFCommand}"></dx:DXButton>-->
-        <dx:PdfViewer x:Name="pdfViewer" ShowToolbar="True" ShowEditToolbar="True" DocumentSource="{Binding DocumentSource}" />
+        <dx:PdfViewer x:Name="pdfViewer"  ShowToolbar="False" ShowEditToolbar="True" DocumentSource="{Binding DocumentSource}" />
 
         <!--<ActivityIndicator
          IsRunning="{Binding InitializePDFCommand.IsRunning}"

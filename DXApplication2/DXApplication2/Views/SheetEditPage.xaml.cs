@@ -1,8 +1,9 @@
 using AndroidX.Lifecycle;
-using DevExpress.Android.Editors;
+
 using DevExpress.Maui.Charts;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
+using DevExpress.Maui.Editors;
 using DevExpress.Spreadsheet;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
@@ -173,7 +174,8 @@ public partial class SheetEditPage : ContentPage
 	private void TextEdit_Completed(object sender, EventArgs e)
 	{
 		TextEdit textEdit = sender as TextEdit;
-		if (textEdit.Text.StartsWith("."))
+		if(textEdit == null) return;
+        if (textEdit.Text.StartsWith("."))
 		{
 			if (Sheet != null)
 			{

@@ -6,4 +6,9 @@ public partial class ReportingPage : ContentPage {
     public ReportingPage() {
         InitializeComponent();
     }
+
+    private void page_BindingContextChanged(object sender, EventArgs e)
+    {
+
+    }
 }

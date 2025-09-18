@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using AndroidX.Lifecycle;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DevExpress.Maui.Core;
@@ -32,6 +33,13 @@ public partial class DatabaseViewModel : ObservableObject {
 
         [ObservableProperty]
     ObservableCollection<CheckerTable>? peoples;
+    [ObservableProperty]
+    ObservableCollection<CheckerTable>? selectedPeoples; 
+    
+    [ObservableProperty]
+    CheckerTable? selectedPeople;
+
+
        [ObservableProperty]
     ObservableCollection<string>? orderFilter;
 
@@ -44,7 +52,25 @@ public partial class DatabaseViewModel : ObservableObject {
 	DHFOrder? currentOrder;	
     
     [ObservableProperty]
-	ExcelSheet? currentSheet;
+    [NotifyCanExecuteChangedFor(nameof(SheetChangedCommand))]
+    ExcelSheet? currentSheet;
+
+
+  
+    [RelayCommand()]  
+
+    public  void SheetChanged()
+    {
+        var selected = new ObservableCollection<CheckerTable>();
+
+        foreach (var item in currentSheet.Checkers)
+        {
+            selected.Add(Peoples.Where(x => x.Name == item).FirstOrDefault());
+        }
+        this.SelectedPeoples = selected;
+        this.SelectedPeople= Peoples.Where(x => x.Name == currentSheet.Checked).FirstOrDefault();
+       // return Task.CompletedTask;
+    }
 
     [ObservableProperty]
 	LiningSpool? currentSpool;
@@ -85,6 +111,7 @@ public partial class DatabaseViewModel : ObservableObject {
 	[ObservableProperty]
 	public List<string> filterList;
   
+    public List<string> PeoplesName=> Peoples?.Select(x => x.Name).ToList() ?? new List<string>();
     public void AddFilter(string str)
     {
         if (OrderFilter == null) return;
@@ -334,6 +361,15 @@ public partial class DatabaseViewModel : ObservableObject {
         {
             try
             {
+                item.Checked = SelectedPeople?.Name ?? "-";
+                if (SelectedPeoples != null)
+                {
+
+                    var oblist = SelectedPeoples.Select(x => x.Name).ToList();
+                    item.Checkers = oblist;
+                    item.Checker = string.Join("-", oblist);
+                }
+              
                 ArgumentNullException.ThrowIfNull(Orders);
                 if (item.Checked == null) item.Checked = "-";
                 if (item.Kiki1 == "" || item.Kiki2=="")
@@ -363,8 +399,8 @@ public partial class DatabaseViewModel : ObservableObject {
                 if (args.DataChangeType == DataChangeType.Edit)
                 {                   
 
-                   // if(item.ID!=0) unitOfWork.SheetRepository.Update(item);
-                    //pendingAction = () => Sheets[args.SourceIndex] = item;
+                    if(item.ID!=0) unitOfWork.SheetRepository.Update(item);
+                   // pendingAction = () => Sheets[args.SourceIndex] = item;
                 }
                 if (args.DataChangeType == DataChangeType.Delete)
                 {

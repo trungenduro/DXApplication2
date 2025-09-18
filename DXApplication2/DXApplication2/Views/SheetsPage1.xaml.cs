@@ -187,8 +187,12 @@ public partial class SheetsPage1 : ContentPage
 	{
 		if (e.DetailFormType == DetailFormType.New)
 		{
-			//var editItem = new exce(DateTime.Today, true, ProductName.IponCoffee, 55, PackagingType.PlasticBox);
-			//e.Result = new DetailEditFormViewModel(editItem, isNew: true, context: null);
+			if (DatabaseViewModel != null)
+			{
+
+				var editItem = new ExcelSheet { SheetNo = DatabaseViewModel.CurrentOrder.ExcelSheetsCount + 1 };
+				e.Result = new DetailEditFormViewModel(editItem, isNew: true, context: null);
+			}
 		}
 	}
 
@@ -201,4 +205,11 @@ public partial class SheetsPage1 : ContentPage
 	{
 
 	}
+
+    private async void pdfClick(object sender, EventArgs e)
+    {
+        popup.IsOpen = false;
+        await Navigation.PushAsync(new LiningReportPage());
+
+    }
 }

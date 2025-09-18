@@ -101,44 +101,44 @@ public partial class ImageEditView : ContentPage {
         ImageEditorToolbar footerToolbarItem = this.editor.Toolbars[1];
 
 
-		var newItem = new ImageEditorToolbarItem()
-		{
-			Name = "Custom",
-			View = new Image()
-			{
-				Source = ImageSource.FromFile("spool.png"),
-				HeightRequest = 30,
-				WidthRequest = 30
-			},
-			IsVisible = true,
-			IsEnabled = true
-		};
-		footerToolbarItem.ToolbarItems.Add(newItem);
+		//var newItem = new ImageEditorToolbarItem()
+		//{
+		//	Name = "Custom",
+		//	View = new Image()
+		//	{
+		//		Source = ImageSource.FromFile("spool.png"),
+		//		HeightRequest = 30,
+		//		WidthRequest = 30
+		//	},
+		//	IsVisible = true,
+		//	IsEnabled = true
+		//};
+		//footerToolbarItem.ToolbarItems.Add(newItem);
 
-		newItem.SubToolbars = new List<ImageEditorToolbar>()
-			{
-				new ImageEditorToolbar()
-				{
-					ToolbarItems = new List<IImageEditorToolbarItem>()
-					{
-						new ImageEditorToolbarItem(){ Name = "insertspool",View = new Image()
-			{
-				Source = ImageSource.FromFile("spool.png"),
-				HeightRequest = 30,
-				WidthRequest = 30
-			},},
-					}
-				}
-                ,new ImageEditorToolbar()
-				{
-					ToolbarItems = new List<IImageEditorToolbarItem>()
-					{
-						new ImageEditorToolbarItem(){ Name = "inserteda"},
-					}
-				},
+		//newItem.SubToolbars = new List<ImageEditorToolbar>()
+		//	{
+		//		new ImageEditorToolbar()
+		//		{
+		//			ToolbarItems = new List<IImageEditorToolbarItem>()
+		//			{
+		//				new ImageEditorToolbarItem(){ Name = "insertspool",View = new Image()
+		//	{
+		//		Source = ImageSource.FromFile("spool.png"),
+		//		HeightRequest = 30,
+		//		WidthRequest = 30
+		//	},},
+		//			}
+		//		}
+  //              ,new ImageEditorToolbar()
+		//		{
+		//			ToolbarItems = new List<IImageEditorToolbarItem>()
+		//			{
+		//				new ImageEditorToolbarItem(){ Name = "inserteda"},
+		//			}
+		//		},
 
 
-			};
+		//	};
 
 
 		ImageEditorToolbarItem cropItem = (ImageEditorToolbarItem)footerToolbarItem.ToolbarItems.FirstOrDefault(i => i.Name == "Crop");
@@ -165,11 +165,8 @@ public partial class ImageEditView : ContentPage {
 		Spool = sp;
 		if (sp.ImagePath == "")
 		{
-
             ImageSource blankImage = ImageSource.FromStream(() => CreateBlankImageStream(200, 200));
-
 			editor.Source = blankImage;
-
         }
 		else
 		{
@@ -469,7 +466,7 @@ public partial class ImageEditView : ContentPage {
 		}
         if(ann is ImageEditorShapeSettings ss)
         {
-			ss.Color = Colors.Red;
+			//ss.Color = Colors.Red;
 			ss.StrokeThickness = 5;
 		}
 
@@ -509,4 +506,19 @@ public partial class ImageEditView : ContentPage {
 	{
 		this.deleteBTN.IsVisible = false;
 	}
+
+    private void redu_Clicked(object sender, EventArgs e)
+    {
+        Image image = new Image() { HeightRequest = 50, WidthRequest = 50, Aspect = Aspect.AspectFit };
+        image.Source = ImageSource.FromFile("reducer.png");
+
+        this.editor.AddCustomAnnotationView(image,
+             new Syncfusion.Maui.ImageEditor.ImageEditorAnnotationSettings
+             {
+                 AllowDrag = true,
+                 AllowResize = true,
+                 IsRotatable = true
+
+             });
+    }
 }

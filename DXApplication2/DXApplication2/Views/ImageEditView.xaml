@@ -29,7 +29,9 @@
         <dx:DXButton Grid.Row="1" Clicked="DXButton_Clicked" ButtonType="ToolButton"
                 Icon="spool.png"   />
          <dx:DXButton Grid.Row="1" Clicked="eda_Clicked" ButtonType="ToolButton" Padding="5"
-                Icon="eda.png" />
+                Icon="eda.png" /> 
+            <dx:DXButton Grid.Row="1" Clicked="redu_Clicked" ButtonType="ToolButton" Padding="5"
+                Icon="reducer" />
             
             
             

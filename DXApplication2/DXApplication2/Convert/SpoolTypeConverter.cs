@@ -1,6 +1,7 @@
 ﻿using LiningCheckRecord;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -276,7 +277,31 @@ namespace DXApplication2.Converters
 		}
 	}
 
-    public class BoolToColorConverter : IValueConverter
+
+	public class ListToTokenItemsConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value == null) return null;
+			if (value is not string list)
+				return null;
+	
+				//items.Add(new CheckerTable { Name = item });
+			
+			return new CheckerTable { Name = list };
+		}
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			//return null;
+			if (value == null) return null;
+			if (value is not CheckerTable list) return null;
+					
+
+            return list.Name;
+        }
+	}
+
+        public class BoolToColorConverter : IValueConverter
     {
 
 

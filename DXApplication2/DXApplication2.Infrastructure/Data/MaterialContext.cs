@@ -74,9 +74,9 @@ namespace LiningCheckRecord
 
 			modelBuilder.Entity<ExcelSheet>()
 				.Property(x => x.Checkers)
-				.HasConversion(new ValueConverter<List<object>, string>(
+				.HasConversion(new ValueConverter<List<string>, string>(
 					v => JsonConvert.SerializeObject(v), // Convert to string for persistence
-					v => JsonConvert.DeserializeObject<List<object>>(v)));
+					v => JsonConvert.DeserializeObject<List<string>>(v)));
 
 			modelBuilder.Entity<DHFOrder>().HasMany(x => x.ExcelSheets).WithOne(y => y.Order);
 			Seed(modelBuilder);
@@ -426,19 +426,20 @@ namespace LiningCheckRecord
         public string Kiki1 { get; set; } = string.Empty;
         public string Kiki2 { get; set; } = string.Empty;
 
-        public List<object> Checkers { get; set; } = new();
+        public List<string> Checkers { get; set; } = new();
 
         public string Checker
         {
-            get
-            {
-                if (Checkers == null) return "-";
+            get; set;
+            //get
+            //{
+            //    if (Checkers == null) return "-";
 
-                if (Checkers.Count == 0) return "-";
-                if (Checkers[0] == null) return "-";
-                return string.Join("-", Checkers);
-            }
-        }
+            //    if (Checkers.Count == 0) return "-";
+            //    if (Checkers[0] == null) return "-";
+            //    return string.Join("-", Checkers);
+            //}
+        } = "";
         public string Checked { get; set; } = "-";
 
         public List<LiningSpool> Spools { get; set; } = new List<LiningSpool>();
@@ -750,6 +751,11 @@ namespace LiningCheckRecord
         [Display(Name = "名前")]
         [Required]
         public string Name { get; set; } = "";
+
+        public override string ToString()
+        {
+            return Name;
+        }
     } 
     public class Checker1Table
     {

@@ -7,7 +7,7 @@ namespace DXApplication2.ReportLibrary.Data
         public CountryDataSource()
         {
 			DHFOrder order = new DHFOrder { OrderNo = "DHF2023001",  ãqêÊñº = "JFE",  Total=10, àƒåèñº = "ç≤ê¢ï€" };
-			ExcelSheet sheet = new ExcelSheet { SheetNo = 1, Kiki1 = "22", Kiki2 = "33", CheckResult = "çáäi", ThickNess = 2, CheckDate1 = DateTime.Now, CheckDate2=DateTime.Now, Checkers = new List<object> {"DHF" }, Checked="OK" ,Order=order, Option1=1, Option2 = 1 };
+			ExcelSheet sheet = new ExcelSheet { SheetNo = 1, Kiki1 = "22", Kiki2 = "33", CheckResult = "çáäi", ThickNess = 2, CheckDate1 = DateTime.Now, CheckDate2=DateTime.Now, Checkers = new List<string> {"DHF" }, Checked="OK" ,Order=order, Option1=1, Option2 = 1 };
 
 			List<LiningSpool> sales= Enumerable.Range(1, 10).Select(i =>
                 new LiningSpool { ID = i, SpoolNo = $"Spool{i}", Size1 = $"{i * 25}A", Sheet= sheet

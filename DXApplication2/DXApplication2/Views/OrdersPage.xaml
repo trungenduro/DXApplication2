@@ -5,6 +5,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:dx="http://schemas.devexpress.com/maui"
+    xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
     xmlns:dxcore="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Mvvm"
       xmlns:local="clr-namespace:DemoCenter.Maui.Views"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -119,7 +120,7 @@
     <ContentPage.ToolbarItems>
         <!--Command="{Binding RefreshCommand"-->
         <!--<ToolbarItem Text="Refresh"  Clicked="ToolbarItem_Clicked" />-->
-        <!--<ToolbarItem Text="Create"  IconImageSource="filter.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowFilteringUIForm}" />-->
+        <ToolbarItem Text="Create"  IconImageSource="filter.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowFilteringUIForm}" />
         <ToolbarItem Text="Create"  IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
     </ContentPage.ToolbarItems>
     <Shell.TitleView>
@@ -135,80 +136,17 @@ IconMember="add.svg" ChipCheckIcon="add.svg"
         </HorizontalStackLayout>
     </Shell.TitleView>
     <Grid>
-       
-        <!--#region NewRegion -->
-        <!--<dx:DataGridView
-            x:Name="collectionView" ShowAutoFilterRow="True"
-            ItemsSource="{Binding Orders}" ValidateAndSave="collectionView_ValidateAndSave"
-              RowDoubleTapCommand="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailEditForm}"
-               DetailEditFormTemplate="{DataTemplate views:SheetsPage1}"
-            >
-            <dx:DataGridView.Behaviors>                
-                
-            </dx:DataGridView.Behaviors>
-            
-            <dx:DataGridView.EndSwipeItems>
 
-                <dx:GridSwipeItem BackgroundColor="White"  Image="edit.svg"  Tap="Swipe_Open"/>
-            </dx:DataGridView.EndSwipeItems>
+     
 
-            <dx:DataGridView.Columns>
-                <dx:TextColumn Caption="オーダー" HorizontalContentAlignment="Center" FontSize="15" FieldName="OrderNo" Width="180" AutoFilterCondition="Contains"   >
-                  
-                </dx:TextColumn>
-                <dx:TemplateColumn  Caption="進歩" IsReadOnly="True" FieldName="CreateDate"  MinWidth="200" AutoFilterCondition="Contains"  >
-                    <dx:TemplateColumn.DisplayTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <local:BarControl MaxValue="{Binding Item.Total}" Value="{Binding Item.SpoolsCount}" />
-                                <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                                    <Label FontSize="Body" TextColor="Blue" Text="{Binding Item.SpoolsCount}"></Label>
-                                    <Label FontSize="Body" TextColor="Blue" Text="/"></Label>
-                                    <Label FontSize="Body" TextColor="Blue" Text="{Binding Item.Total}"  />
-
-                                </HorizontalStackLayout>
-                            </Grid>
-                        </DataTemplate>
-                    </dx:TemplateColumn.DisplayTemplate>
-                </dx:TemplateColumn>
-                <dx:TextColumn Caption="客先名" FieldName="客先名" Width="180" AutoFilterCondition="Contains"   />
-                <dx:TextColumn Caption="シート数" FieldName="ExcelSheetsCount" Width="180" AutoFilterCondition="Contains"   />
-            
-                <dx:TextColumn Caption="管数" FieldName="Total" Width="180" AutoFilterCondition="Contains"   />
-                
-            </dx:DataGridView.Columns>
-
-
-
-        </dx:DataGridView>-->
-        <!--#endregion-->
-        <!--#region colectionRegion -->
         <dx:TabView 
       HeaderPanelPosition="Bottom"
       ItemHeaderWidth="*"
       HeaderPanelPadding="0"      
       IsSelectedItemIndicatorVisible="False"
      >
-            <dx:TabViewItem SelectedHeaderBackgroundColor="LightBlue"  HeaderIcon="list.png"  > 
-                <!--<dx:TabViewItem.HeaderContent>
-                    <VerticalStackLayout
-                  VerticalOptions="Center"
-                  Spacing="4"     >
-                        <dx:DXBorder
-                      CornerRadius="100"
-                      Padding="20,4"
-                      HorizontalOptions="Center"
-                      >
-                            <dx:DXImage
-                          WidthRequest="24"
-                          HeightRequest="24"
-                          Source="all.png"
-                          TintColor="{dx:ThemeColor OnSurfaceVariant}" />
-                        </dx:DXBorder>
-                        
-                    </VerticalStackLayout>
-                </dx:TabViewItem.HeaderContent>-->
-
+            <dx:TabViewItem SelectedHeaderBackgroundColor="Cyan" HeaderFontSize="15" HeaderIconPosition="Left"  HeaderHeight="30" HeaderText="{Binding Source={x:Reference collectionView},Path=VisibleItemCount ,StringFormat='({0}) '}"  HeaderIcon="list"  > 
+                
                 <dx:TabViewItem.Content>
                     <VerticalStackLayout>
                         <!--<dx:FilterChipGroupItem Text="ff"  Context="{Binding Source={x:Reference collectionView}, Path=FilteringContext}"  FieldName="IsFinished" >
@@ -251,14 +189,13 @@ IconMember="add.svg" ChipCheckIcon="add.svg"
                 </dx:TabViewItem.Content>
             </dx:TabViewItem>
 
-            <dx:TabViewItem SelectedHeaderBackgroundColor="LightBlue"  HeaderIcon="star.png" HeaderIconColor="Blue" >
-         
+            <dx:TabViewItem SelectedHeaderBackgroundColor="LightBlue" HeaderIconPosition="Left" HeaderText="{Binding Source={x:Reference Favorite},Path= VisibleItemCount,StringFormat='({0})'}" HeaderIcon="star.png" HeaderIconColor="Blue" >
+
 
                 <dx:TabViewItem.Content>
                     <Grid>
-                        
-                      
-                        <dx:DXCollectionView
+
+                        <dx:DXCollectionView x:Name="Favorite"
                   FilterString="[IsFavorite]=True"
                   ItemsSource="{Binding Orders}"
                   ItemTemplate="{StaticResource orderTemplate}"     

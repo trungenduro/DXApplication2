@@ -209,13 +209,15 @@ namespace DXApplication2.Views
 			CopyFile("type1.png");
 			CopyFile("type2.png");
 			CopyFile("type3.png");
+			CopyFile("reducer.png");
 
 		}
 		public void CopyFile(string filename)
 		{
 			string f = Path.Combine(FileSystem.Current.AppDataDirectory, filename);
-			
 
+			if (File.Exists(f))
+				File.Delete(f);
 				var file = File.Create(f);
 				var task = FileSystem.Current.OpenAppPackageFileAsync(filename);
 				task.Wait();
