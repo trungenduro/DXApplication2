@@ -210,7 +210,7 @@ public partial class DatabaseViewModel : ObservableObject {
 	}
      public async Task GeneratePDFSheet(ExcelSheet sheet) {
         IsRunning = true;
-        List<LiningSpool> liningSpools = sheet.Spools;
+        List<LiningSpool> liningSpools = new List<LiningSpool>( sheet.Spools);
 	
        
 
