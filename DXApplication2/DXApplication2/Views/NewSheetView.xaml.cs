@@ -219,4 +219,18 @@ public partial class NewSheetView : ContentPage
     {
 
     }
+
+	private void DateEdit_Completed(object sender, EventArgs e)
+	{
+
+		if (sender is not IView textEdit) return;	
+		if (textEdit.Parent is not Grid grid) return;	
+		
+	//	var grid = textEdit.Parent as Grid;
+
+		var ind = grid.Children.ToList().FindIndex(x => x == textEdit);
+
+		if (grid.Children.Count > ind + 1)
+			grid.Children[ind + 1].Focus();
+	}
 }

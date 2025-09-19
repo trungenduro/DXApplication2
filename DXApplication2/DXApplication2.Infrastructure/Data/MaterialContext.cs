@@ -267,10 +267,13 @@ namespace LiningCheckRecord
         public string 客先名 { get; set; } = string.Empty;
         [DataType(DataType.Text), Display(Name = "数量", Description = "合計数量")]
         public int Total { get; set; } = 0;
+        public string PdfPath { get; set; } = "";
         public string 案件名
         {
             get;set;
         }
+
+
         public bool IsFavorite { get; set; }
 
         [DataType(DataType.Text), Display(Name = "客先名/案件名", Description = "合計数量")]
@@ -481,7 +484,9 @@ namespace LiningCheckRecord
         public int Option2 { get; set; }
         public int SpoolsCount { get => Spools.Count; }
 
-        public DHFOrder? Order { get; set; }
+        [NotMapped]
+        public string SpoolString { get => string.Join('*', Spools.Select(x => x.SpoolNo)); }
+		public DHFOrder? Order { get; set; }
         public double ThickNess { get; set; } = 1;
         public List<object> ThickNessList
         {

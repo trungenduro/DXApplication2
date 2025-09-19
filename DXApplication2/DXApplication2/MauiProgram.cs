@@ -16,7 +16,7 @@ public static class MauiProgram {
     public static MauiApp CreateMauiApp() {
         ThemeManager.ApplyThemeToSystemBars = true;
 
-		Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("@33312e302e303b33313bnBbHvo7vwf3oYtCI0ddj+yf4ST/I6gVyXQN07J2XHFA=");
+		Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjGyl/Vkd+XU9FcVRDXXxIeUx0RWFcb1x6cVFMYFxBNQtUQF1hTH5ad01hWXxfcH1dRGJaWkd3");
 
         var builder = MauiApp.CreateBuilder()
             .UseMauiApp<App>()

@@ -22,7 +22,7 @@
   </g>
   <g id="Layer_1" transform="translate(8, -2)" style="enable-background:new 0 0 16 16">
     <g id="AddCircled">
-      <circle cx="9" cy="9" r="7" fill="#039C23" class="Green" />
+      <circle cx="9" cy="9" r="7" fill="red"  />
     </g>
   </g>
   <g id="Layer_1" transform="translate(8, -2)" style="enable-background:new 0 0 16 16">

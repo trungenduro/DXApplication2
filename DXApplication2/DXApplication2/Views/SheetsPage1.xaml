@@ -18,25 +18,38 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <!--<ToolbarItem Text="{Binding Source={x:Reference sheetGrid1}}" />-->
-        <ToolbarItem Text="シート作成" IconImageSource="delete.png"  Command="{Binding DeleteCommand}" />
-        <ToolbarItem Text="シート作成" IconImageSource="addlist.svg"  Command="{Binding Source={x:Reference sheetGrid1}, Path=Commands.ShowDetailNewItemForm}" />
+        <!--<ToolbarItem Text="シート作成" IconImageSource="delete.png"  Clicked="delete_Clicked" />-->
+     <!--   --><!--<ToolbarItem Text="シート作成" IconImageSource="addlist.svg"  Command="{Binding Source={x:Reference sheetGrid1}, Path=Commands.ShowDetailNewItemForm}" />-->
         <ToolbarItem Text="Save" IconImageSource="save.svg" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     <Shell.TitleView>
         <Grid >
           
-            <dx:TextEdit PlaceholderText="検索" HeightRequest="35"  IconVerticalAlignment="Center" Completed="TextEdit_Completed" TextVerticalAlignment="Center" Margin="1,0,0,0" BoxPadding="1" VerticalOptions="Center" StartIcon="search.png" ></dx:TextEdit>
+            <dx:TextEdit PlaceholderText="管番号検索" HeightRequest="35"  IconVerticalAlignment="Center" Completed="TextEdit_Completed" TextVerticalAlignment="Center" Margin="1,0,0,0" BoxPadding="1" VerticalOptions="Center" StartIcon="search.png" ></dx:TextEdit>
         </Grid>
     </Shell.TitleView>
         <Grid>
-    <dx:DXScrollView>
-        
-   
+        <ActivityIndicator ZIndex="1" WidthRequest="200" HeightRequest="200" BindingContext="{Binding DataControlContext}"
+IsRunning="{Binding IsRunning}" IsVisible="Visible" 
+HorizontalOptions="Center"
+VerticalOptions="Center" />
+        <dx:DXScrollView>
+
+           
+
+              
+
+
+                <VerticalStackLayout Margin="10,0,10,0">
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <dx:DXButton  Content="PDF作成" Icon="pdf" ButtonType="ToolButton" Clicked="orderpdfClick"></dx:DXButton>
+                    <dx:DXButton Content="削除" Icon="delete.png" ButtonType="ToolButton" Clicked="delete_Clicked" ></dx:DXButton>
+                    <dx:DXButton Content="シート追加" BorderColor="White"  Icon="addlist.png" ButtonType="ToolButton" Command="{Binding Source={x:Reference sheetGrid1}, Path=Commands.ShowDetailNewItemForm}" ></dx:DXButton>
+                </HorizontalStackLayout>
+
+              
             
-      
-        <VerticalStackLayout Margin="10,0,10,0">
-       
-            <!--<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">-->
+                <!--<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">-->
            <dx:DXBorder BorderThickness="0"  BorderColor="Black" BackgroundColor="Cyan"
     CornerRadius="12"
     Margin="0,0,0,0"    >
@@ -85,7 +98,9 @@
 
      
     </Grid>
+
 </dx:DXBorder>
+                <!--<Label Text="{Binding Source={x:Reference sheetGrid1},Path=FilterString,StringFormat='filter={0};'}"></Label>-->
                     <!--MaxValue="{Binding Item.Total}" Value="{Binding Item.SpoolsCount}" />-->
 
 
@@ -116,7 +131,7 @@
                                              Command="{Binding Commands.ShowDetailEditForm, Source={RelativeSource AncestorType={x:Type dx:DXCollectionView}}}"
                                         CommandParameter="{Binding .}"
                                         ></dx:DXButton>-->
-                                    <dx:DXBorder x:Name="border" HorizontalOptions="End" VerticalOptions="Start" CornerRadius="60" HeightRequest="60"  WidthRequest="{Binding Source={x:Reference border},Path=HeightRequest}" Padding="5" BorderThickness="2" BorderColor="Red">
+                                    <dx:DXBorder x:Name="border" HorizontalOptions="End" VerticalOptions="Start" CornerRadius="60" HeightRequest="60"  WidthRequest="{Binding Source={x:Reference border},Path=HeightRequest}" Padding="5" BorderThickness="0" BorderColor="Red">
                                         <Label  Text="{Binding CheckResult, StringFormat='{0}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="Red"  FontSize="16" />
                                     </dx:DXBorder>   
                            
@@ -235,8 +250,8 @@
         </dx:DXPopup>
        
     </VerticalStackLayout>
-       
-      
-    </dx:DXScrollView>
+
+          
+        </dx:DXScrollView>
     </Grid>
 </ContentPage>

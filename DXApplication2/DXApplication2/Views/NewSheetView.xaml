@@ -13,7 +13,7 @@
         <converters:SpoolToIconConverter x:Key="SpoolIcon" />
         <converters:ListIndexConverter x:Key="ListConvert" />
         <converters:SheetNumberConverter x:Key="SheetNoConvert" />
-        <converters:ListToTokenItemsConverter x:Key="TokenConvert" />
+
 
       
 
@@ -36,21 +36,21 @@
 
                             <dx:DateEdit Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" LabelText="検査日" Date="{Binding Item.CheckDate1}" DisplayFormat="yyyy/MM/dd" />
                            
-                            <dx:DateEdit Grid.Row="1" Margin="0,0,5,0" Grid.Column="0" LabelText="原管入荷日" DisplayFormat="yyyy/MM/dd" Date="{Binding Item.CheckDate2,StringFormat='{yyyy/dd/mm}'}" />
 
                             <dx:ComboBoxEdit Grid.Row="1"  Margin="5,0,0,0" Grid.Column="1" TextHorizontalAlignment="Center" TextVerticalAlignment="Center"   LabelText="ポリエチレンライニング" ItemsSource="{Binding DataControlContext.DataControlContext.LinningType}"  SelectedValue="{Binding Item.LinningType}" />
-                           
+                            <dx:DateEdit Grid.Row="1" Margin="0,0,5,0" Grid.Column="0" LabelText="原管入荷日" Completed="DateEdit_Completed" DisplayFormat="yyyy/MM/dd" Date="{Binding Item.CheckDate2,StringFormat='{yyyy/dd/mm}'}" />
 
-                            <dx:TextEdit Grid.Row="2" Grid.ColumnSpan="2"  LabelFontSize="12" TextVerticalAlignment="Start" VerticalOptions="Start" TextFontSize="16"  Keyboard="Numeric" LabelText="ピンホール検査機器名" Text="{Binding Item.Kiki1}" Prefix="LP-0" Mask=""  />
-                  
-                     
-                            <dx:TextEdit Grid.Row="3" Margin="5,0,0,0" Grid.Column="1" LabelText="指定膜厚" Suffix="mm以上" Keyboard="Numeric"  Text="{Binding Item.ThickNess}" />
 
-                            <dx:TextEdit Grid.Row="3"   Margin="0,0,5,0"  LabelText="膜厚検査機器名" Keyboard="Numeric" Text="{Binding Item.Kiki2}" Prefix="LP-0" Mask="00" />
-                          
-                            <dx:ComboBoxEdit Grid.Row="4" HorizontalOptions="Fill" Margin="0,0,5,0" Grid.Column="0"  BoxPadding="20" TextVerticalAlignment="Center" LabelText="検査電圧" ItemsSource="{Binding DataControlContext.DataControlContext.Options1}"  SelectedIndex="{Binding Item.Option1}" />
+                            <dx:TextEdit Grid.Row="2" Grid.ColumnSpan="2"  LabelFontSize="12" TextVerticalAlignment="Start" VerticalOptions="Start" TextFontSize="16" Completed="DateEdit_Completed" Keyboard="Numeric" LabelText="ピンホール検査機器名" Text="{Binding Item.Kiki1}" Prefix="LP-0" Mask=""  />
 
-                            <dx:ComboBoxEdit Grid.Row="4" Margin="5,0,0,0" MinimumWidthRequest="170" Grid.Column="1" TextFontSize="16" HorizontalOptions="Fill" TextHorizontalAlignment="Center" BoxPadding="20" TextVerticalAlignment="Center" LabelText="膜厚検査機器" ItemsSource="{Binding DataControlContext.DataControlContext.Options2}"  SelectedIndex="{Binding Item.Option2}" />
+
+
+                            <dx:TextEdit Grid.Row="3"   Margin="0,0,5,0"  LabelText="膜厚検査機器名" Keyboard="Numeric" Text="{Binding Item.Kiki2}" Completed="DateEdit_Completed" Prefix="LP-0" Mask="00" />
+                            <dx:TextEdit Grid.Row="3" Margin="5,0,0,0" Grid.Column="1" LabelText="指定膜厚" Suffix="mm以上" Keyboard="Numeric" Completed="DateEdit_Completed"  Text="{Binding Item.ThickNess}" />
+
+                            <dx:ComboBoxEdit Grid.Row="4" HorizontalOptions="Fill" Margin="0,0,5,0" Grid.Column="0"  BoxPadding="20" TextVerticalAlignment="Center" Completed="DateEdit_Completed"  LabelText="検査電圧" ItemsSource="{Binding DataControlContext.DataControlContext.Options1}"  SelectedIndex="{Binding Item.Option1}" />
+
+                            <dx:ComboBoxEdit Grid.Row="4" Margin="5,0,0,0" MinimumWidthRequest="170" Grid.Column="1" TextFontSize="16" HorizontalOptions="Fill"   TextHorizontalAlignment="Center" BoxPadding="20" TextVerticalAlignment="Center" LabelText="膜厚検査機器" ItemsSource="{Binding DataControlContext.DataControlContext.Options2}"  SelectedIndex="{Binding Item.Option2}" />
 
                 </Grid>
 
@@ -108,14 +108,11 @@ IconMember="add.svg" ChipCheckIcon="add.svg"
                                                 </Style>
                                             </Grid.Resources>
 
-                                            <Grid Grid.Row="1"   />
-                                          
+                                            <Grid Grid.Row="1"   />                                          
                                                 
                                               <dx:TextEdit HeightRequest="35" HorizontalOptions="Fill" BoxPadding="10,0,0,0" Text="{Binding SpoolNo}" ClearIconVisibility="Never" Grid.ColumnSpan="1"  />
                                               <dx:TextEdit Grid.Column="1"  HeightRequest="35" HorizontalOptions="Fill" BoxPadding="10,0,0,0" Text="{Binding Size}" ClearIconVisibility="Never" Grid.ColumnSpan="1"  />
                                            
-
-
                                             <Image Grid.Row="1"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
 
                                             <!--<Label Padding="0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="良" FontSize="15" FontAttributes="Bold"/>-->

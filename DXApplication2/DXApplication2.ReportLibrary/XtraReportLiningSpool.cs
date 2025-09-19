@@ -33,7 +33,7 @@ namespace DXApplication2.ReportLibrary
 			i++;
 			var n = this.CurrentRowIndex;
 			if (this.DataSource is not List<LiningSpool> spools) return;
-			if (i >= spools.Count) return;
+			if (n >= spools.Count) return;
 			
 			if (sender is XRPictureBox xRPictureBox)
 			{
@@ -84,6 +84,19 @@ namespace DXApplication2.ReportLibrary
 
 		private void xrLabel35_TextChanged(object sender, EventArgs e)
 		{
+
+		}
+
+		private void SpoolBorder_BeforePrint(object sender, CancelEventArgs e)
+		{
+			var n = this.CurrentRowIndex;
+			if (this.DataSource is not List<LiningSpool> spools) return;
+			if (n >= spools.Count) return;
+			if (spools[n].SpoolNo == "")
+			{
+				this.SpoolBorder.BackColor = Color.White;
+			//	this.SpoolBorder.Borders =  =  = Color.White;
+			}	
 
 		}
 	}

@@ -1,8 +1,9 @@
 using CommunityToolkit.Maui.Views;
-using DevExpress.Android.Editors;
+
 using DevExpress.Maui.CollectionView;
 using DevExpress.Maui.Core;
 using DevExpress.Maui.DataGrid;
+using DevExpress.Maui.Editors;
 using DevExpress.Spreadsheet;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
@@ -22,7 +23,7 @@ public partial class SheetsPage1 : ContentPage
 
 	DHFOrder? dhfOrder;
 
-
+	DetailEditFormViewModel FormData;
 
 	private void ToolbarItem_Clicked(object sender, EventArgs e)
 	{
@@ -36,8 +37,8 @@ public partial class SheetsPage1 : ContentPage
     private void ContentPage_BindingContextChanged(object sender, EventArgs e)
     {
         if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
-        {		
-			
+        {
+			FormData = form;
 			form.PropertyChanged += (s, e) =>
 			{
 				if (e.PropertyName == nameof(DevExpress.Maui.Core.DetailEditFormViewModel.Item))
@@ -110,7 +111,13 @@ public partial class SheetsPage1 : ContentPage
 			//	DetailEditFormViewModel form = new DetailEditFormViewModel(DatabaseViewModel)
 
 		}
-
+		if (e.IsValid)
+			if (FormData != null)
+			{
+				FormData.CloseOnSave = false;
+				await FormData.SaveAsync();
+				FormData.CloseOnSave = true;				
+			}
 	}
 
 	private void ToolbarButton_Clicked(object sender, EventArgs e)
@@ -179,7 +186,7 @@ public partial class SheetsPage1 : ContentPage
 	{
 		if(sender is TextEdit edit)
 		{
-			//this.sheetGrid1.FilterString = "Contains([])"
+			this.sheetGrid1.FilterString = $"Contains([SpoolString],'{edit.Text}' )";
 		}
     }
 
@@ -209,7 +216,40 @@ public partial class SheetsPage1 : ContentPage
     private async void pdfClick(object sender, EventArgs e)
     {
         popup.IsOpen = false;
-        await Navigation.PushAsync(new LiningReportPage());
+		if (DatabaseViewModel != null)
+		{
+			await DatabaseViewModel.GeneratePDFSheet(ActiveSheet);
+			await Navigation.PushAsync(new LiningReportPage());
+		}		
 
     }
+
+	private void ToolbarItem_Clicked_1(object sender, EventArgs e)
+	{
+
+	}
+
+	private async void delete_Clicked(object sender, EventArgs e)
+	{
+		bool confirm = await Shell.Current.DisplayAlert(
+						"確認", $"削除しますか？", "はい", "キャンセル");
+		if (!confirm)
+		{		
+			return;
+		}
+		if (this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
+		{
+			await form.DeleteAsync();
+		}
+
+	}
+
+	private async void orderpdfClick(object sender, EventArgs e)
+	{
+		if (DatabaseViewModel != null)
+		{
+			await DatabaseViewModel.GeneratePDFOrder();
+			await Navigation.PushAsync(new LiningReportPage());
+		}
+	}
 }

@@ -15,7 +15,7 @@
       xmlns:converters="clr-namespace:DXApplication2.Converters;assembly=DXApplication2"  
     BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
     xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
-    Title="オーダーリスト">
+    Title="O/#リスト">
     
     <ContentPage.Resources>     
             <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
@@ -123,7 +123,7 @@
         <ToolbarItem Text="Create"  IconImageSource="filter.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowFilteringUIForm}" />
         <ToolbarItem Text="Create"  IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
     </ContentPage.ToolbarItems>
-    <Shell.TitleView>
+    <!--<Shell.TitleView>
         <HorizontalStackLayout Spacing="0">
             <dxe:InputChipGroup IsScrollBarVisible="True" x:Name="inputchip" VerticalOptions="Center" BoxMode="Filled"  ChildRemoved="inputchip_ChildRemoved" 
                             Padding="0,0,10,0" EditorPlaceholderText="検索" ItemsSource="{Binding OrderFilter}" Completed="inputchip_Completed"
@@ -131,10 +131,10 @@
 IconMember="add.svg" ChipCheckIcon="add.svg" 
 >
             </dxe:InputChipGroup>
-            <!--<dxe:FormListPickerItem HeightRequest="35" IsVisible="False" PickerShowMode="Page" ></dxe:FormListPickerItem>-->
-            <!--<dx:TextEdit PlaceholderText="検索" HeightRequest="35" HorizontalOptions="Fill" MinimumWidthRequest="200" IconVerticalAlignment="Center" Completed="TextEdit_Completed" TextVerticalAlignment="Center" Margin="1,0,0,0" BoxPadding="1" VerticalOptions="Center" StartIcon="search.png" TextChanged="TextEdit_TextChanged"></dx:TextEdit>-->          
+            --><!--<dxe:FormListPickerItem HeightRequest="35" IsVisible="False" PickerShowMode="Page" ></dxe:FormListPickerItem>-->
+            <!--<dx:TextEdit PlaceholderText="検索" HeightRequest="35" HorizontalOptions="Fill" MinimumWidthRequest="200" IconVerticalAlignment="Center" Completed="TextEdit_Completed" TextVerticalAlignment="Center" Margin="1,0,0,0" BoxPadding="1" VerticalOptions="Center" StartIcon="search.png" TextChanged="TextEdit_TextChanged"></dx:TextEdit>--><!--          
         </HorizontalStackLayout>
-    </Shell.TitleView>
+    </Shell.TitleView>-->
     <Grid>
 
      

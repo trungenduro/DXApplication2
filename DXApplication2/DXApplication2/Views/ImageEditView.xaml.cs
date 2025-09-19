@@ -165,7 +165,7 @@ public partial class ImageEditView : ContentPage {
 		Spool = sp;
 		if (sp.ImagePath == "")
 		{
-            ImageSource blankImage = ImageSource.FromStream(() => CreateBlankImageStream(200, 200));
+            ImageSource blankImage = ImageSource.FromStream(() => CreateBlankImageStream(50, 50));
 			editor.Source = blankImage;
         }
 		else
@@ -395,7 +395,7 @@ public partial class ImageEditView : ContentPage {
 
         //this.editor.AddCustomAnnotationView(new Label { Text = "A", WidthRequest = 150, HeightRequest = 40 });
 
-        Image image = new Image() { HeightRequest = 80, WidthRequest = 200, Aspect = Aspect.AspectFit };
+        Image image = new Image() { HeightRequest = 200, WidthRequest = 500, Aspect = Aspect.AspectFit };
         image.Source = ImageSource.FromFile("spool.png");
 
         this.editor.AddCustomAnnotationView(image,
@@ -430,7 +430,7 @@ public partial class ImageEditView : ContentPage {
             Bounds= new Rect(0,0,10,10),
             TextStyle = new ImageEditorTextStyle()
             {
-                FontSize = 30,
+                FontSize = 50,
                 TextColor = Colors.Blue,
                 FontFamily = "Arial",
                 FontAttributes = FontAttributes.None
@@ -441,7 +441,7 @@ public partial class ImageEditView : ContentPage {
 
     private void eda_Clicked(object sender, EventArgs e)
     {
-        Image image = new Image() { HeightRequest = 80, WidthRequest = 120, Aspect = Aspect.AspectFit };
+        Image image = new Image() { HeightRequest = 100, WidthRequest = 100, Aspect = Aspect.AspectFit ,Rotation=90};
         image.Source = ImageSource.FromFile("eda.png");
 
         this.editor.AddCustomAnnotationView(image,
@@ -509,7 +509,7 @@ public partial class ImageEditView : ContentPage {
 
     private void redu_Clicked(object sender, EventArgs e)
     {
-        Image image = new Image() { HeightRequest = 50, WidthRequest = 50, Aspect = Aspect.AspectFit };
+        Image image = new Image() { HeightRequest = 100, WidthRequest = 100, Aspect = Aspect.AspectFit };
         image.Source = ImageSource.FromFile("reducer.png");
 
         this.editor.AddCustomAnnotationView(image,

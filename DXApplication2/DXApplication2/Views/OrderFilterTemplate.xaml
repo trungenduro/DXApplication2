@@ -8,21 +8,27 @@
         <VerticalStackLayout>
 
             
-            <dx:FilterChipGroupItem
+            <dx:FilterCheckedListPickerItem
          FieldName="客先名"
-         Text="客先名"
+         Text="客先名" ShowSearchPanel="False"
          ShowValuesOutOfFilter="true"
          ShowValueCounts="true"
-         AllowDeselect="True"
+        
          ShowSeparator="False" />
 
+            <dx:FilterCheckedListPickerItem
+         FieldName="案件名"
+       ShowSearchPanel="False"
+         ShowValuesOutOfFilter="true"
+         ShowValueCounts="true"
+      
+          />
 
-
-            <dx:FilterChipGroupItem
-         FieldName="IsFinished" ShowValuesOutOfFilter="true"
-         Text="完成"  ShowValueCounts="true"
+            <dx:FilterCheckItem Text="完成"
+         FieldName="IsFinished" 
+         
                
-         ShowSeparator="False" />
+          />
 
 
 

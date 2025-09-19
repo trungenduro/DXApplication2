@@ -83,6 +83,8 @@ public partial class DatabaseViewModel : ObservableObject {
 	[ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(InitializeCommand))]
     bool isInitialized;
+    [ObservableProperty]  
+    bool isRunning=false;
 
 
 
@@ -137,7 +139,7 @@ public partial class DatabaseViewModel : ObservableObject {
     PdfDocumentSource? documentSource;
 
     [RelayCommand()]
-    async Task InitializePDFAsync() {
+    public async Task InitializePDFAsync() {
         IsInitialized = false;
             List<LiningSpool> liningSpools = new List<LiningSpool>();
         if (CurrentSheet == null)
@@ -149,12 +151,14 @@ public partial class DatabaseViewModel : ObservableObject {
         }
         else
         { liningSpools = new List<LiningSpool>(CurrentSheet.Spools); }
-        
-        for (int i = 0; i < 10 && liningSpools.Count <10; i++)
-		{
-            liningSpools.Add(new LiningSpool {SpoolNo="",Size1="" });
-		}
 
+        int i1;
+		for ( i1=1 ; i1 < 10 && liningSpools.Count > 10 * i1; i1++)
+        
+		for (int i = 0; i < 10 && liningSpools.Count < 10 * i1; i++)
+		{
+			liningSpools.Add(new LiningSpool { SpoolNo = "", Size1 = "" });
+		}
 		if (liningSpools.Count >0)
         {            
             var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= liningSpools} ;
@@ -170,6 +174,63 @@ public partial class DatabaseViewModel : ObservableObject {
        
         IsInitialized = true;
     }
+
+     public async Task GeneratePDFOrder() {
+        IsRunning = true;
+            List<LiningSpool> liningSpools = new List<LiningSpool>();
+        if (CurrentOrder == null)
+            return;
+       
+        { liningSpools = new List<LiningSpool>(); }
+
+        foreach (var sheet in CurrentOrder.ExcelSheets.OrderBy(x=>x.SheetNo))
+        {
+            var spools = new List<LiningSpool>(sheet.Spools);
+
+            for (int i = 0; i < 10 && spools.Count < 10 * ((spools.Count + 9) / 10); i++)
+            {
+				spools.Add(new LiningSpool { SpoolNo = "", Size1 = "" });
+            }
+
+			liningSpools.AddRange(spools);  
+		}
+
+
+		if (liningSpools.Count >0)
+        {            
+            var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= liningSpools} ;
+            report.CreateDocument();
+            string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
+			MemoryStream stream = new MemoryStream();
+            await report.ExportToPdfAsync(stream);				
+			DocumentSource = stream;         
+        }
+
+		IsRunning = false;
+	}
+     public async Task GeneratePDFSheet(ExcelSheet sheet) {
+        IsRunning = true;
+        List<LiningSpool> liningSpools = sheet.Spools;
+	
+       
+
+		for (int i = 0; i < 10 && liningSpools.Count < 10 * ((liningSpools.Count + 9) / 10); i++)
+		{
+			liningSpools.Add(new LiningSpool { SpoolNo = "", Size1 = "" });
+		}
+
+		if (liningSpools.Count >0)
+        {            
+            var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= liningSpools} ;
+            report.CreateDocument();
+            string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
+			MemoryStream stream = new MemoryStream();
+            await report.ExportToPdfAsync(stream);				
+			DocumentSource = stream;         
+        }
+
+		IsRunning = false;
+	}
 
 
 
@@ -312,7 +373,6 @@ public partial class DatabaseViewModel : ObservableObject {
                 mess += "オーダーが 重複してます\n";
             if (mess != "")
             {
-
                 args.IsValid = false;
                 await Shell.Current.DisplayAlert("確認", mess, "OK");
                 return;
@@ -342,8 +402,7 @@ public partial class DatabaseViewModel : ObservableObject {
 			
 			}
             if (args.DataChangeType == DataChangeType.Add)
-            {
-                
+            {               
 
 
 
@@ -352,7 +411,14 @@ public partial class DatabaseViewModel : ObservableObject {
 			}
             if (args.DataChangeType == DataChangeType.Delete)
             {
-                unitOfWork.CustomersRepository.Delete(order);
+				bool confirm = await Shell.Current.DisplayAlert(
+						"確認", $"シート {order.OrderNo} を削除しますか？", "はい", "キャンセル");
+                if (!confirm)
+                {
+                    args.IsValid = false;
+                    return;
+                }
+				unitOfWork.CustomersRepository.Delete(order);
 				pendingAction = () => Orders.Remove(order);
 			}
 
