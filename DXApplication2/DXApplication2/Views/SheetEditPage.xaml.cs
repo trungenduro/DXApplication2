@@ -2,9 +2,9 @@ using AndroidX.Lifecycle;
 
 using DevExpress.Maui.Charts;
 using DevExpress.Maui.Core;
-using DevExpress.Maui.DataGrid;
+
 using DevExpress.Maui.Editors;
-using DevExpress.Spreadsheet;
+
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using static Android.Icu.Text.IDNA;
@@ -26,7 +26,7 @@ public partial class SheetEditPage : ContentPage
 		this.BindingContext = model;
 		InitializeComponent();
 
-		DataGridView dataGridView = new DataGridView();
+	//	DataGridView dataGridView = new DataGridView();
         //dataGridView.Commands.ShowDetailEditForm
 
     }
@@ -41,15 +41,7 @@ public partial class SheetEditPage : ContentPage
 
 	}
 
-	private void Swipe_Open(object sender, DevExpress.Maui.DataGrid.SwipeItemTapEventArgs e)
-	{
-		DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
-		if (e.Item is LiningSpool sp)
-		{
-			vm.CurrentSpool = sp;
-			Navigation.PushAsync(new NewSpoolPage(vm));
-		}
-	}
+
 
 	//add edit spool
     private async void collectionView_ValidateAndSave(object sender, DevExpress.Maui.Core.ValidateItemEventArgs e)
@@ -57,15 +49,7 @@ public partial class SheetEditPage : ContentPage
 		if( this.BindingContext is DevExpress.Maui.Core.DetailEditFormViewModel form)
 		{
 
-			if(  form.DataControl is  DataGridView grid)
-			{
-				//grid.Commands.ShowDetailEditForm
-				if(grid.BindingContext is DatabaseViewModel viewmodel)
-				{
-
-
-				}
-			}
+			
 
             if (e.Item is LiningSpool sp)
 			{
@@ -108,19 +92,8 @@ public partial class SheetEditPage : ContentPage
 		}
 	}
 
-    private void GridSwipeItem_Tap(object sender, SwipeItemTapEventArgs e)
-    {
+  
 
-    }
-
-    private void delete_Tap(object sender, SwipeItemTapEventArgs e)
-    {
-        if (e.Item is LiningSpool sp)
-        {
-           // spoolGrid.DeleteRow(e.RowHandle);
-          //  DatabaseViewModel.DeleteSpoolAsync(sp).Wait();
-        }
-    }
 
 	LiningSpool ActiveSpool;
 	int ActiveHandle = -1;

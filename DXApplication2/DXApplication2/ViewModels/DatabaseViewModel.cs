@@ -1,18 +1,21 @@
 using System.Collections.ObjectModel;
+using System.IO;
+using Android.Content;
 using AndroidX.Lifecycle;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DevExpress.Maui.Core;
-using DevExpress.Maui.Pdf;
-using DevExpress.Spreadsheet;
+
+
 
 
 using DXApplication2.Converters;
 using DXApplication2.Domain.Data;
 using DXApplication2.Domain.Services;
 using DXApplication2.Infrastructure.Data;
-
+//using Java.IO;
 using LiningCheckRecord;
+//using File = Java.IO.File;
 
 namespace DXApplication2.ViewModels;
 
@@ -135,8 +138,8 @@ public partial class DatabaseViewModel : ObservableObject {
 	}
 
   
-    [ObservableProperty]
-    PdfDocumentSource? documentSource;
+   // [ObservableProperty]
+    //PdfDocumentSource? documentSource;
 
     [RelayCommand()]
     public async Task InitializePDFAsync() {
@@ -167,7 +170,7 @@ public partial class DatabaseViewModel : ObservableObject {
 			MemoryStream stream = new MemoryStream();
             await report.ExportToPdfAsync(stream);
 				
-			DocumentSource = stream;
+			//DocumentSource = stream;
             //LinningReport 
             // LinningReport
         }
@@ -200,14 +203,30 @@ public partial class DatabaseViewModel : ObservableObject {
         {            
             var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= liningSpools} ;
             report.CreateDocument();
-            string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
-			MemoryStream stream = new MemoryStream();
-            await report.ExportToPdfAsync(stream);				
-			DocumentSource = stream;         
+            var downloadsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath;
+
+            // Fix for CS8602 and MVVMTK0034: Use the generated property `CurrentOrder` instead of directly referencing the field `currentOrder`.
+            // Additionally, ensure `CurrentOrder` is not null before accessing its properties to avoid null reference exceptions.
+
+            string resultFile =  $"{CurrentOrder?.OrderNo ?? "Order"}_成績表.pdf";
+            MemoryStream stream = new MemoryStream();
+            await report.ExportToPdfAsync(stream);
+            stream.Position = 0;
+            try
+            {
+                SaveFileToAndroid(CurrentOrder?.OrderNo ?? "Order", resultFile, stream);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
-		IsRunning = false;
+        IsRunning = false;
 	}
+
+
+
      public async Task GeneratePDFSheet(ExcelSheet sheet) {
         IsRunning = true;
         List<LiningSpool> liningSpools = new List<LiningSpool>( sheet.Spools);
@@ -223,14 +242,98 @@ public partial class DatabaseViewModel : ObservableObject {
         {            
             var report = new DXApplication2.ReportLibrary.XtraReportLiningSpool() { Name="test",DataSource= liningSpools} ;
             report.CreateDocument();
-            string resultFile = Path.Combine(FileSystem.Current.AppDataDirectory, report.Name + ".pdf");
-			MemoryStream stream = new MemoryStream();
-            await report.ExportToPdfAsync(stream);				
-			DocumentSource = stream;         
+            var downloadsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDocuments).AbsolutePath;
+         //  var filePath = Path.Combine(downloadsPath, fileName);
+
+
+            string resultFile =  $"{sheet?.Order?.OrderNo ?? "Order"}_シート{sheet?.SheetNo ?? 0}.pdf";
+			
+            if( File.Exists(resultFile))
+            {
+               //  resultFile = Path.Combine(downloadsPath, $"{currentOrder.OrderNo}_シート{sheet.SheetNo}_{}.pdf");
+
+               //await Shell.Current.DisplayAlert("Error", "File.Exists", "OK");
+                  //  IsRunning = false;
+                 //   return;
+                
+            }
+            MemoryStream stream = new MemoryStream();
+            await report.ExportToPdfAsync(stream);
+            stream.Position = 0;
+
+            try
+            {
+                SaveFileToAndroid(sheet.Order?.OrderNo??"", resultFile, stream);
+            }
+            catch (Exception e1 )
+            {
+                await Shell.Current.DisplayAlert("Error", e1.Message, "OK");
+            }
+            //DocumentSource = stream;         
         }
 
-		IsRunning = false;
+        IsRunning = false;
 	}
+
+    public void SaveFileToAndroid(string folder, string resultFile, MemoryStream stream)
+    {
+        var documentPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDocuments).AbsolutePath;
+        var dir = Path.Combine(documentPath, "ライニング検査","成績表");
+        if(dir != null && !Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+        var dir1 = Path.Combine(documentPath, "ライニング検査", "成績表",folder);
+        if (dir1 != null && !Directory.Exists(dir1))
+        {
+            Directory.CreateDirectory(dir1);
+        }
+        string fullpath= Path.Combine(dir1, resultFile);
+
+        using (var fileStream = File.Create(fullpath))
+        {
+            stream.CopyTo(fileStream);
+        }
+
+        var context = Android.App.Application.Context;
+        var uri = Android.Net.Uri.FromFile(new Java.IO.File(fullpath));
+        context.SendBroadcast(new Android.Content.Intent(Android.Content.Intent.ActionMediaScannerScanFile, uri));
+
+       
+         OpenFile(fullpath, "application/pdf");
+
+
+    }
+
+    public void OpenFile(string filePath, string mimeType)
+    {
+        try
+        {
+            var context = Android.App.Application.Context;
+            // Replace the following line:  
+            // var file = new File(filePath);  
+
+            // With this corrected line:  
+            var file = new Java.IO.File(filePath);
+            var uri = FileProvider.GetUriForFile(context, context.PackageName + ".fileprovider", file);
+
+            var intent = new Intent(Intent.ActionView);
+            intent.SetDataAndType(uri, mimeType);
+            intent.SetFlags(ActivityFlags.GrantReadUriPermission | ActivityFlags.NewTask);
+
+
+           // Shell.Current.DisplayAlert("データ保存", "ファイルを開く際にエラーが発生しました。", "OK").Wait();
+
+            context.StartActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            // Log the error or display an alert to the user  
+           System.Console.WriteLine($"Error opening file: {ex.Message}");
+            Shell.Current.DisplayAlert("Error", "ファイルを開く際にエラーが発生しました。", "OK").Wait();
+        }
+    }
+
 
 
 
@@ -256,7 +359,7 @@ public partial class DatabaseViewModel : ObservableObject {
 	public List<string> LinningType => new List<string> { "内面", "外面" };
 	public List<string> CheckResults => new List<string> { "","合格", "不合格" };
 	public List<string> Options2 => new List<string> { "電磁式膜厚計", "渦電流式膜厚計" };
-	public List<string> Sizes => new List<string> {"15A", "20A", "25A", "50A", "65A", "80A", "100A","125A","150A","200A","250A","300A","350A","400A","450A","500A" };
+	public List<string> Sizes => new List<string> {"1/2B","1B", "2B", "3B", "4B", "6B", "10B", "12BA","14B","16B","18B","20B","24B"};
    
     public async void SaveDatabase()
 	{
@@ -445,6 +548,18 @@ public partial class DatabaseViewModel : ObservableObject {
                     mess = "指定膜厚を入力してください";
                 if (item.Checker == "")
                     mess = "検査員を入力してください";
+
+                if(item.CheckResult.Equals("合格"))
+                {
+                    if (item.Spools.Where(x => x.CheckShape != "良").Any())
+                    {
+                        mess = "合格できい管番号があります";
+
+                        args.IsValid = false;
+                        await Shell.Current.DisplayAlert("確認", "合格できません", "OK");
+                        return;
+                    }
+                }
 
                 if (mess != "")
                 {

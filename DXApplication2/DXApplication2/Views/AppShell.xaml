@@ -53,10 +53,7 @@
         Title="成績表"
         Icon="share.png"
         ContentTemplate="{DataTemplate views:OCRPage}" /> 
-    <ShellContent
-        Title="Report"
-        Icon="share.png"
-        ContentTemplate="{DataTemplate views:LiningReportPage}" />
+    
     <ShellContent
         Title="Reset Database"
         Icon="logo_dhf1.png"

@@ -395,7 +395,7 @@ public partial class ImageEditView : ContentPage {
 
         //this.editor.AddCustomAnnotationView(new Label { Text = "A", WidthRequest = 150, HeightRequest = 40 });
 
-        Image image = new Image() { HeightRequest = 200, WidthRequest = 500, Aspect = Aspect.AspectFit };
+        Image image = new Image() { HeightRequest = 100, WidthRequest = 350, Aspect = Aspect.AspectFit };
         image.Source = ImageSource.FromFile("spool.png");
 
         this.editor.AddCustomAnnotationView(image,
@@ -441,14 +441,14 @@ public partial class ImageEditView : ContentPage {
 
     private void eda_Clicked(object sender, EventArgs e)
     {
-        Image image = new Image() { HeightRequest = 100, WidthRequest = 100, Aspect = Aspect.AspectFit ,Rotation=90};
+        Image image = new Image() { HeightRequest = 60, WidthRequest = 60, Aspect = Aspect.AspectFit ,Rotation=90};
         image.Source = ImageSource.FromFile("eda.png");
 
         this.editor.AddCustomAnnotationView(image,
              new Syncfusion.Maui.ImageEditor.ImageEditorAnnotationSettings
              {
                  AllowDrag = true,
-                 AllowResize = false,
+                 AllowResize = true,
                  IsRotatable = true
                  
              });
@@ -509,7 +509,7 @@ public partial class ImageEditView : ContentPage {
 
     private void redu_Clicked(object sender, EventArgs e)
     {
-        Image image = new Image() { HeightRequest = 100, WidthRequest = 100, Aspect = Aspect.AspectFit };
+        Image image = new Image() { HeightRequest = 60, WidthRequest = 60, Aspect = Aspect.AspectFit };
         image.Source = ImageSource.FromFile("reducer.png");
 
         this.editor.AddCustomAnnotationView(image,
@@ -518,7 +518,6 @@ public partial class ImageEditView : ContentPage {
                  AllowDrag = true,
                  AllowResize = true,
                  IsRotatable = true
-
              });
     }
 }

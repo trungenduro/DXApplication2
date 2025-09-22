@@ -35,7 +35,7 @@ public static class MauiProgram {
             // .UseDevExpressTreeView()
             .UseDevExpressCollectionView()
             .UseDevExpressEditors()
-            .UseDevExpressDataGrid()
+          //  .UseDevExpressDataGrid()
             // .UseDevExpressScheduler()
             //.UseDevExpressGauges()
             .UseMauiCommunityToolkit()
@@ -56,7 +56,7 @@ public static class MauiProgram {
     static MauiAppBuilder RegisterViewModels(this MauiAppBuilder appBuilder) {
    
         appBuilder.Services.AddSingleton<ViewModels.DatabaseViewModel>();
-        appBuilder.Services.AddTransient<ViewModels.ReportingViewModel>();
+       // appBuilder.Services.AddTransient<ViewModels.ReportingViewModel>();
 		//appBuilder.Services.AddSingleton<IOcrServiceDI, OcrServiceDI>();
 		return appBuilder;
     }

@@ -632,7 +632,7 @@ namespace LiningCheckRecord
 
         public ExcelSheet? Sheet { get; set; }
 
-        public string Size1 { get; set; } = "50A";
+        public string Size1 { get; set; } = "";
         public string Size2 { get; set; } = string.Empty;
         public string ImagePath
         {

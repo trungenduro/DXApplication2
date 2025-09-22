@@ -58,16 +58,19 @@
                            </Grid>  
                        </DataTemplate>  
                    </dx:ComboBoxEdit.ItemTemplate>  
-               </dx:ComboBoxEdit>-->  
+               </dx:ComboBoxEdit>-->
 
-               <dx:ComboBoxEdit LabelText="母管サイズ" SelectedValue="{Binding Item.Size1}" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}">  
-                 
-               </dx:ComboBoxEdit>
 
-                <Grid ColumnDefinitions="*,40">
-                    <dx:ComboBoxEdit LabelText="枝サイズ" SelectedValue="{Binding Item.Size1}" ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}"/>
+
+
+                        <Grid ColumnDefinitions="*,40">
+                    <dx:ComboBoxEdit x:Name="edasize" LabelText="サイズ選択"  ItemsSource="{Binding DataControlContext.DataControlContext.DataControlContext.Sizes}"/>
                     <dx:DXButton Grid.Column="1" Icon="add" IconColor="#1177D7" ButtonType="ToolButton" Clicked="DXButton_Clicked_1" ></dx:DXButton>
-                </Grid>
+                        
+                        </Grid>
+                        <dx:TextEdit x:Name="size1" LabelText="サイズ" Text="{Binding Item.Size1}" />
+                        <!--<dx:TokenEdit x:Name="token" ></dx:TokenEdit>
+                        <dx:FilterChipGroupItem  x:Name="tokenChip" ></dx:FilterChipGroupItem>-->
 
             </dx:DXStackLayout>  
 

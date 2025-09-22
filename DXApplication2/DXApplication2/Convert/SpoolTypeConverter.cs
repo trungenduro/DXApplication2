@@ -164,6 +164,8 @@ namespace DXApplication2.Converters
 			if (spool.Sheet == null) return new Uri("error.svg", UriKind.RelativeOrAbsolute);
 			if(minVal<spool.Sheet.ThickNess)
 				return new Uri("error.svg", UriKind.RelativeOrAbsolute);
+			if(string.IsNullOrEmpty( spool.CheckShape))
+				return new Uri("error.svg", UriKind.RelativeOrAbsolute);
 
 			return new Uri("ok.svg", UriKind.RelativeOrAbsolute);
 		}

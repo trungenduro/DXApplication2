@@ -1,6 +1,6 @@
 using CommunityToolkit.Maui.Media;
 using DevExpress.Maui.Core;
-using DevExpress.Maui.DataGrid;
+
 using DevExpress.Maui.Editors;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
@@ -16,23 +16,9 @@ namespace DXApplication2.Views
             InitializeComponent();
         }
       
-        private void collectionView_DoubleTap(object sender, DevExpress.Maui.DataGrid.DataGridGestureEventArgs e)
-		{
+      
 
-			//Navigation.PushAsync(new SheetsPage());
-
-		}
-
-		private void Swipe_Open(object sender, DevExpress.Maui.DataGrid.SwipeItemTapEventArgs e)
-		{
-			DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
-			if (e.Item is CheckerTable peo)
-			{
-				vm.RemovePeople(peo);
-			}
-			//collectionView.Commands..dr
-
-		}
+		
 
 		private async void collectionView_ValidateAndSave(object sender, DevExpress.Maui.Core.ValidateItemEventArgs e)
 		{

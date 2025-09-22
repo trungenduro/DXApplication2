@@ -1,7 +1,7 @@
 using DemoCenter.Maui.Views;
 using DevExpress.CodeParser;
 using DevExpress.Maui.Core;
-using DevExpress.Maui.DataGrid;
+
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using System.Text.RegularExpressions;
@@ -153,9 +153,34 @@ public partial class NewSpoolPage : ContentPage
         Capture();
 	}
 
-    private void DXButton_Clicked_1(object sender, EventArgs e)
+    private async void DXButton_Clicked_1(object sender, EventArgs e)
     {
+		if(this.edasize.SelectedValue == null) return;
 
+		if (this.size1.Text.Contains("x"))
+		{
+			var s1 = this.size1.Text.Split('x').First();
+
+			if (DatabaseViewModel != null && Sheet != null)
+			{
+
+				var i1 = DatabaseViewModel.Sizes.FindIndex(x => x == s1);
+
+				if (i1 > -1)
+				{
+					if(i1 < edasize.SelectedIndex)
+					{
+						await DisplayAlert("Error", "Second size must be less than or equal to first size", "OK");
+                        return;
+					}
+				}
+			}
+		}
+
+            if (this.size1.Text=="") this.size1.Text += $"{this.edasize.SelectedValue}";
+			else
+        this.size1.Text += $"x{this.edasize.SelectedValue}";
+		//this.tokenChip.item. .ite 
     }
 
     private async void FreeHandClicked(object sender, EventArgs e)

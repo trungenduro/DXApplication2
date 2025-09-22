@@ -2,9 +2,9 @@ using CommunityToolkit.Maui.Views;
 
 using DevExpress.Maui.CollectionView;
 using DevExpress.Maui.Core;
-using DevExpress.Maui.DataGrid;
+
 using DevExpress.Maui.Editors;
-using DevExpress.Spreadsheet;
+
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
 using Microsoft.Maui.Controls;
@@ -219,7 +219,7 @@ public partial class SheetsPage1 : ContentPage
 		if (DatabaseViewModel != null)
 		{
 			await DatabaseViewModel.GeneratePDFSheet(ActiveSheet);
-			await Navigation.PushAsync(new LiningReportPage());
+		//	await Navigation.PushAsync(new LiningReportPage());
 		}		
 
     }
@@ -249,7 +249,7 @@ public partial class SheetsPage1 : ContentPage
 		if (DatabaseViewModel != null)
 		{
 			await DatabaseViewModel.GeneratePDFOrder();
-			await Navigation.PushAsync(new LiningReportPage());
+		//	await Navigation.PushAsync(new LiningReportPage());
 		}
 	}
 }
