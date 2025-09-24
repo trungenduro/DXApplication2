@@ -7,14 +7,19 @@ using SampleApp.Platforms.Android.DI;
 using CommunityToolkit.Maui.Core.Handlers;
 using CommunityToolkit.Maui.Views;
 using Syncfusion.Maui.Core.Hosting;
+using CommunityToolkit.Maui.Media;
+using System.Threading.Tasks;
 
 
 
 namespace DXApplication2;
 
 public static class MauiProgram {
-    public static MauiApp CreateMauiApp() {
+    public static  MauiApp CreateMauiApp() {
         ThemeManager.ApplyThemeToSystemBars = true;
+
+
+      
 
 		Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjGyl/Vkd+XU9FcVRDXXxIeUx0RWFcb1x6cVFMYFxBNQtUQF1hTH5ad01hWXxfcH1dRGJaWkd3");
 
@@ -63,6 +68,8 @@ public static class MauiProgram {
     static MauiAppBuilder RegisterAppServices(this MauiAppBuilder appBuilder) {
      
         appBuilder.Services.AddSingleton<Domain.Services.ICacheService, Infrastructure.Services.MemoryCacheService>();
+		appBuilder.Services.AddSingleton<ISpeechToText, SpeechToTextImplementation>();
+		//appBuilder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
 		appBuilder.Services.AddSingleton<IOcrServiceDI, OcrServiceDI>();
 		return appBuilder;
     }

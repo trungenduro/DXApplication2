@@ -121,6 +121,7 @@
         <!--Command="{Binding RefreshCommand"-->
         <!--<ToolbarItem Text="Refresh"  Clicked="ToolbarItem_Clicked" />-->
         <ToolbarItem Text="Create"  IconImageSource="filter.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowFilteringUIForm}" />
+        <ToolbarItem Text="Create"  IconImageSource="im.svg" Clicked="importClick" />
         <ToolbarItem Text="Create"  IconImageSource="add.svg" Command="{Binding Source={x:Reference collectionView}, Path=Commands.ShowDetailNewItemForm}" />
     </ContentPage.ToolbarItems>
     <!--<Shell.TitleView>

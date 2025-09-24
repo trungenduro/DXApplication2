@@ -1,22 +1,35 @@
+using CommunityToolkit.Maui.Media;
 using DemoCenter.Maui.Views;
+using DevExpress.Android.Editors;
 using DevExpress.CodeParser;
+using DevExpress.Data.Extensions;
+using DevExpress.DataAccess.Native.Sql;
 using DevExpress.Maui.Core;
-
+using DevExpress.Maui.Editors;
 using DXApplication2.ViewModels;
 using LiningCheckRecord;
+using SampleApp.DI;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TextEdit = DevExpress.Maui.Editors.TextEdit;
 
 namespace DXApplication2.Views;
 
 public partial class NewSpoolPage : ContentPage
 {
-	public NewSpoolPage()
+	private ISpeechToText speechToText;
+	public NewSpoolPage( )
 	{
 		InitializeComponent();
-	//	finished = true;
+	}
+	void OnHandlerChanged(object sender, EventArgs e)
+	{
+		if (Handler != null)
+			speechToText = Handler.MauiContext.Services.GetService<ISpeechToText>();
 	}
 
+	private CancellationTokenSource tokenSource = new CancellationTokenSource();
 	DatabaseViewModel DatabaseViewModel;
 	public NewSpoolPage(DatabaseViewModel model)
 	{
@@ -110,7 +123,7 @@ public partial class NewSpoolPage : ContentPage
 			}
 		}
 
-	//	preview.Source = imageSource;
+		preview.Source = imageSource;
 
 	
 	//	preview.IsVisible = true;
@@ -148,9 +161,9 @@ public partial class NewSpoolPage : ContentPage
        
 	}
 
-	private void DXButton_Clicked(object sender, EventArgs e)
+	private async Task DXButton_Clicked(object sender, EventArgs e)
 	{
-        Capture();
+       await Capture();
 	}
 
     private async void DXButton_Clicked_1(object sender, EventArgs e)
@@ -196,6 +209,7 @@ public partial class NewSpoolPage : ContentPage
         {
             sp.ImagePath = cropResult;
             sp.SpoolType = 4;
+			preview.Source = ImageSource.FromFile(cropResult);
         } 
 		
     }
@@ -204,6 +218,12 @@ public partial class NewSpoolPage : ContentPage
 	{
 		if (finished)
 		{
+			if(this.types.SelectedIndex < 3)
+			{
+				var file= $"type{this.types.SelectedIndex + 1}.png";
+				preview.Source = ImageSource.FromFile(file);
+			}
+				
 			if (this.types.SelectedIndex == 3)
 				TakePhotoClicked(sender, e);	
 			if (this.types.SelectedIndex == 4)
@@ -216,4 +236,120 @@ public partial class NewSpoolPage : ContentPage
 	{
 		finished = true;
 	}
+
+	private void TextEdit_Completed(object sender, EventArgs e)
+	{
+		TextEdit textEdit = sender as TextEdit;
+		if (textEdit.Text.Trim() == "")
+		{
+			textEdit.HasError = false;
+			return;
+		}
+		if (Sheet == null) return;
+
+		if (textEdit.Text.StartsWith("."))
+		{
+			if (Sheet != null)
+			{
+				textEdit.Text = $"{Sheet.ThickNess}{textEdit.Text}";
+			}
+		}
+		double d = 0;
+		if (!Double.TryParse(textEdit.Text, out d))
+		{
+			textEdit.HasError = true;
+		}
+		else
+		{
+
+			textEdit.HasError = d < Sheet.ThickNess;
+		}
+		var grid = textEdit.Parent as Grid;
+
+		var ind = grid.Children.ToList().FindIndex(x => x == textEdit);
+
+		if (grid.Children.Count > ind + 1)
+			grid.Children[ind + 1].Focus();
+	}
+
+	private void DXButton_Clicked_2(object sender, EventArgs e)
+	{
+
+	}
+
+	private void Micro_Clicked(object sender, EventArgs e)
+	{
+		if(sender is not DXButton btn) return;
+		var grid = btn.Parent as DXStackLayout;
+		var ind= grid.Children.FindIndex(x => x == btn);
+		if (grid.Children.Count > ind + 1)
+		{
+			//grid.Children[ind + 1].Focus();
+		}
+		Listen();
+	}
+
+	private async void Listen()
+	{
+		string RecognitionText= "";
+		var isAuthorized = await speechToText.RequestPermissions();
+		if (isAuthorized)
+		{
+			try
+			{
+				RecognitionText = await speechToText.Listen(CultureInfo.GetCultureInfo("ja-JP"),
+					new Progress<string>(partialText =>
+					{
+						if (DeviceInfo.Platform == DevicePlatform.Android)
+						{
+							RecognitionText = partialText;
+						}						
+						
+					}), tokenSource.Token);
+			}
+			catch (Exception ex)
+			{
+				await DisplayAlert("Error", ex.Message, "OK");
+			}
+		}
+		else
+		{
+			await DisplayAlert("Permission Error", "No microphone access", "OK");
+		}
+		test.Text += RecognitionText;
+	}
+	string RecognitionText = "";
+
+
+
+
+	async Task StartListening(CancellationToken cancellationToken)
+	{
+		var isGranted = await SpeechToText.Default.RequestPermissions(cancellationToken);
+		if (!isGranted)
+		{
+			//await Toast.Make("Permission not granted").Show(CancellationToken.None);
+			return;
+		}
+
+		var recognitionResult = await SpeechToText.Default.ListenAsync(
+			CultureInfo.GetCultureInfo("ja-JP"),
+			new Progress<string>(partialText =>
+			{
+				RecognitionText += partialText + " ";
+			}),
+			cancellationToken);
+
+		if (recognitionResult.IsSuccessful)
+		{
+			RecognitionText = recognitionResult.Text;
+			// You can now parse numbers from RecognitionText
+		}
+		else
+		{
+			//await Toast.Make(recognitionResult.Exception?.Message ?? "Unable to recognize speech").Show(CancellationToken.None);
+		}
+	}
+
+
 }

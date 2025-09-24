@@ -483,7 +483,13 @@ public partial class DatabaseViewModel : ObservableObject {
 
             if (args.DataChangeType == DataChangeType.Edit)
             {
-
+                if(string.IsNullOrEmpty(order.‹qæ–¼ ))
+                {
+					args.IsValid = false;
+					//order.‹qæ–¼ = args..;
+					await Shell.Current.DisplayAlert("Šm”F", "‹qæ–¼‚ª–¢“ü—Í", "OK");
+					return;
+				}
                 var sheets = await unitOfWork.SheetRepository.GetAsync();
                 var orderS= sheets.Where(x=>x.Order!=null).Where(x => x.Order.Id == order.Id).ToList();
                 foreach (var sh in orderS)
@@ -865,6 +871,31 @@ public partial class DatabaseViewModel : ObservableObject {
         List<CheckerTable> checkerTables = Peoples.ToList();
 		checkerTables?.Remove(peo);
 		Peoples = new ObservableCollection<CheckerTable>( checkerTables);
+
+	}
+
+	internal void ImportCsv(List<List<string>> csvData)
+	{
+		using var unitOfWork = new SQLiteUnitOfWork(cacheService);
+		Action? pendingAction = null;
+		var ordersName = csvData[0][0].Trim();
+        if(Orders.Where(x => x.OrderNo == ordersName).Any())
+		{
+			Shell.Current.DisplayAlert("Error", "ƒI[ƒ_[‚ª d•¡‚µ‚Ä‚Ü‚·\n", "OK").Wait();
+			return;
+		}
+        else
+        {
+            var order = new DHFOrder { OrderNo = ordersName, ‹qæ–¼ = csvData[0][1], Total = csvData.Count, };		
+			unitOfWork.CustomersRepository.Add(order);
+			pendingAction = () => Orders.Remove(order);
+
+			foreach (var line in csvData)
+			{
+				
+			}
+
+		}
 
 	}
 }

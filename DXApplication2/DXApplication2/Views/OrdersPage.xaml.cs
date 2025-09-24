@@ -1,4 +1,6 @@
 using Android.Bluetooth;
+using Android.Content;
+using Android.Speech;
 using DevExpress.Maui.Core;
 
 using DevExpress.Maui.Editors;
@@ -17,11 +19,31 @@ namespace DXApplication2.Views
             InitializeComponent();
 			InitCache();
 			this.checkbox.IsChecked = true;
-
+			//	var lists = await GetAvailableLanguagesAsync();
+			 InitializeLanguagesAsync();
 		}
+		private async Task InitializeLanguagesAsync()
+		{
+			var lists = await GetAvailableLanguagesAsync();
+		}
+		public async Task<IList<string>> GetAvailableLanguagesAsync()
+		{
+			var tcs = new TaskCompletionSource<IList<string>>();
+			var receiver = new LanguageDetailsReceiver(tcs);
 
-		
-        DHFOrder ActiveOrder;
+			var filter = new IntentFilter(RecognizerIntent.ActionGetLanguageDetails);
+			Android.App.Application.Context.RegisterReceiver(receiver, filter);
+
+			var intent = new Intent(RecognizerIntent.ActionGetLanguageDetails);
+			Android.App.Application.Context.SendBroadcast(intent);
+
+			var languages = await tcs.Task;
+
+			Android.App.Application.Context.UnregisterReceiver(receiver);
+
+			return languages;
+		}
+		DHFOrder ActiveOrder;
         int ActiveHandle = -1;
     
 
@@ -209,5 +231,15 @@ namespace DXApplication2.Views
 				fileStream.Close();
 				file.Close();			
 		}
-	}
+
+		private void importClick(object sender, EventArgs e)
+		{
+			DatabaseViewModel vm = (DatabaseViewModel)BindingContext;
+			//vm.re.Execute(null);
+
+			CsvImportView csvImportView = new CsvImportView();
+
+			Navigation.PushAsync(csvImportView);
+		}
+    }
 }

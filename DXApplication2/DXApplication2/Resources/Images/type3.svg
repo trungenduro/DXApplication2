@@ -1,16 +1,15 @@
-
 <svg width="200" height="200" viewBox="0 0 100 100">
 
-  <line x1="30" y1="50" x2="30" y2="80" stroke="#1177D7" stroke-width="5" />
-  <line x1="80" y1="15" x2="80" y2="45" stroke="#1177D7" stroke-width="5" />
-  
-  <path d="M30,50 A20,20 0 0,1 50,30" fill="none" stroke="#1177D7" stroke-width="5" />
-   <line x1="50" y1="30" x2="80" y2="30" stroke="#1177D7" stroke-width="5" />
-  <line x1="48" y1="80" x2="13" y2="80" stroke="#1177D7" stroke-width="5" />
+	<line x1="30" y1="50" x2="30" y2="80" stroke="blue" stroke-width="5" />
+	<line x1="80" y1="15" x2="80" y2="45" stroke="blue" stroke-width="5" />
 
-  <text x="5" y="85" font-size="18" text-anchor="middle" fill="blue">A</text>
-   <text x="25" y="35" font-size="18" text-anchor="middle" fill="blue">B</text>
-   <text x="65" y="25" font-size="18" text-anchor="middle" fill="blue">C</text>
- <text x="92" y="38" font-size="18" text-anchor="middle" fill="blue">D</text>
-  
+	<path d="M30,50 A20,20 0 0,1 50,30" fill="none" stroke="blue" stroke-width="5" />
+	<line x1="50" y1="30" x2="80" y2="30" stroke="blue" stroke-width="5" />
+	<line x1="48" y1="80" x2="13" y2="80" stroke="blue" stroke-width="5" />
+
+	<text x="5" y="85" font-size="18" text-anchor="middle" fill="blue">A</text>
+	<text x="25" y="35" font-size="18" text-anchor="middle" fill="blue">B</text>
+	<text x="65" y="25" font-size="18" text-anchor="middle" fill="blue">C</text>
+	<text x="92" y="38" font-size="18" text-anchor="middle" fill="blue">D</text>
+
 </svg>

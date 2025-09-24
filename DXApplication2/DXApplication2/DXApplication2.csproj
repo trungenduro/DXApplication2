@@ -90,6 +90,9 @@
     <Compile Update="Views\EditSpoolPage.xaml.cs">
       <DependentUpon>EditSpoolPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\CsvImportView.xaml.cs">
+      <DependentUpon>CsvImportView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\SheetsPage1.xaml.cs">
       <DependentUpon>SheetsPage1.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,9 @@
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\PeoplesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\CsvImportView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\SheetEditPage.xaml">

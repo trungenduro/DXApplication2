@@ -84,9 +84,9 @@ IconMember="add.svg" ChipCheckIcon="add.svg"
                       
                     <dx:DXButton  
                         Margin="80,0,80,00" BackgroundColor="#1177D7" TextColor="White" CornerRadius="10"  IconHeight="32" IconWidth="32" Content="管追加" ButtonType="Filled"  Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailNewItemForm}" ></dx:DXButton>
-                   
-                   
-                        <dx:DXCollectionView Margin="5,15,5,5" x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" DetailEditFormTemplate="{DataTemplate views:EditSpoolPage}" 
+
+
+                        <dx:DXCollectionView Margin="5,15,5,5" x:Name="spoolGrid" ItemsSource="{Binding Item.Spools}" DetailEditFormTemplate="{DataTemplate views:NewSpoolPage}" 
                                  ItemSpanCount="1" ValidateAndSave="collectionView_ValidateAndSave" 
                                  Tap="spoolGrid_Tap"
                                  DetailNewItemFormTemplate="{DataTemplate views:NewSpoolPage}" >
@@ -110,8 +110,8 @@ IconMember="add.svg" ChipCheckIcon="add.svg"
 
                                             <Grid Grid.Row="1"   />                                          
                                                 
-                                              <dx:TextEdit HeightRequest="35" HorizontalOptions="Fill" BoxPadding="10,0,0,0" Text="{Binding SpoolNo}" ClearIconVisibility="Never" Grid.ColumnSpan="1"  />
-                                              <dx:TextEdit Grid.Column="1"  HeightRequest="35" HorizontalOptions="Fill" BoxPadding="10,0,0,0" Text="{Binding Size}" ClearIconVisibility="Never" Grid.ColumnSpan="1"  />
+                                              <Label FontSize="20" HorizontalOptions="Center"  Text="{Binding SpoolNo}"  Grid.ColumnSpan="1"  />
+                                            <Label FontSize="20" Grid.Column="1"  HeightRequest="35" HorizontalOptions="Fill"  Text="{Binding Size}"  Grid.ColumnSpan="1"  />
                                            
                                             <Image Grid.Row="1"  Source="{Binding  Converter={StaticResource ImageEnumConverter}}" />
 

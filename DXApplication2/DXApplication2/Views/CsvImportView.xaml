@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DXApplication2.Views.CsvImportView" 
+           xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+                xmlns:dx="http://schemas.devexpress.com/maui"
+             xmlns:converters="clr-namespace:DXApplication2.Converters"   
+             xmlns:viewModels="clr-namespace:DXApplication2.ViewModels"
+              BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:DatabaseViewModel}}"
+             xmlns:views="clr-namespace:DXApplication2.Views;assembly=DXApplication2"
+          
+             Title="CSV読込み">
+    <ContentPage.Resources>
+        <converters:SpoolToImageConverter x:Key="ImageEnumConverter" />
+      
+        <converters:SpoolToIconConverter x:Key="SpoolIcon" />
+        <converters:ListIndexConverter x:Key="ListConvert" />
+        <converters:SheetNumberConverter x:Key="SheetNoConvert" />
+     
+        
+      
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+       
+        <ToolbarItem Text="管追加" IconImageSource="addSpool.svg" Command="{Binding Source={x:Reference spoolGrid}, Path=Commands.ShowDetailNewItemForm}" />
+    
+        <ToolbarItem Text="Save" IconImageSource="im.png" Command="{Binding SaveCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <VerticalStackLayout Margin="10,0,10,0">
+
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <dx:DXButton  Content="サンプールCSVを読込み" ButtonType="ToolButton" ></dx:DXButton>
+
+            <dx:DXButton Content="CSV選択" BorderColor="White" Clicked="SelectCSV_Clicked"  Icon="im.png" ButtonType="ToolButton"  ></dx:DXButton>
+        </HorizontalStackLayout>
+
+        <Label Margin="10" Text="読込みできるのは、下記のフォマットのCSVのみです" TextColor="Red" FontAttributes="Bold" FontSize="20"></Label>
+        <Grid>
+            <Image Source="csvsample.png" Margin="5"></Image>
+            <dx:DXBorder BorderThickness="2" CornerRadius="5" BorderColor="Red" Padding="10" VerticalOptions="Center" HorizontalOptions="Center" Background="White" >
+                <Label Text="CSVフォマット" TextColor="Red" FontAttributes="Bold" FontSize="20" ></Label>
+            </dx:DXBorder>
+        </Grid>
+
+        <dx:DataGridView Margin="20,10,10,10" HorizontalOptions="Center" WidthRequest="200" 
+     x:Name="collectionView"         
+     >
+
+            <dx:DataGridView.Columns>
+                <dx:TextColumn Caption="検査員名前" FieldName="Name" Width="180" AutoFilterCondition="Contains"   />
+            </dx:DataGridView.Columns>
+
+        </dx:DataGridView>
+
+        <dx:DXPopup x:Name="popup" BindingContext="{Binding DataControlContext.DataControlContext}"            
+               AllowScrim="True"
+               CloseOnScrimTap="True"
+               VerticalAlignment="Bottom"
+               HorizontalAlignment="Stretch"
+               Margin="0,0,0,0"
+               CornerRadius="16">
+            <VerticalStackLayout Padding="5,10,10,8" HorizontalOptions="Center">
+                <Label FontSize="17"  TextColor="Blue" Text="{Binding CurrentSpool.SpoolNo, StringFormat='管番号：{0}'}"            
+                Margin="24,16"
+                HorizontalTextAlignment="Center" />
+
+                <dx:DXSeparator />
+
+
+             
+
+
+                <dx:DXButton ButtonType="ToolButton" Content="削除         " WidthRequest="150"
+             Icon="delete" 
+             />
+
+                <dx:DXSeparator/>
+
+                <dx:DXButton ButtonType="ToolButton" Content="キャンセル" />
+            </VerticalStackLayout>
+
+        </dx:DXPopup>
+    </VerticalStackLayout>
+
+</ContentPage>

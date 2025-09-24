@@ -128,6 +128,7 @@ namespace LiningCheckRecord
                     v => JsonConvert.DeserializeObject<List<object>>(v)));
 
             modelBuilder.Entity<DHFOrder>().HasMany(x => x.ExcelSheets).WithOne(y => y.Order);
+            modelBuilder.Entity<DHFOrder>().HasMany(x => x.SpoolsCSV).WithOne(y => y.Order);
             modelBuilder.Entity<ExcelSheet>().HasMany(x => x.Spools).WithOne(y => y.Sheet);
             //  modelBuilder.Entity<ExcelSheet>().HasMany(x => x.Spools);
 
@@ -158,8 +159,8 @@ namespace LiningCheckRecord
 				customers1.Add(new DHFOrder {Id=2, 客先名 = $"JGC", 案件名="名古屋", OrderNo = $"00001-0001", Total = 5,});
 
             var checker = new List<CheckerTable>();
-            checker.Add(new CheckerTable { ID = 1, Name = "太郎1" });
-            checker.Add(new CheckerTable { ID = 2, Name = "太郎2" });
+            checker.Add(new CheckerTable { ID = 1, Name = "DHF1" });
+            checker.Add(new CheckerTable { ID = 2, Name = "DHF2" });
 
 
             modelBuilder.Entity<DHFOrder>().HasData(customers1);
@@ -280,6 +281,7 @@ namespace LiningCheckRecord
         public string CombineName { get => 客先名 + "/" + 案件名; }
 
         public List<ExcelSheet> ExcelSheets { get; set; } = new();
+        public List<LiningSpool> SpoolsCSV { get; set; } = new();
 
         public int ExcelSheetsCount { get => ExcelSheets.Count; }
         public int SpoolsCount
